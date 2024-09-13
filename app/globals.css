@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -91,3 +93,13 @@
 .orange_gradient {
   @apply bg-gradient-to-br from-amber-500 via-orange-600 to-yellow-500;
 }
+
+.search_input {
+  @apply block w-full rounded-md border border-gray-200 bg-white py-2.5 font-poppins pl-5 pr-12 text-sm shadow-lg font-medium focus:border-black focus:outline-none focus:ring-0;
+}
+
+/* Nav Component */
+.logo_text {
+  @apply font-poppins font-semibold text-lg text-black tracking-wide;
+}
+

@@ -210,7 +210,7 @@ const fetchTournamentData = async (): Promise<TournamentProps> => {
             "name": "Alice",
             "id": "player1",
             "image": "https://example.com/images/alice.jpg",
-            "score": 45
+            "score": 51
           },
           "playerTwo": {
             "name": "Charlie",

@@ -20,3 +20,15 @@ export type RoundProps = {
 export type TournamentProps = {
     rounds: RoundProps[];
 };
+
+export type User = {
+    username: string;
+    image: string;
+  }
+  
+export type UserContextType = {
+    user: User | null;
+    loading: boolean;
+    login: () => void;
+    logout: () => void;
+  }
