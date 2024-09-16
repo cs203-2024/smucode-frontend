@@ -21,7 +21,7 @@ const TournamentBracket = ({ id, playerOne, playerTwo }: BracketProps) => {
     const isWinner = getWinnerScore(playerOne, playerTwo);
     
   return (
-    <div className="p-4 w-64">
+    <div className="p-4 w-64 min-w-64">
     {/* <h2 className="text-lg font-semibold mb-3">{id}</h2> */}
     <div className="space-y-1">
 

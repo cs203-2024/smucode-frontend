@@ -10,7 +10,7 @@ const fetchTournamentData = async (): Promise<TournamentProps> => {
     "rounds": [
     {
       "id": 1,
-      "name": "Elimination Round",
+      "name": "Round of 16",
       "brackets": [
         {
           "id": 1,

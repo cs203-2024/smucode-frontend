@@ -1,12 +1,12 @@
 "use client"
 
-import TournamentData from '@/components/TournamentData'; 
+import TournamentBracketWrapper from '@/components/TournamentBracketWrapper'; 
 
 const TournamentPage: React.FC = () => {
   return (
     <div>
       <h1>Tournament</h1>
-      <TournamentData />
+      <TournamentBracketWrapper />
     </div>
   );
 };
