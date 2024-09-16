@@ -19,7 +19,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@/registry/*": ["./app/registry/*"]
+      // "@/registry/*": ["registry/*"]
     // "paths": {
     //   "@/*": ["./app/*"],
     //   "@/registry/*": ["./app/registry/*"]

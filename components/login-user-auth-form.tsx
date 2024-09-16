@@ -33,21 +33,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             <Input
               id="username"
               placeholder=""
-              type="username"
+              type="text"
               autoCapitalize="none"
               autoComplete="username"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
-            <Label className="" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              id="email"
-              placeholder=""
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
             />
@@ -60,18 +48,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               type="password"
               autoCapitalize="none"
               autoComplete="password"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
-            <Label className="" htmlFor="verifyPassword">
-              Verify Password
-            </Label>
-            <Input
-              id="verifyPassword"
-              placeholder=""
-              type="verifyPassword"
-              autoCapitalize="none"
-              autoComplete="verifyPassword"
               autoCorrect="off"
               disabled={isLoading}
             />
@@ -94,6 +70,22 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </span>
         </div>
       </div>
+      <Button variant="outline" type="button" disabled={isLoading}>
+        {isLoading ? (
+          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        ) : (
+          <Icons.google className="mr-2 h-4 w-4" />
+        )}{" "}
+        Google
+      </Button>
+      <Button variant="outline" type="button" disabled={isLoading}>
+        {isLoading ? (
+          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        ) : (
+          <Icons.apple className="mr-2 h-4 w-4" />
+        )}{" "}
+        Apple
+      </Button>
       <Button variant="outline" type="button" disabled={isLoading}>
         {isLoading ? (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
