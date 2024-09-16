@@ -4,7 +4,7 @@ import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/registry/new-york/ui/button"
-import { UserAuthForm } from "@/components/login-user-auth-form"
+import { LoginUserAuthForm } from "@/components/login-user-auth-form"
 
 export const metadata: Metadata = {
   title: "Login",
@@ -74,7 +74,7 @@ export default function AuthenticationPage() {
                 to continue to SMUcode
               </p>
             </div>
-            <UserAuthForm />
+            <LoginUserAuthForm />
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link

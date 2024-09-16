@@ -1,7 +1,7 @@
 // Home.tsx
 import type { FC } from 'react';
 import Link from 'next/link';
-import { Button } from '../components/Button';
+import { Button } from '/components/Button';
 
 const Home: FC = () => {
   return (
