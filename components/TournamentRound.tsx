@@ -32,6 +32,7 @@ const TournamentRound: React.FC<RoundProps> = ({ name, id, brackets }) => {
           <div key={bracket.id} className="flex items-center">
             <TournamentBracket
               id={bracket.id}
+              status={bracket.status}
               playerOne={bracket.playerOne}
               playerTwo={bracket.playerTwo}
             />

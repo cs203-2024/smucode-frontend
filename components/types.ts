@@ -7,8 +7,9 @@ export type PlayerInfo = {
 
 export type BracketProps = {
     id: number;
-    playerOne: PlayerInfo;
-    playerTwo: PlayerInfo;
+    status: string;
+    playerOne?: PlayerInfo;
+    playerTwo?: PlayerInfo;
 };
 
 export type RoundProps = {
