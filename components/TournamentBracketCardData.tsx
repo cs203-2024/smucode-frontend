@@ -248,13 +248,11 @@ const fetchTournamentData = async (): Promise<TournamentProps> => {
   
 };
 
-const TournamentData: React.FC = async () => {
-  const tournamentData = await fetchTournamentData();
+const TournamentBracketCardData: React.FC = async () => {
+  const TournamentBracketCardData = await fetchTournamentData();
   return (
-    <div>
-      <TournamentWrapper rounds={tournamentData.rounds} />
-    </div>
+      <TournamentBracketCard rounds={TournamentBracketCardData.rounds}/>
   );
 };
 
-export default TournamentData;
+export default TournamentBracketCardData;
