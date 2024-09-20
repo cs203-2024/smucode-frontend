@@ -33,3 +33,13 @@ export type UserContextType = {
     login: () => void;
     logout: () => void;
   }
+
+export type TournamentCardInfo = {
+    name: string;
+    id: string;
+    ongoing: boolean;
+    capacity: number;
+    startDate: Date;
+    endDate: Date;
+};
+
