@@ -93,31 +93,48 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.google className="mr-2 h-4 w-4" />
-        )}{" "}
-        Google
-      </Button>
-      {/* <Button variant="outline" size="icon" type="button" disabled={isLoading}> */}
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.apple className="mr-2 h-4 w-4" />
-        )}{" "}
-        Apple
-      </Button>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.gitHub className="mr-2 h-4 w-4" />
-        )}{" "}
-        GitHub
-      </Button>
+      <div className="flex justify-center space-x-2">
+        <Button
+          variant="outline"
+          type="button"
+          disabled={isLoading}
+          className="p-2 flex items-center justify-center"
+        >
+          {isLoading ? (
+            <Icons.spinner className="m-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Icons.google className="m-2 h-4 w-4" />
+          )}{" "}
+          {/* Google */}
+        </Button>
+        {/* <Button variant="outline" size="icon" type="button" disabled={isLoading}> */}
+        <Button
+          variant="outline"
+          type="button"
+          disabled={isLoading}
+          className="p-2 flex items-center justify-center"
+        >
+          {isLoading ? (
+            <Icons.spinner className="m-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Icons.apple className="m-2 h-4 w-4" />
+          )}{" "}
+          {/* Apple */}
+        </Button>
+        <Button
+          variant="outline"
+          type="button"
+          disabled={isLoading}
+          className="p-2 flex items-center justify-center"
+        >
+          {isLoading ? (
+            <Icons.spinner className="m-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Icons.gitHub className="m-2 h-4 w-4" />
+          )}{" "}
+          {/* GitHub */}
+        </Button>
+      </div>
     </div>
   );
 }
