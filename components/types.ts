@@ -7,8 +7,9 @@ export type PlayerInfo = {
 
 export type BracketProps = {
     id: number;
-    playerOne: PlayerInfo;
-    playerTwo: PlayerInfo;
+    status: string;
+    playerOne?: PlayerInfo;
+    playerTwo?: PlayerInfo;
 };
 
 export type RoundProps = {
@@ -16,6 +17,22 @@ export type RoundProps = {
     id: number;
     brackets: BracketProps[];
 };
+
+export type TournamentProps = {
+    rounds: RoundProps[];
+};
+
+export type User = {
+    username: string;
+    image: string;
+  }
+  
+export type UserContextType = {
+    user: User | null;
+    loading: boolean;
+    login: () => void;
+    logout: () => void;
+  }
 
 export type TournamentCardInfo = {
     name: string;
@@ -25,3 +42,4 @@ export type TournamentCardInfo = {
     startDate: Date;
     endDate: Date;
 };
+

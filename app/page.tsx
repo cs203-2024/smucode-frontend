@@ -7,6 +7,7 @@ import TournamentCardWrapper from "@/components/home/TournamentCardWrapper";
 
 
 export default function Home() {
+
     return (
       <main className="flex-col flex min-h-full flex gap-3 items-start justify-center py-8 px-20">
         <div className="w-full flex justify-between items-center space-between mb-6">

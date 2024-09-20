@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -86,3 +88,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+.logo_gradient {
+  @apply bg-gradient-to-br from-[#22FB9E] to-[#30A6FD];
+}
+
+/* Nav Component */
+.logo_text {
+  @apply font-poppins font-semibold text-lg text-black tracking-wide;
+}
+
