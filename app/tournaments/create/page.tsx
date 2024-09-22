@@ -24,12 +24,10 @@ import {
     SelectValue,
   } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider"
-import { addDays, format } from "date-fns"
+import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
-import { DateRange } from "react-day-picker" 
 import { capitalise, cn, isPowerOfTwo } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -92,24 +90,6 @@ const formSchema = z.object({
         message: "Only .jpg, .jpeg and .png formats are supported."
     }),
 })
-// .refine((data) => {
-//     return data.timeWeight + data.spaceWeight + data.testCaseRatioWeight == 100;
-// }, {
-//     message: "The sum of time, space, and test case ratio weights must equal 100%.",
-//     path: ["timeWeight"], 
-// })
-// .refine((data) => {
-//     return data.timeWeight + data.spaceWeight + data.testCaseRatioWeight == 100;
-// }, {
-//     message: "The sum of time, space, and test case ratio weights must equal 100%.",
-//     path: ["spaceWeight"], 
-// })
-// .refine((data) => {
-//     return data.timeWeight + data.spaceWeight + data.testCaseRatioWeight == 100;
-// }, {
-//     message: "The sum of time, space, and test case ratio weights must equal 100%.",
-//     path: ["testCaseRatioWeight"], 
-// })
 .superRefine((data, ctx) => {
     if (data.timeWeight + data.spaceWeight + data.testCaseRatioWeight !== 100) {
       ctx.addIssue({
@@ -255,10 +235,10 @@ export default function CreateTournament() {
                                     <FormItem>
                                         <FormLabel className="font-semibold">Capacity</FormLabel>
                                         <FormControl>
-                                            <Input type="number" min={2} step={1} placeholder="eg. 32 (multiple of 2)" className="max-w-[400px]" {...field} />
+                                            <Input type="number" min={2} step={1} placeholder="eg. 32 (power of 2)" className="max-w-[400px]" {...field} onChange={(e) => field.onChange(parseInt(e.target.value))} />
                                         </FormControl>
                                         <FormDescription>
-                                            Your tournament should have at least 2 players.
+                                            The number of players should be a power of 2.
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
@@ -506,7 +486,7 @@ export default function CreateTournament() {
                                                 step={1}
                                                 onValueChange={(valueArray) => {
                                                     setTimeW(valueArray[0]);
-                                                    field.onChange(valueArray[0]); // Update form field with single number
+                                                    field.onChange(valueArray[0]); 
                                                 }}
                                             />
                                         </FormControl>
@@ -536,7 +516,7 @@ export default function CreateTournament() {
                                                 step={1}
                                                 onValueChange={(valueArray) => {
                                                     setSpaceW(valueArray[0])
-                                                    field.onChange(valueArray[0]); // Update form field with single number
+                                                    field.onChange(valueArray[0]); 
                                                 }}
                                             />
                                         </FormControl>
@@ -566,7 +546,7 @@ export default function CreateTournament() {
                                                 step={1}
                                                 onValueChange={(valueArray) => {
                                                     setTcW(valueArray[0]);
-                                                    field.onChange(valueArray[0]); // Update form field with single number
+                                                    field.onChange(valueArray[0]); 
                                                 }}
                                             />
                                         </FormControl>
@@ -607,11 +587,8 @@ export default function CreateTournament() {
                                             onChange={(e) => {
                                                 const file = e.target.files?.[0];
                                                 if (file && file instanceof File) {
-                                                    //console.log("is File!");
-                                                    // Set the file in the form state
-                                                    field.onChange(file);  // This updates the Zod value
-                                                    form.trigger("image"); // Trigger validation for this field
-                                                    //console.log("file set!");
+                                                    field.onChange(file);  
+                                                    form.trigger("image"); 
                                                 }
                                             }}
                                             //onBlur={fileRef.onBlur}
