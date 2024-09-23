@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useState } from "react";
-
+import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z, ZodErrorMap } from "zod";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button"
 import {
@@ -28,7 +28,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider"
 import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
-import { capitalise, cn, isPowerOfTwo } from "@/lib/utils"
+import { capitalise, cn, generateCapacity, isPowerOfTwo } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
 import {
   Popover,
@@ -46,8 +46,13 @@ import { QuestionMarkCircledIcon } from "@radix-ui/react-icons"
 const TournamentStatusEnum = z.enum(["active", "inactive", "suspended"]);
 type TournamentStatusEnum = z.infer<typeof TournamentStatusEnum>;
 
+const BandEnum = z.enum(["lower", "middle", "upper"]);
+type BandEnum = z.infer<typeof BandEnum>;
+
 const TournamentFormatEnum = z.enum(["single-elimination", "double-elimination", "round-robin"]);
 type TournamentFormatEnum = z.infer<typeof TournamentFormatEnum>;
+
+const capacityEnum: number[] = generateCapacity(64);
 
 const MAX_FILE_SIZE = 1024*1024*5;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
@@ -65,6 +70,7 @@ const formSchema = z.object({
     }),
     status: TournamentStatusEnum,
     format: TournamentFormatEnum,
+    band: BandEnum,
     startDate: z.date({
         required_error: "Start date is required."
     }),
@@ -86,9 +92,7 @@ const formSchema = z.object({
     testCaseRatioWeight: z.number({required_error: "This field is required."}).refine((value) => value <= 100 && value >= 0, {
         message: "Test case ratio weight must be between 0% and 100%."
     }),
-    image: z.instanceof(File, {message: "Please select a valid file."}).refine((file) => file.size >= 1 && ACCEPTED_IMAGE_TYPES.includes(file.type), {
-        message: "Only .jpg, .jpeg and .png formats are supported."
-    }),
+    image: z.instanceof(File, {message: "Please select a valid file."}).optional()
 })
 .superRefine((data, ctx) => {
     if (data.timeWeight + data.spaceWeight + data.testCaseRatioWeight !== 100) {
@@ -133,6 +137,7 @@ export default function CreateTournament() {
     const [timeW, setTimeW] = useState(0);
     const [spaceW, setSpaceW] = useState(0);
     const [tcW, setTcW] = useState(0);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -141,6 +146,7 @@ export default function CreateTournament() {
             description: "",
             status: "active",
             format: "single-elimination",
+            band: "upper",
             capacity: 2,
             startDate: new Date(),
             endDate: new Date(),
@@ -202,7 +208,7 @@ export default function CreateTournament() {
                                 </FormItem>
                             )}
                         />
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-3 gap-2">
                             <FormField
                                 control={form.control}
                                 name="format"
@@ -234,11 +240,45 @@ export default function CreateTournament() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="font-semibold">Capacity</FormLabel>
-                                        <FormControl>
-                                            <Input type="number" min={2} step={1} placeholder="eg. 32 (power of 2)" className="max-w-[400px]" {...field} onChange={(e) => field.onChange(parseInt(e.target.value))} />
-                                        </FormControl>
+                                        <Select onValueChange={field.onChange} defaultValue={""+field.value}>
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select a capacity" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {capacityEnum.map((option) => (
+                                                    <SelectItem key={option} value={""+option}>{option}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                         <FormDescription>
-                                            The number of players should be a power of 2.
+                                            The maximum number of players.
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="band"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="font-semibold">Band</FormLabel>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select the band" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {BandEnum.options.map((option) => (
+                                                    <SelectItem key={option} value={option}>{capitalise(option)}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormDescription>
+                                            Select the band of players.
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
@@ -559,48 +599,60 @@ export default function CreateTournament() {
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="description"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="font-semibold">Description</FormLabel>
-                                    <FormControl>
-                                        <Textarea placeholder="eg. Winners will be awarded a 6-month internship with us" className="h-[15vh]" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                        Participants will be able to view this description. 
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="image"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="font-semibold">Logo</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="file" accept={ACCEPTED_IMAGE_TYPES.join(",")} 
-                                            onChange={(e) => {
-                                                const file = e.target.files?.[0];
-                                                if (file && file instanceof File) {
-                                                    field.onChange(file);  
-                                                    form.trigger("image"); 
-                                                }
-                                            }}
-                                            //onBlur={fileRef.onBlur}
-                                        />
-                                    </FormControl>
-                                    <FormDescription>
-                                        Images must have the following formats: .jpeg or .jpg or .png 
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                                control={form.control}
+                                name="description"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="font-semibold">Description</FormLabel>
+                                        <FormControl>
+                                            <Textarea placeholder="eg. Winners will be awarded a 6-month internship with us" className="h-[35vh]" {...field} />
+                                        </FormControl>
+                                        <FormDescription>
+                                            Participants will be able to view this description. 
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <div className="col-span-1 flex flex-col justify-center">
+                                <FormField
+                                    control={form.control}
+                                    name="image"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="font-semibold">Logo (optional)</FormLabel>
+                                            <div className="flex justify-center items-center p-6">
+                                                {imagePreview ? (
+                                                <Image src={imagePreview} alt="Uploaded Preview" className="bg-gray-300 w-40 h-40 object-cover rounded-full" width={160} height={160} />
+                                                ) : (
+                                                <div className="bg-gray-200 w-40 h-40 object-contain rounded-full text-gray-700 flex items-center justify-center p-4 text-center" >No image uploaded</div>
+                                                )}
+                                            </div>
+                                            <FormControl>
+                                                <Input
+                                                    type="file" accept={ACCEPTED_IMAGE_TYPES.join(",")} 
+                                                    onChange={(e) => {
+                                                        const file = e.target.files?.[0];
+                                                        if (file && file instanceof File) {
+                                                            field.onChange(file);  
+                                                            form.trigger("image"); 
+                                                            const objectUrl = URL.createObjectURL(file);
+                                                            setImagePreview(objectUrl);
+                                                        }
+                                                    }}
+                                                />
+                                            </FormControl>
+                                            <FormDescription>
+                                                Images must have the following formats: .jpeg or .jpg or .png 
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </form>
             </Form>

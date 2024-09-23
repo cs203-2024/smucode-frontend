@@ -16,3 +16,19 @@ export function isPowerOfTwo(n: number) {
       return true;
   return false;
 }
+
+export function generateCapacity(max: number): number[] {
+  if (max < 1) {
+    return [2];
+  }
+
+  const result: number[] = [];
+  let value = 2;
+
+  while (value <= max) {
+    result.push(value);
+    value *= 2; 
+  }
+
+  return result;
+}
