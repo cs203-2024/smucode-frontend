@@ -177,7 +177,7 @@ export default function CreateTournament() {
             memWeight: spaceW,
             testCaseWeight: tcW
         };
-        console.log(updatedValues);
+        // console.log(updatedValues);
 
         return updatedValues;
     }
