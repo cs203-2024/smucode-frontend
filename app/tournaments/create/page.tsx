@@ -54,7 +54,7 @@ type TournamentFormatEnum = z.infer<typeof TournamentFormatEnum>;
 
 const capacityEnum: number[] = generateCapacity(64);
 
-const MAX_FILE_SIZE = 1024*1024*5;
+// const MAX_FILE_SIZE = 1024*1024*5;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
 const formSchema = z.object({
@@ -86,16 +86,16 @@ const formSchema = z.object({
     timeWeight: z.number({required_error: "This field is required."}).refine((value) => value <= 100 && value >= 0, {
         message: "Time complexity weight must be between 0% and 100%."
     }),
-    spaceWeight: z.number({required_error: "This field is required."}).refine((value) => value <= 100 && value >= 0, {
+    memWeight: z.number({required_error: "This field is required."}).refine((value) => value <= 100 && value >= 0, {
         message: "Space complexity weight must be between 0% and 100%."
     }),
-    testCaseRatioWeight: z.number({required_error: "This field is required."}).refine((value) => value <= 100 && value >= 0, {
+    testCaseWeight: z.number({required_error: "This field is required."}).refine((value) => value <= 100 && value >= 0, {
         message: "Test case ratio weight must be between 0% and 100%."
     }),
     image: z.instanceof(File, {message: "Please select a valid file."}).optional()
 })
 .superRefine((data, ctx) => {
-    if (data.timeWeight + data.spaceWeight + data.testCaseRatioWeight !== 100) {
+    if (data.timeWeight + data.memWeight + data.testCaseWeight !== 100) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "The sum must equal 100%",
@@ -104,22 +104,24 @@ const formSchema = z.object({
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "The sum must equal 100%",
-        path: ["spaceWeight"],
+        path: ["memWeight"],
       });
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "The sum must equal 100%",
-        path: ["testCaseRatioWeight"],
+        path: ["testCaseWeight"],
       });
     }
   })
 .refine((data) => {
+    console.log(data.startDate.getTime() + ", " + data.endDate.getTime());
     return data.startDate.getTime() < data.endDate.getTime();
 }, {
     message: "Start Date Time must be before End Date Time.",
     path: ["startDate"]
 })
 .refine((data) => {
+    console.log(data.signUpDeadline.getTime() + ", " + data.startDate.getTime());
     return data.signUpDeadline.getTime() < data.startDate.getTime();
 }, {
     message: "Signups must end before Start Date Time.",
@@ -152,8 +154,8 @@ export default function CreateTournament() {
             endDate: new Date(),
             signUpDeadline: new Date(),
             timeWeight: 0,
-            spaceWeight: 0,
-            testCaseRatioWeight: 0
+            memWeight: 0,
+            testCaseWeight: 0
         },
     })
 
@@ -172,8 +174,8 @@ export default function CreateTournament() {
             endDate: endDateWithTime,
             signUpDeadline: signUpDateWithTime,
             timeWeight: timeW,
-            spaceWeight: spaceW,
-            testCaseRatioWeight: tcW
+            memWeight: spaceW,
+            testCaseWeight: tcW
         };
         console.log(updatedValues);
 
@@ -199,7 +201,7 @@ export default function CreateTournament() {
                                 <FormItem>
                                     <FormLabel className="font-semibold">Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="eg. SMU Gardening Champsionships" className="w-full" {...field} />
+                                        <Input placeholder="eg. SMU Gardening Championships" className="w-full" {...field} />
                                     </FormControl>
                                     <FormDescription>
                                         This is your public tournament display name.
@@ -264,7 +266,7 @@ export default function CreateTournament() {
                                 name="band"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="font-semibold">Band</FormLabel>
+                                        <FormLabel className="font-semibold flex justify-start items-center gap-2">Band <TooltipLabel info="This is the band of players to select from in the case of an oversubscription for the tournament. E.g., if a tournament of capacity 32 has 60 players registered, selecting the 'Upper' band will result in the top 32 players with the highest ELO rating to be selected for registration" /></FormLabel>
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
                                                 <SelectTrigger>
@@ -330,22 +332,22 @@ export default function CreateTournament() {
                                         </PopoverContent>
                                     </Popover>
                                     <Input className="w-18" min={0} max={23} step={1} type="number" placeholder="HH" onChange={(e) => {
-                                            const hour = e.target.value ? e.target.value:"0";
-                                            setSignUpHour(parseInt(hour));
+                                            const hour = e.target.value ? parseInt(e.target.value):0;
+                                            setSignUpHour(hour);
                                             if (field.value) {
-                                                const updatedDate = new Date(field.value);
-                                                updatedDate.setHours(signUpHour, signUpMin, 0, 0); 
+                                                const updatedDate = new Date(field.value); 
+                                                updatedDate.setHours(hour, signUpMin, 0, 0); 
                                                 field.onChange(updatedDate); 
                                             }
                                         }}
                                     />
                                     :
                                     <Input className="w-18" min={0} max={59} step={1} type="number" placeholder="MM" onChange={(e) => {
-                                            const min = e.target.value ? e.target.value:"0";
-                                            setSignUpMin(parseInt(min));
+                                            const min = e.target.value ? parseInt(e.target.value):0;
+                                            setSignUpMin(min);
                                             if (field.value) {
                                                 const updatedDate = new Date(field.value); 
-                                                updatedDate.setHours(signUpHour, signUpMin, 0, 0); 
+                                                updatedDate.setHours(signUpHour, min, 0, 0); 
                                                 field.onChange(updatedDate); 
                                             }
                                         }} 
@@ -403,22 +405,22 @@ export default function CreateTournament() {
                                         </PopoverContent>
                                     </Popover>
                                     <Input className="w-18" min={0} max={23} step={1} type="number" placeholder="HH" onChange={(e) => {
-                                            const hour = e.target.value ? e.target.value:"0";
-                                            setStartHour(parseInt(hour));
+                                            const hour = e.target.value ? parseInt(e.target.value):0;
+                                            setStartHour(hour);
                                             if (field.value) {
                                                 const updatedDate = new Date(field.value); 
-                                                updatedDate.setHours(startHour, startMin, 0, 0); 
+                                                updatedDate.setHours(hour, startMin, 0, 0); 
                                                 field.onChange(updatedDate); 
                                             }
                                         }}
                                     />
                                     :
                                     <Input className="w-18" min={0} max={59} step={1} type="number" placeholder="MM" onChange={(e) => {
-                                            const min = e.target.value ? e.target.value:"0";
-                                            setStartMin(parseInt(min));
+                                            const min = e.target.value ? parseInt(e.target.value):0;
+                                            setStartMin(min);
                                             if (field.value) {
                                                 const updatedDate = new Date(field.value); 
-                                                updatedDate.setHours(startHour, startMin, 0, 0); 
+                                                updatedDate.setHours(startHour, min, 0, 0); 
                                                 field.onChange(updatedDate); 
                                             }
                                         }} 
@@ -476,22 +478,22 @@ export default function CreateTournament() {
                                         </PopoverContent>
                                     </Popover>
                                     <Input className="w-18" min={0} max={23} step={1} type="number" placeholder="HH" onChange={(e) => {
-                                            const hour = e.target.value ? e.target.value:"0";
-                                            setEndHour(parseInt(hour));
+                                            const hour = e.target.value ? parseInt(e.target.value):0;
+                                            setEndHour(hour);
                                             if (field.value) {
                                                 const updatedDate = new Date(field.value); 
-                                                updatedDate.setHours(endHour, endMin, 0, 0); 
+                                                updatedDate.setHours(hour, endMin, 0, 0); 
                                                 field.onChange(updatedDate); 
                                             }
                                         }}
                                     />
                                     :
                                     <Input className="w-18" min={0} max={59} step={1} type="number" placeholder="MM" onChange={(e) => {
-                                            const min = e.target.value ? e.target.value:"0";
-                                            setEndMin(parseInt(min));
+                                            const min = e.target.value ? parseInt(e.target.value):0;
+                                            setEndMin(min);
                                             if (field.value) {
                                                 const updatedDate = new Date(field.value); 
-                                                updatedDate.setHours(endHour, endMin, 0, 0); 
+                                                updatedDate.setHours(endHour, min, 0, 0); 
                                                 field.onChange(updatedDate); 
                                             }
                                         }} 
@@ -538,7 +540,7 @@ export default function CreateTournament() {
                         />
                         <FormField
                             control={form.control}
-                            name="spaceWeight"
+                            name="memWeight"
                             render={({ field }) => (
                                 <FormItem>
                                     <div className="font-semibold flex justify-between items-center">
@@ -568,7 +570,7 @@ export default function CreateTournament() {
                         />
                         <FormField
                             control={form.control}
-                            name="testCaseRatioWeight"
+                            name="testCaseWeight"
                             render={({ field }) => (
                                 <FormItem>
                                     <div className="font-semibold flex justify-between items-center">
@@ -627,7 +629,7 @@ export default function CreateTournament() {
                                                 {imagePreview ? (
                                                 <Image src={imagePreview} alt="Uploaded Preview" className="bg-gray-300 w-40 h-40 object-cover rounded-full" width={160} height={160} />
                                                 ) : (
-                                                <div className="bg-gray-200 w-40 h-40 object-contain rounded-full text-gray-700 flex items-center justify-center p-4 text-center" >No image uploaded</div>
+                                                <div className="bg-gray-200 w-40 h-40 object-contain rounded-full text-gray-400 text-sm font-semibold flex items-center justify-center p-4 text-center" >No image uploaded</div>
                                                 )}
                                             </div>
                                             <FormControl>
@@ -667,7 +669,7 @@ function TooltipLabel({info}:{info: string}) {
                 <TooltipTrigger asChild className="inline-block cursor-pointer">
                     <QuestionMarkCircledIcon />
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent className="max-w-[300px] text-center p-2">
                     <p>{info}</p>
                 </TooltipContent>
             </Tooltip>
