@@ -18,7 +18,7 @@ const Nav = () => {
     if (loading) return <div>Loading...</div>;
 
     return (
-        <nav className="sticky top-0 flex z-50 justify-between items-center w-full mb-16 bg-white shadow-md p-3 sha">
+        <nav className="sticky top-0 flex z-50 justify-between items-center w-full bg-white shadow-md p-3 sha">
             <Link href="/" className="flex gap-2 items-center">
                 <Image src="/assets/images/logo.png" width={30} height={30} className="object-contain" alt="logo" />
                     <p className="logo_text">SMUCode</p>
