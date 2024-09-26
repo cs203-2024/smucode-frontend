@@ -1,5 +1,4 @@
 
-
 import "./globals.css";
 import Nav from '@/components/Nav';
 import { UserProvider } from '@/components/UserContext';
@@ -24,7 +23,6 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           <div className="">
             <div className="" />
           </div>
-
           <main className="">
             <Nav />
             {children}

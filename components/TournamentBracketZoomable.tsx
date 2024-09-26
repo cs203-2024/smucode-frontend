@@ -30,7 +30,11 @@ const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) =
       <div className={`${!isWinner && status === "completed" ? "opacity-40" : ""} flex items-center justify-between bg-white shadow-md p-1.5 rounded-full`}>
         <div className="flex items-center space-x-2">
           <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
-            <span className="text-sm">{player.name.charAt(0)}</span>
+            {player.image ? (
+              <img src={player.image} alt={player.name} className="w-full h-full rounded-full object-cover" />
+            ) : (
+              <span className="text-sm">{player.name.charAt(0)}</span>
+            )}
           </div>
           <p className={`${status !== "completed" ? "font-medium text-black-500" : ""} font-medium`}>{player.name}</p>
         </div>
@@ -119,7 +123,7 @@ const TournamentBracketZoomable = ({ rounds } : TournamentProps) => {
       {({ zoomIn, zoomOut, resetTransform }) => (
         <div>
           
-          <div className="relative zoom-container bg-slate-50 w-[100vw] h-[80vh] overflow-hidden relative">
+          <div className="relative zoom-container bg-slate-50 w-[80vw] h-[80vh] overflow-hidden relative">
           <div className="controls absolute bottom-1 right-1 bg-transparent z-10">
             <Button variant="ghost" size="icon" onClick={() => zoomIn()}><ZoomIn /></Button>
             <Button variant="ghost" size="icon" onClick={() => zoomOut()}><ZoomOut /></Button>

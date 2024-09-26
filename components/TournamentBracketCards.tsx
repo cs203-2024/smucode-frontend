@@ -29,7 +29,11 @@ const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) =
       <div className={`${!isWinner && status === "completed" ? "opacity-40" : ""} flex items-center py-1 justify-between text-sm`}>
         <div className="flex items-center space-x-2">
           <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
-            <span className="text-sm">{player.name.charAt(0)}</span>
+            {player.image ? (
+              <img src={player.image} alt={player.name} className="w-full h-full rounded-full object-cover" />
+            ) : (
+              <span className="text-sm">{player.name.charAt(0)}</span>
+            )}
           </div>
           <p className={`${status !== "completed" ? "font-medium text-black-500" : ""} font-medium`}>{player.name}</p>
         </div>
@@ -124,7 +128,7 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
   }
 
   return (
-    <div className="flex flex-col bg-slate-50 min-w-[80vw] h-[80vh] space-y-8 overflow-y-auto p-4">
+    <div className="flex flex-col bg-slate-50 w-[80vw] h-[85vh] space-y-8 overflow-y-auto p-4">
       
       <div className="mb-3">
         <input
