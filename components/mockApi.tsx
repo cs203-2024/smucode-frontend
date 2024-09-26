@@ -1,4 +1,4 @@
-// mockApi.ts
+
 import { TournamentProps } from './types';
 
 // Mock API to fetch tournament data
@@ -15,13 +15,13 @@ export const fetchTournamentData = async (): Promise<TournamentProps> => {
             "playerOne": {
               "name": "Alice",
               "id": "player1",
-              "image": "https://example.com/images/alice.jpg",
+              "image": "",
               "score": 45
             },
             "playerTwo": {
               "name": "Bob",
               "id": "player2",
-              "image": "https://example.com/images/bob.jpg",
+              "image": "",
               "score": 30
             }
           },
@@ -31,13 +31,13 @@ export const fetchTournamentData = async (): Promise<TournamentProps> => {
             "playerOne": {
               "name": "Charlie",
               "id": "player3",
-              "image": "https://example.com/images/charlie.jpg",
+              "image": "",
               "score": 50
             },
             "playerTwo": {
               "name": "Diana",
               "id": "player4",
-              "image": "https://example.com/images/diana.jpg",
+              "image": "",
               "score": 40
             }
           },
@@ -47,13 +47,13 @@ export const fetchTournamentData = async (): Promise<TournamentProps> => {
             "playerOne": {
               "name": "Eve",
               "id": "player5",
-              "image": "https://example.com/images/eve.jpg",
+              "image": "",
               "score": 60
             },
             "playerTwo": {
               "name": "Frank",
               "id": "player6",
-              "image": "https://example.com/images/frank.jpg",
+              "image": "",
               "score": 55
             }
           },
@@ -63,13 +63,13 @@ export const fetchTournamentData = async (): Promise<TournamentProps> => {
             "playerOne": {
               "name": "Grace",
               "id": "player7",
-              "image": "https://example.com/images/grace.jpg",
+              "image": "",
               "score": 35
             },
             "playerTwo": {
               "name": "Hank",
               "id": "player8",
-              "image": "https://example.com/images/hank.jpg",
+              "image": "",
               "score": 45
             }
           },
@@ -79,13 +79,13 @@ export const fetchTournamentData = async (): Promise<TournamentProps> => {
             "playerOne": {
               "name": "Ivy",
               "id": "player9",
-              "image": "https://example.com/images/ivy.jpg",
+              "image": "",
               "score": 65
             },
             "playerTwo": {
               "name": "Jack",
               "id": "player10",
-              "image": "https://example.com/images/jack.jpg",
+              "image": "",
               "score": 70
             }
           },
@@ -95,13 +95,13 @@ export const fetchTournamentData = async (): Promise<TournamentProps> => {
             "playerOne": {
               "name": "Karen",
               "id": "player11",
-              "image": "https://example.com/images/karen.jpg",
+              "image": "",
               "score": 55
             },
             "playerTwo": {
               "name": "Leo",
               "id": "player12",
-              "image": "https://example.com/images/leo.jpg",
+              "image": "",
               "score": 65
             }
           },
@@ -111,13 +111,13 @@ export const fetchTournamentData = async (): Promise<TournamentProps> => {
             "playerOne": {
               "name": "Mona",
               "id": "player13",
-              "image": "https://example.com/images/mona.jpg",
+              "image": "",
               "score": 75
             },
             "playerTwo": {
               "name": "Nina",
               "id": "player14",
-              "image": "https://example.com/images/nina.jpg",
+              "image": "",
               "score": 60
             }
           },
@@ -127,13 +127,13 @@ export const fetchTournamentData = async (): Promise<TournamentProps> => {
             "playerOne": {
               "name": "Oscar",
               "id": "player15",
-              "image": "https://example.com/images/oscar.jpg",
+              "image": "",
               "score": 80
             },
             "playerTwo": {
               "name": "Paul",
               "id": "player16",
-              "image": "https://example.com/images/paul.jpg",
+              "image": "",
               "score": 50
             }
           }
@@ -149,13 +149,13 @@ export const fetchTournamentData = async (): Promise<TournamentProps> => {
             "playerOne": {
               "name": "Alice",
               "id": "player1",
-              "image": "https://example.com/images/alice.jpg",
+              "image": "",
               "score": 45
             },
             "playerTwo": {
               "name": "Bob",
               "id": "player2",
-              "image": "https://example.com/images/bob.jpg",
+              "image": "",
               "score": 30
             }
           },
@@ -165,13 +165,13 @@ export const fetchTournamentData = async (): Promise<TournamentProps> => {
             "playerOne": {
               "name": "Charlie",
               "id": "player3",
-              "image": "https://example.com/images/charlie.jpg",
+              "image": "",
               "score": 50
             },
             "playerTwo": {
               "name": "Diana",
               "id": "player4",
-              "image": "https://example.com/images/diana.jpg",
+              "image": "",
               "score": 40
             }
           },
@@ -181,13 +181,13 @@ export const fetchTournamentData = async (): Promise<TournamentProps> => {
             "playerOne": {
               "name": "Eve",
               "id": "player5",
-              "image": "https://example.com/images/eve.jpg",
+              "image": "",
               "score": 60
             },
             "playerTwo": {
               "name": "Frank",
               "id": "player6",
-              "image": "https://example.com/images/frank.jpg",
+              "image": "",
               "score": 55
             }
           },
@@ -197,13 +197,13 @@ export const fetchTournamentData = async (): Promise<TournamentProps> => {
             "playerOne": {
               "name": "Grace",
               "id": "player7",
-              "image": "https://example.com/images/grace.jpg",
+              "image": "",
               "score": 35
             },
             "playerTwo": {
               "name": "Hank",
               "id": "player8",
-              "image": "https://example.com/images/hank.jpg",
+              "image": "",
               "score": 45
             }
           }
@@ -219,7 +219,7 @@ export const fetchTournamentData = async (): Promise<TournamentProps> => {
             "playerOne": {
               "name": "Alice",
               "id": "player1",
-              "image": "https://example.com/images/alice.jpg",
+              "image": "",
               "score": 0
             },
           },

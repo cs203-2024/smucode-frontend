@@ -23,7 +23,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           <div className="">
             <div className="" />
           </div>
-          <main className="mt-[60px]">
+          <main className="">
             <Nav />
             {children}
           </main>
