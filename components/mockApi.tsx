@@ -1,12 +1,8 @@
-"use client"
-
-import TournamentBracketCard from './TournamentBracketCard';
-import TournamentWrapper from './TournamentWrapper';
+// mockApi.ts
 import { TournamentProps } from './types';
 
-// Mock data 
-const fetchTournamentData = async (): Promise<TournamentProps> => {
-
+// Mock API to fetch tournament data
+export const fetchTournamentData = async (): Promise<TournamentProps> => {
   return {
     "rounds": [
       {
@@ -245,16 +241,4 @@ const fetchTournamentData = async (): Promise<TournamentProps> => {
       }
     ]
   };
-  
 };
-
-const TournamentData: React.FC = async () => {
-  const tournamentData = await fetchTournamentData();
-  return (
-    <div>
-      <TournamentWrapper rounds={tournamentData.rounds} />
-    </div>
-  );
-};
-
-export default TournamentData;
