@@ -124,7 +124,7 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
   }
 
   return (
-    <div className="flex flex-col bg-slate-50 min-w-[80vw] h-[80vh] space-y-8 overflow-y-auto p-4">
+    <div className="flex flex-col bg-slate-50 w-[80vw] h-[80vh] space-y-8 overflow-y-auto p-4">
       
       <div className="mb-3">
         <input

@@ -119,7 +119,7 @@ const TournamentBracketZoomable = ({ rounds } : TournamentProps) => {
       {({ zoomIn, zoomOut, resetTransform }) => (
         <div>
           
-          <div className="relative zoom-container bg-slate-50 w-[100vw] h-[80vh] overflow-hidden relative">
+          <div className="relative zoom-container bg-slate-50 w-[80vw] h-[80vh] overflow-hidden relative">
           <div className="controls absolute bottom-1 right-1 bg-transparent z-10">
             <Button variant="ghost" size="icon" onClick={() => zoomIn()}><ZoomIn /></Button>
             <Button variant="ghost" size="icon" onClick={() => zoomOut()}><ZoomOut /></Button>
