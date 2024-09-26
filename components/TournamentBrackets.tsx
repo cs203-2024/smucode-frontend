@@ -40,7 +40,12 @@ const TournamentBrackets: React.FC = () => {
             checked={selectedComponent === 'A'}
             onChange={handleToggleChange}
             />
-            <Icons.bracket />
+
+          <Icons.bracket 
+            className={`cursor-pointer ${
+              selectedComponent === 'A' ? 'text-blue-500' : 'text-gray-400'
+            }`} 
+          />
           </label>
 
           <label className="basis-1/2 pl-[5px]">
@@ -51,7 +56,11 @@ const TournamentBrackets: React.FC = () => {
             checked={selectedComponent === 'B'}
             onChange={handleToggleChange}
             />
-            <Icons.grid />
+            <Icons.grid
+            className={`cursor-pointer ${
+              selectedComponent === 'B' ? 'text-blue-500' : 'text-gray-400'
+            }`}
+          />
           </label>
         </div>
       </div>
