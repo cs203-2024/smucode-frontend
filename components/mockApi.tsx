@@ -1,8 +1,35 @@
 
-import { TournamentProps } from './types';
+import { TournamentProps, TournamentOverviewProps } from './types';
 
-// Mock API to fetch tournament data
-export const fetchTournamentData = async (): Promise<TournamentProps> => {
+
+const mockTournamentData: TournamentOverviewProps = {
+  id: "1",
+  name: "Summer Coding Challenge 2024",
+  imageUrl: "",
+  startDateTime: "2024-08-15 09:00 AM",
+  endDateTime: "2024-08-20 06:00 PM",
+  signUpStartDateTime: "2024-07-01 12:00 PM",
+  signUpCloseDateTime: "2024-08-10 11:59 PM",
+  signUpStatus: "Open",
+  tournamentStatus: "Upcoming",
+  currentRound: "Not Started",
+  participantsCount: 30,
+  maxParticipants: 32,
+  scoreCriteria: {
+    time: 40,
+    space: 30,
+    testCases: 30,
+  },
+};
+
+export const fetchTournamentOverviewData = async (id: string): Promise<TournamentOverviewProps> => {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return mockTournamentData;
+};
+
+
+export const fetchTournamentBracketsData = async (id: string): Promise<TournamentProps> => {
+  await new Promise(resolve => setTimeout(resolve, 500));
   return {
     "rounds": [
       {

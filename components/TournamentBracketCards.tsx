@@ -109,7 +109,7 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
 
   if (filteredRounds.length === 0) {
     return (
-      <div className="flex flex-col bg-slate-50 min-w-[80vw] space-y-8 overflow-y-auto p-4">
+      <div className="flex flex-col bg-slate-50 min-w-[80vw] space-y-8 overflow-y-auto p-1">
         <div className="mb-3">
         <input
           type="text"
@@ -128,7 +128,7 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
   }
 
   return (
-    <div className="flex flex-col bg-slate-50 w-[80vw] h-[85vh] space-y-8 overflow-y-auto p-4">
+    <div className="flex flex-col bg-slate-50 w-[80vw] h-[85vh] space-y-8 overflow-y-auto p-1">
       
       <div className="mb-3">
         <input

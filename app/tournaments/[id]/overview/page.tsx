@@ -1,9 +1,10 @@
-import React from 'react'
+import TournamentOverview from '@/components/TournamentOverview';
 
-const TournamentOverview = () => {
+
+const TournamentOverviewPage = () => {
   return (
-    <div>Overview</div>
+    <TournamentOverview tournamentId="1" />
   )
 }
 
-export default TournamentOverview
+export default TournamentOverviewPage

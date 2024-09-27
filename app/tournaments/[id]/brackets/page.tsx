@@ -3,7 +3,7 @@ import TournamentBrackets from "@/components/TournamentBrackets";
 const TournamentBracketsPage: React.FC = () => {
   return (
     <>
-        <TournamentBrackets />
+        <TournamentBrackets tournamentId="1" />
     </>
   );
 };
