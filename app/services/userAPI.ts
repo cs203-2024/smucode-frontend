@@ -1,53 +1,95 @@
-import axiosClient from './http'; //import configured Axios client
-import { User } from '@models/User'; //import existing User model
+import axiosClient from './http'; // Import configured Axios client
+import { User } from '../models/User';
 
-//ts interface for user credentials (used for login and signup)
+// Interface for user credentials (used for login and signup)
 interface UserCredentials {
     username: string;
     password: string;
 }
 
-export const getUserById = (id: number) => {
-    return axiosClient.get<User>(`/users/${id}`)
-        .then(response => response.data)
-        .catch(error => {
-            console.error('Error fetching user by ID:', error);
-            throw error;
-        });
+// Interface for login response
+interface LoginResponse {
+    message: string;
+    userDTO: User;
+    token: string;
+}
+
+// Interface for signup response
+interface SignupResponse {
+    message: string;
+    userDTO: User;
+    token?: string; // Assuming token might be included upon signup
+}
+
+// Get user by username
+export const getUserByUsername = async (username: string): Promise<User> => {
+    try {
+        const response = await axiosClient.get<User>(`/${username}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user by username:', error);
+        throw error;
+    }
 };
 
-export const login = (credentials: UserCredentials) => {
-    return axiosClient.post<string>('/users/login', credentials)
-        .then(response => response.data)
-        .catch(error => {
-            console.error('Error logging in:', error);
-            throw error;
-        });
+// Login function
+export const login = async (credentials: UserCredentials): Promise<LoginResponse> => {
+    try {
+        const response = await axiosClient.post<LoginResponse>('/login', credentials);
+        const { token } = response.data;
+
+        // Store the JWT token
+        localStorage.setItem('token', token);
+
+        return response.data;
+    } catch (error) {
+        console.error('Error logging in:', error);
+        throw error;
+    }
 };
 
-export const signup = (newUser: Omit<User, 'id'>) => { // Exclude 'id' as it's usually set by the backend
-    return axiosClient.post<User>('/users/signup', newUser)
-        .then(response => response.data)
-        .catch(error => {
-            console.error('Error signing up:', error);
-            throw error;
-        });
+// Signup function
+// Signup function
+export const signup = async (newUser: Omit<User, 'id'>): Promise<SignupResponse> => {
+    try {
+        const response = await axiosClient.post<SignupResponse>('/signup', newUser);
+        const { token } = response.data;
+
+        // Store the JWT token if provided
+        if (token) {
+            localStorage.setItem('token', token);
+        }
+
+        return response.data;
+    } catch (error: any) {
+        console.error('Error signing up:', error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
 };
 
-export const logout = () => {
-    return axiosClient.post<string>('/users/logout')
-        .then(response => response.data)
-        .catch(error => {
-            console.error('Error logging out:', error);
-            throw error;
-        });
+
+// Logout function
+export const logout = async (): Promise<string> => {
+    try {
+        const response = await axiosClient.post<string>('/logout');
+
+        // Remove the JWT token
+        localStorage.removeItem('token');
+
+        return response.data;
+    } catch (error) {
+        console.error('Error logging out:', error);
+        throw error;
+    }
 };
 
-export const getUserProfile = (username: string) => {
-    return axiosClient.get<User>(`/users/profile`, { params: { username } })
-        .then(response => response.data)
-        .catch(error => {
-            console.error('Error fetching user profile:', error);
-            throw error;
-        });
+// Get user profile
+export const getUserProfile = async (username: string): Promise<User> => {
+    try {
+        const response = await axiosClient.get<User>('/profile', { params: { username } });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user profile:', error);
+        throw error;
+    }
 };

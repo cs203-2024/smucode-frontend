@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //create an Axios client with default settings
 const axiosClient = axios.create({
-    baseURL: 'http://localhost:8080/api', //backend url
+    baseURL: 'http://localhost:8080/api/users', //backend url
     headers: {
         //JSON request body
         'Content-Type': 'application/json',
