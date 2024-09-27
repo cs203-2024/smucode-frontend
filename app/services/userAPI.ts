@@ -1,24 +1,24 @@
-import axiosClient from './http'; // Import configured Axios client
+import axiosClient from './http';
 import { User } from '../models/User';
 
-// Interface for user credentials (used for login and signup)
+//interface for user credentials (used for login and signup)
 interface UserCredentials {
     username: string;
     password: string;
 }
 
-// Interface for login response
+//interface for login response
 interface LoginResponse {
     message: string;
     userDTO: User;
     token: string;
 }
 
-// Interface for signup response
+//interface for signup response
 interface SignupResponse {
     message: string;
     userDTO: User;
-    token?: string; // Assuming token might be included upon signup
+    token?: string; //assuming token might be included upon signup
 }
 
 // Get user by username
@@ -32,7 +32,6 @@ export const getUserByUsername = async (username: string): Promise<User> => {
     }
 };
 
-// Login function
 export const login = async (credentials: UserCredentials): Promise<LoginResponse> => {
     try {
         const response = await axiosClient.post<LoginResponse>('/login', credentials);
@@ -48,14 +47,12 @@ export const login = async (credentials: UserCredentials): Promise<LoginResponse
     }
 };
 
-// Signup function
-// Signup function
 export const signup = async (newUser: Omit<User, 'id'>): Promise<SignupResponse> => {
     try {
         const response = await axiosClient.post<SignupResponse>('/signup', newUser);
         const { token } = response.data;
 
-        // Store the JWT token if provided
+        //store JWT token if provided
         if (token) {
             localStorage.setItem('token', token);
         }
@@ -68,7 +65,6 @@ export const signup = async (newUser: Omit<User, 'id'>): Promise<SignupResponse>
 };
 
 
-// Logout function
 export const logout = async (): Promise<string> => {
     try {
         const response = await axiosClient.post<string>('/logout');
@@ -83,7 +79,6 @@ export const logout = async (): Promise<string> => {
     }
 };
 
-// Get user profile
 export const getUserProfile = async (username: string): Promise<User> => {
     try {
         const response = await axiosClient.get<User>('/profile', { params: { username } });
