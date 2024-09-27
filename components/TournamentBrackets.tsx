@@ -6,8 +6,10 @@ import TournamentBracketCards from '@/components/TournamentBracketCards';
 import { fetchTournamentBracketsData } from '@/components/mockApi'; 
 import { TournamentProps } from '@/components/types';
 import { Icons } from "@/components/icons";
+import { useTournamentId } from "@/context/TournamentIdContext";
 
-const TournamentBrackets: React.FC<{ tournamentId: string }> = ({ tournamentId }) => {
+const TournamentBrackets: React.FC = () => {
+  const tournamentId = useTournamentId();
   const [selectedComponent, setSelectedComponent] = useState<string>('A');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

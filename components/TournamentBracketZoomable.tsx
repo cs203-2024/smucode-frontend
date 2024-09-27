@@ -1,9 +1,7 @@
-
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Button } from "@/components/ui/button"
 import { Crosshair, ZoomIn, ZoomOut } from 'lucide-react';
 import { BracketProps, PlayerInfo, RoundProps, TournamentProps } from './types';
-
 
 const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) => {
 

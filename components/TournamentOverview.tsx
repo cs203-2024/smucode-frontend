@@ -5,12 +5,13 @@ import { Badge } from "@/components/ui/badge"
 import Image from 'next/image';
 import { fetchTournamentOverviewData } from './mockApi';
 import { TournamentOverviewProps } from './types';
+import { useTournamentId } from "@/context/TournamentIdContext";
 
-const TournamentOverview: React.FC<{ tournamentId: string }> = ({ tournamentId }) => {
+const TournamentOverview: React.FC = () => {
   const [tournamentData, setTournamentData] = useState<TournamentOverviewProps | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const tournamentId = useTournamentId();
   useEffect(() => {
     const loadTournamentData = async () => {
       try {

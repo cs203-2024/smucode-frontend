@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useState, useEffect, ReactNode, useContext } from 'react';
-import { User, UserContextType } from './types';
+import { User, UserContextType } from '@/components/types';
 //import axios from 'axios';
 
 
