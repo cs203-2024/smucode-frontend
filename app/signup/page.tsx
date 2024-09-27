@@ -1,4 +1,5 @@
 import { SignupForm } from "@/components/SignupForm";
+import Link from "next/link";
 
 export default function SignupPage() {
   return (
@@ -9,6 +10,16 @@ export default function SignupPage() {
           <p className="text-sm text-muted-foreground">to explore SMUcode</p>
         </div>
         <SignupForm />
+        <p className="px-8 text-center text-sm text-muted-foreground">
+          Have have an account?{" "}
+          <Link
+            href="/login"
+            className="underline underline-offset-4 hover:text-primary"
+          >
+            Login here
+          </Link>
+          .
+        </p>
       </div>
     </>
   );

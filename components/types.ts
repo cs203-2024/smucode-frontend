@@ -43,3 +43,22 @@ export type TournamentCardInfo = {
     endDate: Date;
 };
 
+export interface TournamentOverviewProps {
+    id: string;
+    imageUrl: string;
+    name: string;
+    startDateTime: string;
+    endDateTime: string;
+    signUpStartDateTime: string;
+    signUpCloseDateTime: string;
+    signUpStatus: 'Open' | 'Closed';
+    tournamentStatus: 'Upcoming' | 'Ongoing' | 'Completed';
+    currentRound?: string;
+    participantsCount: number;
+    maxParticipants: number;
+    scoreCriteria: {
+      time: number;
+      space: number;
+      testCases: number;
+    };
+  }

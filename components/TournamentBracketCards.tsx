@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { TournamentProps, RoundProps, BracketProps, PlayerInfo } from './types';
-import { Input } from "@/components/ui/input"
+
 
 
 const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) => {
@@ -29,7 +29,11 @@ const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) =
       <div className={`${!isWinner && status === "completed" ? "opacity-40" : ""} flex items-center py-1 justify-between text-sm`}>
         <div className="flex items-center space-x-2">
           <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
-            <span className="text-sm">{player.name.charAt(0)}</span>
+            {player.image ? (
+              <img src={player.image} alt={player.name} className="w-full h-full rounded-full object-cover" />
+            ) : (
+              <span className="text-sm">{player.name.charAt(0)}</span>
+            )}
           </div>
           <p className={`${status !== "completed" ? "font-medium text-black-500" : ""} font-medium`}>{player.name}</p>
         </div>
@@ -67,7 +71,7 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
 
   return (
     <div className="p-6 h-full w-full">
-      <h2 className="font-bold mb-4 text-2xl">{name}</h2>
+      <h2 className="font-bold mb-4 text-xl">{name}</h2>
       <p className="text-gray-700 mb-4">Round ID: {id}</p>
       <div className="overflow-x-auto">
         <div className="inline-grid grid-cols-4 gap-x-5 gap-y-8 pb-4 min-w-[1050px]">
@@ -105,16 +109,16 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
 
   if (filteredRounds.length === 0) {
     return (
-      <div className="flex flex-col min-w-[80vw] space-y-8 overflow-y-auto p-4">
+      <div className="flex flex-col bg-slate-50 min-w-[80vw] space-y-8 overflow-y-auto p-1">
         <div className="mb-3">
-          <input
-            type="text"
-            placeholder="Search player name..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="p-2 ml-5 border border-gray-300 rounded-lg"
-          />
-        <div className="ml-7 mt-2 pb-[80vh] text-gray-600">
+        <input
+          type="text"
+          placeholder="Search player name..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-3 py-1.5 ml-5 border text-sm border-gray-400 rounded-lg"
+        />
+        <div className="ml-8 mt-1 pb-[80vh] text-sm text-gray-600">
           <p>No results found.</p>
         </div>
         </div>
@@ -124,7 +128,7 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
   }
 
   return (
-    <div className="flex flex-col min-w-[80vw] space-y-8 overflow-y-auto p-4">
+    <div className="flex flex-col bg-slate-50 w-[80vw] h-[85vh] space-y-8 overflow-y-auto p-1">
       
       <div className="mb-3">
         <input
@@ -132,21 +136,32 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
           placeholder="Search player name..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="p-2.5 ml-5 border border-gray-400 rounded-lg"
+          className="pl-3 py-1.5 ml-5 border text-sm border-gray-400 rounded-lg"
         />
       </div>
-      {filteredRounds.map((round) => (
-        <div key={round.id} className="flex-shrink-0">
-          <TournamentRound
-            name={round.name}
-            id={round.id}
-            brackets={round.brackets}
-            searchQuery={searchQuery}
-          />
-        </div>
-      ))}
+
+      <div className='overflow-y-auto h-[80vh]'>
+        {filteredRounds.map((round) => (
+          <div key={round.id} className="flex-shrink-0">
+            <TournamentRound
+              name={round.name}
+              id={round.id}
+              brackets={round.brackets}
+              searchQuery={searchQuery}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default TournamentBracketCard;
+
+const TournamentBracketCards = ({ rounds }: TournamentProps) => {
+  
+  return (
+    <TournamentBracketCard rounds={rounds} />
+  );
+};
+
+export default TournamentBracketCards;
