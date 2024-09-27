@@ -16,8 +16,6 @@ import {
   
 const Nav = () => {
     const { user, loading, login, logout } = useUserContext();
-    
-    if (loading) return <div>Loading...</div>;
 
     return (
         <nav className="fixed top-0 flex z-50 justify-between h-[60px] items-center w-full bg-white shadow-md p-4">
@@ -27,7 +25,7 @@ const Nav = () => {
             </Link>
 
             <div className="relative flex gap-3">
-                {user ? (
+                {user && !loading ? (
                     <>
                         <div className="relative">
                         <DropdownMenu>
