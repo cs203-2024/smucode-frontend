@@ -1,7 +1,6 @@
-
 import "./globals.css";
 import Nav from '@/components/Nav';
-import { UserProvider } from '@/components/UserContext';
+import { UserProvider } from '@/context/UserContext';
 import { ReactNode } from 'react';
 
 // Metadata

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { TournamentProps, RoundProps, BracketProps, PlayerInfo } from './types';
 
 
-
 const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) => {
   const getWinner = (playerOne: PlayerInfo | undefined, playerTwo: PlayerInfo | undefined) => {
     if (playerOne && playerTwo && status === "completed") {

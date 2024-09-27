@@ -22,16 +22,8 @@ const mockTournamentData: TournamentOverviewProps = {
   },
 };
 
-export const fetchTournamentOverviewData = async (id: string): Promise<TournamentOverviewProps> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return mockTournamentData;
-};
-
-
-export const fetchTournamentBracketsData = async (id: string): Promise<TournamentProps> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return {
-    "rounds": [
+const mockTournamentBracketsData: TournamentProps = {
+  "rounds": [
       {
         "id": 1,
         "name": "Round of 16",
@@ -267,5 +259,21 @@ export const fetchTournamentBracketsData = async (id: string): Promise<Tournamen
         ]
       }
     ]
-  };
+};
+
+export const fetchTournamentOverviewData = async (id: string | undefined) => {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  if(id == "1"){
+    return mockTournamentData;
+  } 
+    return null;
+};
+
+
+export const fetchTournamentBracketsData = async (id: string | undefined) => {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  if(id == "1"){
+    return mockTournamentBracketsData;
+  } 
+    return null;
 };

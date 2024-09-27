@@ -3,8 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
-import { useState } from 'react';
-import { useUserContext } from './UserContext';
+import { useUserContext } from '@/context/UserContext';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -47,7 +46,7 @@ const Nav = () => {
                     </>
                 ) : (
                     <Button asChild className="mr-4" onClick={login}>
-                        <Link href="/tournaments/testid/overview">Login</Link>
+                        <Link href="/tournaments/1/overview">Login</Link>
                     </Button>
                 )}
             </div>
