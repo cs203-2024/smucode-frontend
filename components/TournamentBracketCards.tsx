@@ -20,7 +20,7 @@ const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) =
   const PlayerCard = ({ player, isWinner }: { player: PlayerInfo | undefined, isWinner: boolean }) => {
     if (!player) {
       return (
-        <div className="flex items-center justify-between bg-transparent p-1.5 h-11 border-gray-400 rounded-full"></div>
+        <div className="flex items-center justify-between bg-transparent p-1.5 h-10 border-gray-400 rounded-full"></div>
       );
     }
 
