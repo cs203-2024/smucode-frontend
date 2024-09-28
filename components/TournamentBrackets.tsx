@@ -8,10 +8,11 @@ import { TournamentProps } from '@/components/types';
 import { Icons } from "@/components/icons";
 import { useTournamentId } from "@/context/TournamentIdContext";
 import { Skeleton } from './ui/skeleton';
+import { LayoutGrid } from 'lucide-react';
 
 const TournamentBrackets: React.FC = () => {
   const tournamentId = useTournamentId();
-  const [selectedComponent, setSelectedComponent] = useState<string>('B');
+  const [viewMode, setViewMode] = useState<string>('card');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tournamentData, setTournamentData] = useState<TournamentProps | null>(null);
@@ -38,7 +39,7 @@ const TournamentBrackets: React.FC = () => {
           <p className="font-bold text-2xl ml-3 mt-[2px] mb-5">Tournament Brackets</p>
           <div className="flex flex-col bg-slate-50 w-[80vw] h-[85vh] space-y-8 overflow-y-auto p-1">
           <div className="mb-3">
-            <Skeleton className="w-48 h-8 ml-5" />
+            <Skeleton className="w-[250px] h-8 ml-5" />
           </div>
           <div className='overflow-y-auto h-[80vh]'>
             <div key="1" className="flex-shrink-0">
@@ -86,55 +87,31 @@ const TournamentBrackets: React.FC = () => {
     return <div className="text-center p-4 mt-10">No tournament brackets data available</div>;
   }
 
-  const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedComponent(event.target.value);
-  };
-
   return (
     <div>
       <div className="flex items-center mb-4 space-x-5"> 
-        <p className="font-bold text-2xl ml-3">Tournament Brackets</p>
+        <p className="font-bold text-2xl mt-[2px] ml-3">Tournament Brackets</p>
   
-        <div className="radio-buttons w-[80px] h-[36px] flex flex-row items-center border text-sm border-gray-300 rounded-sm">
-          <label className="basis-1/2 pl-[10px]">
-            <input
-            type="radio"
-            value="B"
-            className="hidden"
-            checked={selectedComponent === 'B'}
-            onChange={handleToggleChange}
-            />
-
-          
-          <Icons.grid
-            className={`cursor-pointer ${
-              selectedComponent === 'B' ? 'text-blue-500' : 'text-gray-400'
-            }`}
-          />
-          </label>
-
-          <label className="basis-1/2 pl-[8px]">
-            <input
-            type="radio"
-            value="A"
-            className="hidden"
-            checked={selectedComponent === 'A'}
-            onChange={handleToggleChange}
-            />
-            <Icons.bracket 
-            className={`cursor-pointer ${
-              selectedComponent === 'A' ? 'text-blue-500' : 'text-gray-400'
-            }`} 
-          />
-          </label>
+        <div className="flex space-x-1">
+          <button
+            className={`p-[4px] rounded-lg ${viewMode === 'card' ? 'bg-themelightblue text-themeblue' : 'bg-gray-200'}`}
+            onClick={() => setViewMode('card')}
+          >
+           <LayoutGrid />
+          </button>
+          <button
+            className={`p-[4px] rounded-lg ${viewMode === 'bracket' ? 'bg-themelightblue text-themeblue' : 'bg-gray-200'}`}
+            onClick={() => setViewMode('bracket')}
+          >
+            <Icons.bracket />
+          </button>
         </div>
       </div>
-
-
+      
       <div>
             <div>
-                {selectedComponent === 'A' && <TournamentBracketZoomable rounds={tournamentData.rounds} />}
-                {selectedComponent === 'B' && <TournamentBracketCards rounds={tournamentData.rounds} />}
+                {viewMode === 'bracket' && <TournamentBracketZoomable rounds={tournamentData.rounds} />}
+                {viewMode === 'card' && <TournamentBracketCards rounds={tournamentData.rounds} />}
             </div>
       </div>
     </div>

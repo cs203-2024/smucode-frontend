@@ -115,7 +115,7 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
           placeholder="Search participant..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-3 py-1.5 ml-5 border text-sm border-gray-400 rounded-lg"
+          className="pl-3 py-1.5 w-[250px] ml-5 border text-sm border-gray-400 rounded-lg"
         />
         <div className="ml-8 mt-1 pb-[80vh] text-sm text-gray-600">
           <p>No results found.</p>
@@ -135,7 +135,7 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
           placeholder="Search participant..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-3 py-1.5 ml-5 border text-sm border-gray-400 rounded-lg"
+          className="pl-3 py-1.5 w-[250px] ml-5 border text-sm border-gray-400 rounded-lg"
         />
       </div>
 
