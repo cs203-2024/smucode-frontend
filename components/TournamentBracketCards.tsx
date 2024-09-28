@@ -112,7 +112,7 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
         <div className="mb-3">
         <input
           type="text"
-          placeholder="Search player name..."
+          placeholder="Search participant..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-3 py-1.5 ml-5 border text-sm border-gray-400 rounded-lg"
@@ -132,7 +132,7 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
       <div className="mb-3">
         <input
           type="text"
-          placeholder="Search player name..."
+          placeholder="Search participant..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-3 py-1.5 ml-5 border text-sm border-gray-400 rounded-lg"
