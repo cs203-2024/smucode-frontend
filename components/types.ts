@@ -62,3 +62,14 @@ export interface TournamentOverviewProps {
       testCases: number;
     };
   }
+
+  export interface UserStats {
+    id: string;
+    name: string;
+    email: string;
+    profilePicture: string;
+    elo: number;
+    matchesPlayed: number;
+    wins: number;
+    losses: number;
+  }
