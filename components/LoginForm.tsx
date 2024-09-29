@@ -11,6 +11,7 @@ interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function LoginForm({ className, ...props }: LoginFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -21,35 +22,65 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     }, 3000);
   }
 
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const inputFields = [
+    {
+      id: "username",
+      label: "Username",
+      type: "text",
+      autoComplete: "username",
+    },
+    {
+      id: "password",
+      label: "Password",
+      type: passwordVisible ? "text" : "password",
+      autoComplete: "password",
+    },
+  ];
+
+  const socialButtons = [
+    { icon: Icons.google, label: "Google" },
+    { icon: Icons.apple, label: "Apple" },
+    { icon: Icons.gitHub, label: "GitHub" },
+  ];
+
   return (
     <div className={cn("grid gap-3", className)} {...props}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-3">
           <div className="grid gap-1">
-            <Label className="" htmlFor="username">
-              Username
-            </Label>
-            <Input
-              id="username"
-              placeholder=""
-              type="text"
-              autoCapitalize="none"
-              autoComplete="username"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
-            <Label className="" htmlFor="password">
-              Password
-            </Label>
-            <Input
-              id="password"
-              placeholder=""
-              type="password"
-              autoCapitalize="none"
-              autoComplete="password"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
+            {inputFields.map((field) => (
+              <React.Fragment key={field.id}>
+                <Label htmlFor={field.id}>{field.label}</Label>
+                <div className="relative">
+                  <Input
+                    id={field.id}
+                    placeholder=""
+                    type={field.type}
+                    autoCapitalize="none"
+                    autoComplete={field.autoComplete}
+                    autoCorrect="off"
+                    disabled={isLoading}
+                  />
+                  {field.id === "password" && (
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute inset-y-0 right-0 flex items-center px-2 text-sm text-gray-600"
+                    >
+                      {passwordVisible ? (
+                        <Icons.eyeSlash className="h-5 w-5" />
+                      ) : (
+                        <Icons.eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  )}
+                </div>
+              </React.Fragment>
+            ))}
           </div>
           <Button disabled={isLoading}>
             {isLoading && (
@@ -70,46 +101,21 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
         </div>
       </div>
       <div className="flex justify-center space-x-2">
-        <Button
-          variant="outline"
-          type="button"
-          disabled={isLoading}
-          className="p-2 flex items-center justify-center"
-        >
-          {isLoading ? (
-            <Icons.spinner className="m-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Icons.google className="m-2 h-4 w-4" />
-          )}{" "}
-          {/* Google */}
-        </Button>
-        {/* <Button variant="outline" size="icon" type="button" disabled={isLoading}> */}
-        <Button
-          variant="outline"
-          type="button"
-          disabled={isLoading}
-          className="p-2 flex items-center justify-center"
-        >
-          {isLoading ? (
-            <Icons.spinner className="m-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Icons.apple className="m-2 h-4 w-4" />
-          )}{" "}
-          {/* Apple */}
-        </Button>
-        <Button
-          variant="outline"
-          type="button"
-          disabled={isLoading}
-          className="p-2 flex items-center justify-center"
-        >
-          {isLoading ? (
-            <Icons.spinner className="m-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Icons.gitHub className="m-2 h-4 w-4" />
-          )}{" "}
-          {/* GitHub */}
-        </Button>
+        {socialButtons.map((button, index) => (
+          <Button
+            key={index}
+            variant="outline"
+            type="button"
+            disabled={isLoading}
+            className="p-2 flex items-center justify-center"
+          >
+            {isLoading ? (
+              <Icons.spinner className="m-2 h-4 w-4 animate-spin" />
+            ) : (
+              <button.icon className="m-2 h-4 w-4" />
+            )}
+          </Button>
+        ))}
       </div>
     </div>
   );
