@@ -5,7 +5,6 @@ import profilePicture from "./profile-picture.jpg";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/new-york/card";
@@ -16,9 +15,10 @@ import { fetchUserData } from "@/components/mockApi";
 import { useEffect, useState } from "react";
 import { UserStats } from "@/components/types";
 import { useUserContext } from "@/context/UserContext";
+import { getCardData } from "./cardData"; // Import the card data
 
 const ProfilePage: React.FC = () => {
-  // Testing getting username from context, Must change to userID eventually
+  // Testing if I can get the username from the context
   const username = useUserContext();
   console.log("Username from context:", username.user?.username);
 
@@ -55,149 +55,90 @@ const ProfilePage: React.FC = () => {
     return <div className="text-center p-4 mt-10">No user data available</div>;
   }
 
+  const cardData = getCardData(userData); // Get the card data
+
+  const userDetails = [
+    { label: "Email", value: userData.email },
+    { label: "Location", value: userData.location },
+    {
+      label: "Member Since",
+      value: new Date(userData.memberSince).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }),
+    },
+  ];
+
   return (
     <>
       <div className="container mx-auto p-4 md:p-6 lg:p-8">
         <div className="flex-1 space-y-4 p-8 pt-6">
-          <Card>
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <div className="flex flex-col items-center space-y-4">
+          <Card className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="flex items-center p-6">
+              <div className="w-1/3 flex flex-col items-center">
                 <Image
                   src={profilePicture}
                   alt="Profile Picture"
-                  width={96} // 24px * 4 (device pixel ratio)
-                  height={96} // 24px * 4 (device pixel ratio)
-                  className="rounded-full"
+                  width={256} // Increased width
+                  height={256} // Increased height
+                  className="rounded-full border-4 border-gray-200 shadow-lg"
                   placeholder="blur"
                   blurDataURL="data:image/png;base64,iVBORw0KGg...AA"
                 />
-                <h2 className="text-3xl font-bold tracking-tight">
-                  {userData.name}
-                </h2>
-                <p className="text-lg text-muted-foreground">
-                  {userData.email}
-                </p>
-                <Button>Edit Profile</Button>
+                <Button className="bg-blue-500 text-white hover:bg-blue-600 px-8 py-2 mt-4">
+                  Edit Profile
+                </Button>
+              </div>
+              <div className="w-2/3 pl-6">
+                <div className="border-b pb-4 mb-4">
+                  <h2 className="text-2xl font-bold text-gray-800">
+                    {userData.name}
+                  </h2>
+                </div>
+                {userDetails.map((detail, index) => (
+                  <div key={index} className="border-b pb-4 mb-4">
+                    <p className="text-lg font-semibold text-gray-700">
+                      {detail.label}
+                    </p>
+                    <p className="text-lg text-gray-500">{detail.value}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </Card>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">ELO</CardTitle>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="h-4 w-4 text-muted-foreground"
-                >
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 19.59 21.15 12 17.96 4.41 21.15 7 14.14 2 9.27 8.91 8.26" />
-                </svg>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{userData.elo}</div>
-                <p className="text-xs text-muted-foreground">
-                  {/* Last updated: 5 September 2024 */}
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Matches Played
-                </CardTitle>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="h-4 w-4 text-muted-foreground"
-                >
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="9"
-                    fill="none"
-                    stroke="currentColor"
-                  />
-                  <line x1="12" y1="12" x2="12" y2="6" stroke="currentColor" />
-                  <line x1="12" y1="12" x2="9" y2="15" stroke="currentColor" />
-                </svg>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {userData.matchesPlayed}
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {/* +20 from last month */}
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Wins</CardTitle>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="h-4 w-4 text-muted-foreground"
-                >
-                  <path d="M12 19V5M12 5L7 10M12 5L17 10" />
-                </svg>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{userData.wins}</div>
-                <p className="text-xs text-muted-foreground">
-                  {/* +10 from last month */}
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Losses</CardTitle>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="h-4 w-4 text-muted-foreground"
-                >
-                  <path d="M12 5V19M12 19L7 14M12 19L17 14" />
-                </svg>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{userData.losses}</div>
-                <p className="text-xs text-muted-foreground">
-                  {/* +10 since last month */}
-                </p>
-              </CardContent>
-            </Card>
+            {cardData.map((card, index) => (
+              <Card key={index}>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    {card.title}
+                  </CardTitle>
+                  {card.icon}
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{card.value}</div>
+                  <p className="text-xs text-muted-foreground">
+                    {card.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="col-span-3">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card className="col-span-2">
               <CardHeader>
                 <CardTitle>Recent Opponents</CardTitle>
-                <CardDescription>
-                  {/* You played 20 matches this month */}
-                </CardDescription>
               </CardHeader>
               <CardContent>
                 <RecentOpponents />
               </CardContent>
+            </Card>
+            <Card className="col-span-2">
+              <CardHeader>
+                <CardTitle>Recent Tournaments</CardTitle>
+              </CardHeader>
+              <CardContent>{/* <RecentOpponents /> */}</CardContent>
             </Card>
           </div>
         </div>

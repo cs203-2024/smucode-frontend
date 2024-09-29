@@ -278,10 +278,13 @@ export const fetchTournamentBracketsData = async (id: string | undefined) => {
 export const profileUsers = [
   {
     id: "1",
-    name: "AdrianLooLovesCoding",
-    email: "adrianloo@gmail.com",
+    name: "TheCodingChampion",
+    email: "championchallander@gmail.com",
     profilePicture: "/profile-picture.jpg",
+    location: "Singapore",
+    memberSince: "2024-09-01",
     elo: 2350,
+    eloDate: "2024-09-18",
     matchesPlayed: 256,
     wins: 154,
     losses: 102,
@@ -292,7 +295,10 @@ export const profileUsers = [
     name: "JohnDoe",
     email: "johndoe@example.com",
     profilePicture: "/profile-picture2.jpg",
+    location: "United States",
+    memberSince: "2024-08-01",
     elo: 2000,
+    eloDate: "2024-09-22",
     matchesPlayed: 150,
     wins: 100,
     losses: 50,
@@ -303,7 +309,10 @@ export const profileUsers = [
     name: "JaneDoe",
     email: "janedoe@example.com",
     profilePicture: "/profile-picture3.jpg",
+    location: "Cambodia",
+    memberSince: "2024-07-01",
     elo: 2500,
+    eloDate: "2024-09-16",
     matchesPlayed: 300,
     wins: 200,
     losses: 100,
@@ -316,4 +325,93 @@ export const fetchUserData = async (id: string | undefined) => {
   await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate a delay
   const user = profileUsers.find((user) => user.id === id);
   return user || null;
+};
+
+export const opponents = [
+  {
+    id: 1,
+    name: "Olivia Martin",
+    email: "olivia.martin@email.com",
+    avatar: "/avatars/01.png",
+    score: 77,
+    date: "2024-09-20",
+  },
+  {
+    id: 2,
+    name: "Jackson Lee",
+    email: "jackson.lee@email.com",
+    avatar: "/avatars/02.png",
+    score: -39,
+    date: "2024-09-18",
+  },
+  {
+    id: 3,
+    name: "Isabella Nguyen",
+    email: "isabella.nguyen@email.com",
+    avatar: "/avatars/03.png",
+    score: 100,
+    date: "2024-09-15",
+  },
+  {
+    id: 4,
+    name: "William Kim",
+    email: "will@email.com",
+    avatar: "/avatars/04.png",
+    score: -50,
+    date: "2024-09-12",
+  },
+  {
+    id: 5,
+    name: "Sofia Davis",
+    email: "sofia.davis@email.com",
+    avatar: "/avatars/05.png",
+    score: 25,
+    date: "2024-09-10",
+  },
+  {
+    id: 6,
+    name: "Liam Johnson",
+    email: "liam.johnson@email.com",
+    avatar: "/avatars/06.png",
+    score: 45,
+    date: "2024-09-08",
+  },
+  {
+    id: 7,
+    name: "Emma Wilson",
+    email: "emma.wilson@email.com",
+    avatar: "/avatars/07.png",
+    score: -20,
+    date: "2024-09-05",
+  },
+  {
+    id: 8,
+    name: "Noah Brown",
+    email: "noah.brown@email.com",
+    avatar: "/avatars/08.png",
+    score: 60,
+    date: "2024-09-03",
+  },
+  {
+    id: 9,
+    name: "Ava Taylor",
+    email: "ava.taylor@email.com",
+    avatar: "/avatars/09.png",
+    score: -15,
+    date: "2024-09-01",
+  },
+  {
+    id: 10,
+    name: "Mason Anderson",
+    email: "mason.anderson@email.com",
+    avatar: "/avatars/10.png",
+    score: 30,
+    date: "2024-08-30",
+  },
+];
+
+// Function to fetch opponents data
+export const fetchOpponentsData = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate a delay
+  return opponents;
 };
