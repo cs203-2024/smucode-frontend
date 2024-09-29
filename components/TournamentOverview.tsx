@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { fetchTournamentOverviewData } from './mockApi';
 import { TournamentOverviewProps } from './types';
 import { useTournamentId } from "@/context/TournamentIdContext";
+import { Skeleton } from "@/components/ui/skeleton"
+
 
 const TournamentOverview: React.FC = () => {
   const [tournamentData, setTournamentData] = useState<TournamentOverviewProps | null>(null);
@@ -28,7 +30,23 @@ const TournamentOverview: React.FC = () => {
   }, [tournamentId]);
 
   if (loading) {
-    return <div className="text-center p-4 mt-10">Loading tournament data...</div>;
+    return (
+      <div className="w-full space-y-6">
+        <h2 className="text-2xl font-bold text-black ml-[12px] mt-[2px]">Tournament Overview</h2>
+        <Skeleton className="h-[85px] rounded-lg mx-6" />
+        <div className="p-6 space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <Skeleton className="h-68 w-full rounded-lg" />
+            <div className="flex flex-col space-y-6">
+              <Skeleton className="h-32 w-full rounded-lg" />
+              <Skeleton className="h-32 w-full rounded-lg" />
+            </div>
+          </div>
+          <Skeleton className="h-20 w-full rounded-lg" />
+          <Skeleton className="h-32 w-full rounded-lg" />
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -57,7 +75,7 @@ const TournamentOverview: React.FC = () => {
   return (
     <div className="w-full space-y-6">
     <h2 className="text-2xl font-bold text-black ml-[12px] mt-[2px]">Tournament Overview</h2>
-      <div className="bg-blue-600 text-white p-6 rounded-t-lg">
+      <div className="bg-blue-600 text-white p-6 rounded-lg mx-6">
         <h1 className="text-3xl font-bold text-center">{name}</h1>
       </div>
       <div className="p-6 space-y-6">

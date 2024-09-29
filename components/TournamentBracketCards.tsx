@@ -20,7 +20,7 @@ const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) =
   const PlayerCard = ({ player, isWinner }: { player: PlayerInfo | undefined, isWinner: boolean }) => {
     if (!player) {
       return (
-        <div className="flex items-center justify-between bg-transparent p-1.5 h-11 border-gray-400 rounded-full"></div>
+        <div className="flex items-center justify-between bg-transparent p-1.5 h-10 border-gray-400 rounded-full"></div>
       );
     }
 
@@ -112,10 +112,10 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
         <div className="mb-3">
         <input
           type="text"
-          placeholder="Search player name..."
+          placeholder="Search participant..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-3 py-1.5 ml-5 border text-sm border-gray-400 rounded-lg"
+          className="pl-3 py-1.5 w-[250px] ml-5 border text-sm border-gray-400 rounded-lg"
         />
         <div className="ml-8 mt-1 pb-[80vh] text-sm text-gray-600">
           <p>No results found.</p>
@@ -132,10 +132,10 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
       <div className="mb-3">
         <input
           type="text"
-          placeholder="Search player name..."
+          placeholder="Search participant..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-3 py-1.5 ml-5 border text-sm border-gray-400 rounded-lg"
+          className="pl-3 py-1.5 w-[250px] ml-5 border text-sm border-gray-400 rounded-lg"
         />
       </div>
 
