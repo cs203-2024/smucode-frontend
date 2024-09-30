@@ -11,7 +11,7 @@ export default function SignupPage() {
         </div>
         <SignupForm />
         <p className="px-8 text-center text-sm text-muted-foreground">
-          Have have an account?{" "}
+          Have an account?{" "}
           <Link
             href="/login"
             className="underline underline-offset-4 hover:text-primary"
