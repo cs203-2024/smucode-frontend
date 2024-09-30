@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import TournamentCardWrapper from "@/components/home/TournamentCardWrapper";
 import NotificationTableWrapper from "@/components/home/NotificationTableWrapper";
+import NotificationTable from "@/components/home/NotificationTable";
 
 export default function Home() {
 
@@ -22,7 +23,8 @@ export default function Home() {
             <TournamentCardWrapper />
           </div>
           <div className="col-span-5">
-            <NotificationTableWrapper />
+            {/* <NotificationTableWrapper /> */}
+            <NotificationTable />
           </div>
         </div>
       </main>

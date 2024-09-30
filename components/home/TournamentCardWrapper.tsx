@@ -21,7 +21,7 @@ import TournamentCard from './TournamentCard';
 export default function TournamentCardWrapper() {
     return (
         <div>
-            <Card className='w-[90vw]'>
+            <Card className='w-full'>
                 <CardHeader>
                     <CardTitle>My Tournaments</CardTitle>
                     <CardDescription>Some information about my tournaments here</CardDescription>
