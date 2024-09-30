@@ -17,6 +17,14 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
     event.preventDefault();
     setIsLoading(true);
 
+    const formData = {
+      username: (event.target as any).username.value,
+      email: (event.target as any).email.value,
+      password: (event.target as any).password.value,
+      verifyPassword: (event.target as any).verifyPassword.value,
+      role: (event.target as any).role.value,
+    };
+
     setTimeout(() => {
       setIsLoading(false);
     }, 3000);
@@ -65,6 +73,7 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
                 <div className="relative">
                   <Input
                     id={field.id}
+                    name={field.id}
                     placeholder=""
                     type={field.type}
                     autoCapitalize="none"
@@ -88,6 +97,18 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
                 </div>
               </React.Fragment>
             ))}
+            <Label htmlFor="role">Role</Label>
+            <div className="relative">
+              <select
+                id="role"
+                name="role"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white"
+                disabled={isLoading}
+              >
+                <option value="participant">Participant</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
           </div>
           <Button disabled={isLoading}>
             {isLoading && (

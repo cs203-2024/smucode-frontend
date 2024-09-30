@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import profilePicture from "./profile-picture.jpg";
 import {
   Card,
   CardContent,
@@ -59,15 +58,6 @@ const ProfilePage: React.FC = () => {
 
   const userDetails = [
     { label: "Email", value: userData.email },
-    { label: "Location", value: userData.location },
-    {
-      label: "Member Since",
-      value: new Date(userData.memberSince).toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }),
-    },
   ];
 
   return (
@@ -78,7 +68,7 @@ const ProfilePage: React.FC = () => {
             <div className="flex items-center p-6">
               <div className="w-1/3 flex flex-col items-center">
                 <Image
-                  src={profilePicture}
+                  src={userData.profilePicture}
                   alt="Profile Picture"
                   width={256} // Increased width
                   height={256} // Increased height
