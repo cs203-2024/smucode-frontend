@@ -183,7 +183,7 @@ export default function CreateTournament() {
     }
 
     return (
-        <div className="w-full p-8">            
+        <div className="w-full px-8 pt-4 mt-[60px]">            
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-11 gap-8">
                     <div className="col-span-11 flex justify-between items-center gap-10">
