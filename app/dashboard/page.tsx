@@ -4,8 +4,7 @@ import Image from "next/image";
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import TournamentCardWrapper from "@/components/home/TournamentCardWrapper";
-import NotificationTableWrapper from "@/components/home/NotificationTableWrapper";
-import NotificationTable from "@/components/home/NotificationTable";
+import NotificationCard from "@/components/home/NotificationCard";
 
 export default function Home() {
 
@@ -18,13 +17,12 @@ export default function Home() {
           </Link>
         </div>
         
-        <div className="w-full grid grid-cols-12 gap-4">
+        <div className="w-full grid grid-cols-11 gap-4">
           <div className="col-span-7">
             <TournamentCardWrapper />
           </div>
-          <div className="col-span-5">
-            {/* <NotificationTableWrapper /> */}
-            <NotificationTable />
+          <div className="col-span-4">
+            <NotificationCard />
           </div>
         </div>
       </main>
