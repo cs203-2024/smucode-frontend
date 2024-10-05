@@ -77,3 +77,21 @@ export interface TournamentOverviewProps {
     wins: number;
     losses: number;
   }
+
+  export type ParticipantCardListProp = {
+    participants: Participant[];
+  };
+
+  export type Participant = {
+    id: string;
+    name: string;
+    profilePicture: string;
+    rank: number;
+    wins: number;
+    losses: number;
+  };
+
+  export type ParticipantCardProps = {
+    participants: Participant;
+    viewMode: 'grid' | 'list';
+  };

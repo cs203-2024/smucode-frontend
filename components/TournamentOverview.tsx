@@ -78,7 +78,9 @@ const TournamentOverview: React.FC = () => {
       <div className="bg-blue-600 text-white p-6 rounded-lg mx-6">
         <h1 className="text-3xl font-bold text-center">{name}</h1>
       </div>
-      <div className="p-6 space-y-6">
+
+      <div>
+      <div className="p-6 space-y-6 h-[65vh] overflow-y-scroll">
 
         <div className="grid md:grid-cols-2 gap-6">
 
@@ -148,6 +150,9 @@ const TournamentOverview: React.FC = () => {
             ))}
           </div>
         </div>
+      </div>
+
+
       </div>
     </div>
   );

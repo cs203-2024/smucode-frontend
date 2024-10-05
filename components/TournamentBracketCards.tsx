@@ -106,40 +106,24 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
   })
   .reverse();
 
-  if (filteredRounds.length === 0) {
-    return (
-      <div className="flex flex-col bg-slate-50 min-w-[80vw] space-y-8 overflow-y-auto p-1">
-        <div className="mb-3">
-        <input
-          type="text"
-          placeholder="Search participant..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-3 py-1.5 w-[250px] ml-5 border text-sm border-gray-400 rounded-lg"
-        />
-        <div className="ml-8 mt-1 pb-[80vh] text-sm text-gray-600">
-          <p>No results found.</p>
-        </div>
-        </div>
-        
-      </div>
-    );
-  }
-
   return (
-    <div className="flex flex-col bg-slate-50 w-[80vw] h-[85vh] space-y-8 overflow-y-auto p-1">
-      
-      <div className="mb-3">
-        <input
-          type="text"
-          placeholder="Search participant..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-3 py-1.5 w-[250px] ml-5 border text-sm border-gray-400 rounded-lg"
-        />
-      </div>
+    <div className="flex flex-col bg-slate-50 min-w-[80vw] h-[85vh] space-y-8 overflow-y-auto p-1">
+    <div className="mb-3">
+      <input
+        type="text"
+        placeholder="Search participant..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="pl-3 py-1.5 w-[250px] ml-5 border text-sm border-gray-400 rounded-lg"
+      />
+    </div>
 
-      <div className='overflow-y-auto h-[80vh]'>
+    {filteredRounds.length === 0 ? (
+      <div className="ml-8 mt-1 pb-[80vh] text-sm text-gray-600">
+        <p>No results found.</p>
+      </div>
+    ) : (
+      <div className="overflow-y-auto h-[80vh] w-[75vw]">
         {filteredRounds.map((round) => (
           <div key={round.id} className="flex-shrink-0">
             <TournamentRound
@@ -151,8 +135,10 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
           </div>
         ))}
       </div>
+       )}
     </div>
-  );
+  )
+
 };
 
 

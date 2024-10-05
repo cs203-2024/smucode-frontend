@@ -1,4 +1,4 @@
-import { TournamentProps, TournamentOverviewProps } from "./types";
+import { TournamentProps, TournamentOverviewProps, ParticipantCardListProp } from "./types";
 
 const mockTournamentData: TournamentOverviewProps = {
   id: "1",
@@ -259,6 +259,19 @@ const mockTournamentBracketsData: TournamentProps = {
   ],
 };
 
+const mockParticipantsData: ParticipantCardListProp = {
+  participants: [
+    { id: "1", name: "John Doe", profilePicture: "", rank: 1, wins: 10, losses: 2 },
+    { id: "2", name: "Jane Smith", profilePicture: "", rank: 2, wins: 9, losses: 3 },
+    { id: "3", name: "Bob Johnson", profilePicture: "", rank: 3, wins: 8, losses: 4 },
+    { id: "4", name: "Alice Brown", profilePicture: "", rank: 4, wins: 7, losses: 5 },
+    { id: "5", name: "Charlie Wilson", profilePicture: "", rank: 5, wins: 6, losses: 6 },
+    { id: "6", name: "Eva Martinez", profilePicture: "", rank: 6, wins: 5, losses: 7 },
+    { id: "7", name: "David Lee", profilePicture: "", rank: 7, wins: 4, losses: 8 },
+    { id: "8", name: "Grace Taylor", profilePicture: "", rank: 8, wins: 3, losses: 9 },
+  ],
+};
+
 export const fetchTournamentOverviewData = async (id: string | undefined) => {
   await new Promise((resolve) => setTimeout(resolve, 500));
   if (id == "1") {
@@ -271,6 +284,14 @@ export const fetchTournamentBracketsData = async (id: string | undefined) => {
   await new Promise((resolve) => setTimeout(resolve, 500));
   if (id == "1") {
     return mockTournamentBracketsData;
+  }
+  return null;
+};
+
+export const fetchTournamentParticipantsData = async (id: string | undefined) => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  if (id == "1") {
+    return mockParticipantsData;
   }
   return null;
 };

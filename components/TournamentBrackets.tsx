@@ -41,7 +41,7 @@ const TournamentBrackets: React.FC = () => {
           <div className="mb-3">
             <Skeleton className="w-[250px] h-8 ml-5" />
           </div>
-          <div className='overflow-y-auto h-[80vh]'>
+          <div className='overflow-y-auto h-[80vh] w-[75vw]'>
             <div key="1" className="flex-shrink-0">
                 <div className="p-6 h-full w-full">
                   <Skeleton className="w-40 h-8 mb-5" />
@@ -74,7 +74,6 @@ const TournamentBrackets: React.FC = () => {
         </div>
       </div>
     </div>
-
 
     );
   }
