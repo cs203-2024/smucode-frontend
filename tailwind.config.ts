@@ -67,7 +67,9 @@ const config: Config = {
 				active: "#3B82F6",
 				background: "#e7f0fe",
 				iconColor: "#3B82F6",
-			}
+			},
+			themelightblue: '#e7f0fe',
+			themeblue: '#3B82F6',
   		}
   	}
   },
