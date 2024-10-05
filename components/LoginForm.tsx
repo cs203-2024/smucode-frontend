@@ -7,6 +7,7 @@ import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/new-york/button";
 import { Input } from "@/components/ui/new-york/input";
 import { Label } from "@/components/ui/new-york/label";
+import Cookies from 'js-cookie';
 
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -40,7 +41,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
       console.log("Login successful:", response);
 
       //store jwt token
-      localStorage.setItem("token", response.token);
+      Cookies.set('authToken', response.token, { expires: 1 });
 
       //TODO: redirect to relevant page
       router.push("/");

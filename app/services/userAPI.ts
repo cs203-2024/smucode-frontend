@@ -1,5 +1,6 @@
 import axiosClient from './http';
 import { User } from '../models/User';
+import Cookies from "js-cookie";
 
 //interface for user credentials (used for login and signup)
 interface UserCredentials {
@@ -37,8 +38,8 @@ export const login = async (credentials: UserCredentials): Promise<LoginResponse
         const response = await axiosClient.post<LoginResponse>('/login', credentials);
         const { token } = response.data;
 
-        // Store the JWT token
-        localStorage.setItem('token', token);
+        //store the jwt token in cookies
+        Cookies.set('authToken', token, { expires: 1 });
 
         return response.data;
     } catch (error) {
@@ -54,7 +55,7 @@ export const signup = async (newUser: Omit<User, 'id'>): Promise<SignupResponse>
 
         //store JWT token if provided
         if (token) {
-            localStorage.setItem('token', token);
+            Cookies.set('authToken', token, { expires: 1 });
         }
 
         return response.data;
@@ -70,7 +71,7 @@ export const logout = async (): Promise<string> => {
         const response = await axiosClient.post<string>('/logout');
 
         // Remove the JWT token
-        localStorage.removeItem('token');
+        Cookies.remove('authToken');
 
         return response.data;
     } catch (error) {
