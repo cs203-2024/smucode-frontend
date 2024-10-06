@@ -20,6 +20,7 @@ import { RiNumbersFill } from "react-icons/ri";
 import { TournamentCardInfo } from '../types';
 import { capitalise, getFormattedDate, getTimeDifference } from '@/lib/utils';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 export default function TournamentCard(data: TournamentCardInfo) {
     return (
@@ -91,7 +92,9 @@ export default function TournamentCard(data: TournamentCardInfo) {
                 <CardDescription className='py-2'>
                     {getFormattedDate(data.startDate)} - {getFormattedDate(data.endDate)}
                 </CardDescription>
-                <Button className='font-semibold'>Manage</Button>
+                <Link href={`tournaments/${data.id}`}>
+                    <Button className='font-semibold'>Manage</Button>
+                </Link>
             </CardFooter>
         </Card>
     )
