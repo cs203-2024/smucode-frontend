@@ -1,9 +1,10 @@
-import { UserStats } from "@/components/types";
+import { UserStats } from "@/components/types"; //for temp hardcode
+import {User} from "@/components/types";
 
-export const getCardData = (userData: UserStats) => [
+export const getCardData = (userData : User) => [
   {
-    title: "ELO",
-    value: userData.elo,
+    title: "Rating",
+    value: userData.mu,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
