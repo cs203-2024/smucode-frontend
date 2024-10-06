@@ -1,7 +1,8 @@
 "use client";
 import * as React from "react";
-// import { useUserContext } from '@/app/context/UserContext';
+import { useUserContext } from '@/context/UserContext';
 import { login } from '@/app/services/userApi';
+import { User } from '@/components/types';
 import { useRouter } from 'next/navigation';
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
@@ -14,7 +15,7 @@ interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function LoginForm({ className, ...props }: LoginFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
-  // const { setUser } = useUserContext();
+  const { setUser } = useUserContext();
   const [errorMessage, setErrorMessage] = React.useState<string>("");
   const router = useRouter();
 
@@ -24,30 +25,44 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     setErrorMessage("");
 
     const form = event.target as HTMLFormElement;
-    const credentials = {
-      username: form.username.value,
-      password: form.password.value,
-    };
+    const formData = new FormData(form);
 
+    const credentials = {
+      username: formData.get('username') as string,
+      password: formData.get('password') as string,
+    };
     try {
       const response = await login(credentials);
+      console.log('Response from login:', response);
 
-      //TODO: update to Adr's contextapi
-      //setUser(response.userDTO);
-
-      //TODO: redirect to supposed homepage
-      router.push("/");
+      if (response && response.userDTO) {
+        const user: User = {
+          username: response.userDTO.username,
+          email: response.userDTO.email,
+          profileImageUrl: response.userDTO.profileImageUrl,
+          role: response.userDTO.role,
+          mu: response.userDTO.mu,
+          sigma: response.userDTO.sigma,
+          skillIndex: response.userDTO.skillIndex,
+        };
+        console.log('Mapped user object:', user);
+        setUser(user);
+        router.push('/'); //TODO: redirect to relevant home page
+      } else {
+        console.error('Unexpected response structure:', response);
+        setErrorMessage('Unexpected response structure');
+      }
     } catch (error: any) {
-      // Handle errors
       console.error('Error logging in:', error);
       setErrorMessage(
           error.response?.data?.message ||
           error.message ||
-          "Login failed. Please try again."
+          'Login failed. Please try again.'
       );
     } finally {
       setIsLoading(false);
     }
+
   }
 
 
