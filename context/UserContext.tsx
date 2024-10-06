@@ -1,63 +1,71 @@
 "use client"
 
-import { createContext, useState, useEffect, ReactNode, useContext } from 'react';
+import {createContext, useState, ReactNode, useContext, useEffect} from 'react';
 import { User, UserContextType } from '@/components/types';
-//import axios from 'axios';
-
+import Cookies from "js-cookie";
+import {jwtDecode} from 'jwt-decode';
+import axiosClient from "@/app/services/http";
+// import {undefined} from "zod";
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-
-    const testuser: User = {
-        username: "Adrian",
-        image: '/assets/images/avatar.png'
-    };
-
   useEffect(() => {
-    const fetchUser = async () => {
+    const token = Cookies.get('authToken');
+    if (token) {
       try {
-        // Use Jere's API
-        //const response = await axios.get<{ user: User }>('/auth/verify', { withCredentials: true });
-        //setUser(response.data.user); // Store user info if token is valid
-        console.log("AUTH");
-        setUser(testuser);
+        console.log('Token found');
+        const decodedToken: any = jwtDecode(token);
+        console.log('Decoded token:', decodedToken);
+
+        const username = decodedToken.sub;
+
+        fetchUserInfo(username);
       } catch (error) {
-        setUser(null); // No user if token is invalid or absent
-      } finally {
-        setLoading(false); // Stop loading
+
+        alert('Error decoding token:');
+        setUser(null);
       }
-    };
-
-    fetchUser();
+    } else {
+      // alert('no token sial');
+      console.log('No token found');
+      setUser(null);
+    }
   }, []);
+  const fetchUserInfo = async (username: string) => {
+    try {
+      const response = await axiosClient.get<User>(`${username}`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('authToken')}`,
+        },
+      });
+      const userData = response.data;
+      console.log('Fetched user info:', userData);
 
+      const { password, ...userWithoutPassword } = userData;
+
+      setUser(userWithoutPassword);
+      console.log('yay set liao');
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+      setUser(null);
+    }
+  };
   const logout = async () => {
     try {
-      //await axios.post('/auth/logout', {}, { withCredentials: true });
-      setUser(null); 
+      //TODO: call logout endpoint?
+      Cookies.remove('authToken');
+      setUser(null);
     } catch (error) {
       console.error('Logout failed', error);
     }
   };
 
-  // TO REMOVE THIS (FOR TESTING ONLY)
-  const login = async () => {
-    try {
-      //await axios.post('/auth/logout', {}, { withCredentials: true });
-      setUser(testuser); 
-    } catch (error) {
-      console.error('Login failed', error);
-    }
-  };
-
   return (
-    <UserContext.Provider value={{ user, loading, login, logout }}>
-      {children}
-    </UserContext.Provider>
+      <UserContext.Provider value={{ user, setUser, logout }}>
+        {children}
+      </UserContext.Provider>
   );
 };
 
