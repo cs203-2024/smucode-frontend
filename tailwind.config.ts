@@ -23,6 +23,9 @@ const config: Config = {
   		},
   		colors: {
 			ongoing: '#2a9d90',
+			timeWeight: "#0371bd",
+			memWeight: "#c63514",
+			testCaseWeight: "#5a64f7",
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

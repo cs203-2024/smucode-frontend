@@ -16,3 +16,26 @@ export function getFormattedDate(input: Date) {
     year: "numeric"
   });
 }
+
+export function getTimeDifference(date1: Date, date2: Date): string {
+    // Get the time difference in milliseconds
+    if (date2.getTime() - date1.getTime() < 0) {
+      return "Tournament Completed";
+    }
+    const diffMs = Math.abs(date2.getTime() - date1.getTime());
+
+    // Convert milliseconds to minutes, hours, and days
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    // Format the output based on the difference
+    if (diffDays > 0) {
+        return `${diffDays} days remaining`;
+    } else if (diffHours > 0) {
+        const remainingMinutes = diffMinutes % 60;
+        return `${diffHours} h ${remainingMinutes} min remaining`;
+    } else {
+        return `${diffMinutes} min remaining`;
+    }
+}

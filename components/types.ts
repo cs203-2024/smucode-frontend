@@ -35,11 +35,22 @@ export type UserContextType = {
   }
 
 export type TournamentCardInfo = {
+    id: number;
+    icon: string;
     name: string;
-    id: string;
-    ongoing: boolean;
     capacity: number;
+    format: string;
+    band: string;
     startDate: Date;
     endDate: Date;
+    signUpDeadline: Date;
+    status: string;
+    signUpPercentage: number;
+    actualSignUp: number;
+    timeWeight: number;
+    memWeight: number;
+    testCaseWeight: number;
+    currentRound: string;
+    roundEnds: Date;
 };
 
