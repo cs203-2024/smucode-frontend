@@ -1,5 +1,5 @@
 import axiosClient from './http';
-import { User } from '../models/User';
+import { User } from '@/components/types';
 import Cookies from "js-cookie";
 
 //interface for user credentials (used for login and signup)
@@ -39,7 +39,7 @@ export const login = async (credentials: UserCredentials): Promise<LoginResponse
         const { token } = response.data;
 
         //store the jwt token in cookies
-        Cookies.set('authToken', token, { expires: 1 });
+        Cookies.set('authToken', token, { expires: 1, path: '/' });
 
         return response.data;
     } catch (error) {
