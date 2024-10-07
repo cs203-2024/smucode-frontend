@@ -38,4 +38,26 @@ export function getTimeDifference(date1: Date, date2: Date): string {
     } else {
         return `${diffMinutes} min remaining`;
     }
+export function isPowerOfTwo(n: number) {
+  if (n == 0)
+      return false;
+  if ((n & (~(n - 1))) == n)
+      return true;
+  return false;
+}
+
+export function generateCapacity(max: number): number[] {
+  if (max < 1) {
+    return [2];
+  }
+
+  const result: number[] = [];
+  let value = 2;
+
+  while (value <= max) {
+    result.push(value);
+    value *= 2; 
+  }
+
+  return result;
 }

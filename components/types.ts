@@ -54,3 +54,37 @@ export type TournamentCardInfo = {
     roundEnds: Date;
 };
 
+export interface TournamentOverviewProps {
+    id: string;
+    imageUrl: string;
+    name: string;
+    startDateTime: string;
+    endDateTime: string;
+    signUpStartDateTime: string;
+    signUpCloseDateTime: string;
+    signUpStatus: 'Open' | 'Closed';
+    tournamentStatus: 'Upcoming' | 'Ongoing' | 'Completed';
+    currentRound?: string;
+    participantsCount: number;
+    maxParticipants: number;
+    scoreCriteria: {
+      time: number;
+      space: number;
+      testCases: number;
+    };
+  }
+
+  // For testing the profile page
+  export interface UserStats {
+    id: string;
+    name: string;
+    email: string;
+    profilePicture: string;
+    location: string;
+    memberSince: string;
+    elo: number;
+    eloDate: string;
+    matchesPlayed: number;
+    wins: number;
+    losses: number;
+  }

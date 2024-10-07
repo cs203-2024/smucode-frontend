@@ -65,7 +65,14 @@ const config: Config = {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+			sidebar: {
+				active: "#3B82F6",
+				background: "#e7f0fe",
+				iconColor: "#3B82F6",
+			},
+			themelightblue: '#e7f0fe',
+			themeblue: '#3B82F6',
   		}
   	}
   },

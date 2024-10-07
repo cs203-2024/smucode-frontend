@@ -145,4 +145,38 @@ export const Icons = {
       <path d="M21 12a9 9 0 1 1-6.219-8.56" />
     </svg>
   ),
+  bracket: ({ className } : IconProps) => (
+    <svg width="24" height="24" stroke="currentColor" className={className} viewBox="-2 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8.28571 3.14286H9C9.55229 3.14286 10 3.59057 10 4.14286V10M8.28571 16.8571H9C9.55228 16.8571 10 16.4094 10 15.8571V10M10 10H12.1429M13.1429 12.1429H18C18.5523 12.1429 19 11.6951 19 11.1429V8.85714C19 8.30486 18.5523 7.85714 18 7.85714H13.1429C12.5906 7.85714 12.1429 8.30486 12.1429 8.85714V11.1429C12.1429 11.6951 12.5906 12.1429 13.1429 12.1429ZM7.85714 18V15.7143C7.85714 15.162 7.40943 14.7143 6.85714 14.7143H2C1.44772 14.7143 1 15.162 1 15.7143V18C1 18.5523 1.44771 19 2 19H6.85714C7.40943 19 7.85714 18.5523 7.85714 18ZM2 5.28571H6.85714C7.40943 5.28571 7.85714 4.838 7.85714 4.28571V2C7.85714 1.44772 7.40943 1 6.85714 1H2C1.44772 1 1 1.44772 1 2V4.28571C1 4.838 1.44771 5.28571 2 5.28571Z" stroke="currentColor" strokeWidth="1.8"/>
+    </svg>
+  ),
+  eye: (props: IconProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  ),
+  eyeSlash: (props: IconProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M13.875 18.825C13.257 18.941 12.63 19 12 19c-7 0-11-7-11-7 1.204-2.408 3.02-4.5 5.25-5.85M9.5 9.5c.5-.5 1.5-1 2.5-1 2 0 3 1 3 3 0 1-.5 2-1 2.5M1 1l22 22" />
+    </svg>
+  ),
 };
