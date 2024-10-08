@@ -37,7 +37,9 @@ export function getTimeDifference(date1: Date, date2: Date): string {
         return `${diffHours} h ${remainingMinutes} min remaining`;
     } else {
         return `${diffMinutes} min remaining`;
-    }
+    }  
+}
+
 export function isPowerOfTwo(n: number) {
   if (n == 0)
       return false;
