@@ -1,6 +1,8 @@
 "use client";
 import * as React from "react";
-
+// import { useUserContext } from '@/app/context/UserContext';
+import { signup } from '@/app/services/userApi';
+import { useRouter } from 'next/navigation';
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/new-york/button";
@@ -12,22 +14,45 @@ interface SignupFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function SignupForm({ className, ...props }: SignupFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
-
+  // const { setUser } = useUserContext();
+  const [errorMessage, setErrorMessage] = React.useState<string>("");
+  const router = useRouter();
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
+    setErrorMessage("");
 
+    const form = event.target as HTMLFormElement;
     const formData = {
-      username: (event.target as any).username.value,
-      email: (event.target as any).email.value,
-      password: (event.target as any).password.value,
-      verifyPassword: (event.target as any).verifyPassword.value,
-      role: (event.target as any).role.value,
+      username: form.username.value,
+      email: form.email.value,
+      password: form.password.value,
+      verifyPassword: form.verifyPassword.value,
+      role: form.role.value,
     };
 
-    setTimeout(() => {
+    if (formData.password !== formData.verifyPassword) {
+      setErrorMessage("Passwords do not match.");
       setIsLoading(false);
-    }, 3000);
+      return;
+    }
+
+    try {
+      const response = await signup(formData);
+      //TODO: link to adr's context
+      //setUser(response.userDTO);
+      //redirect to login
+      router.push("/login");
+    } catch (error: any) {
+      console.error('Error signing up:', error);
+      setErrorMessage(
+          error.response?.data?.message ||
+          error.message ||
+          "Signup failed. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const togglePasswordVisibility = () => {
@@ -105,11 +130,12 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
                 className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white"
                 disabled={isLoading}
               >
-                <option value="participant">Participant</option>
-                <option value="admin">Admin</option>
+                <option value="PLAYER">Participant</option>
+                <option value="ADMIN">Admin</option>
               </select>
             </div>
           </div>
+          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
           <Button disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

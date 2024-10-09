@@ -10,38 +10,14 @@ import {
 import { RecentOpponents } from "@/app/profile/RecentOpponents";
 import { Button } from "@/components/ui/new-york/button";
 
-import { fetchUserData } from "@/components/mockApi";
-import { useEffect, useState } from "react";
-import { UserStats } from "@/components/types";
 import { useUserContext } from "@/context/UserContext";
-import { getCardData } from "./cardData"; // Import the card data
+import { getCardData } from "./cardData";
+import { User } from "@/components/types";
+
 
 const ProfilePage: React.FC = () => {
-  // Testing if I can get the username from the context
-  const username = useUserContext();
-  console.log("Username from context:", username.user?.username);
-
-  const userId = "1"; // Hardcoded for now
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [userData, setUserData] = useState<UserStats | null>(null);
-
-  useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        const data = await fetchUserData(userId);
-        setUserData(data);
-        setLoading(false);
-      } catch (err) {
-        setError("Failed to load user data");
-        setLoading(false);
-      }
-    };
-
-    loadUserData();
-  }, [userId]);
-
+  const { user, loading, error } = useUserContext();
+  console.log("User from context:", user);
   if (loading) {
     return <div className="text-center p-4 mt-10">Loading user data...</div>;
   }
@@ -50,14 +26,14 @@ const ProfilePage: React.FC = () => {
     return <div className="text-center p-4 text-red-500 mt-10">{error}</div>;
   }
 
-  if (!userData) {
+  if (!user) {
     return <div className="text-center p-4 mt-10">No user data available</div>;
   }
 
-  const cardData = getCardData(userData); // Get the card data
+  const cardData = getCardData(user);
 
   const userDetails = [
-    { label: "Email", value: userData.email },
+    { label: "Email", value: user.email },
   ];
 
   return (
@@ -68,8 +44,8 @@ const ProfilePage: React.FC = () => {
             <div className="flex items-center p-6">
               <div className="w-1/3 flex flex-col items-center">
                 <Image
-                  src={userData.profilePicture}
-                  alt="Profile Picture"
+                    src={user.profileImageUrl || /*default img*/ '/assets/images/avatar.png'}
+                    alt={`${user.username}'s Profile Picture`}
                   width={256} // Increased width
                   height={256} // Increased height
                   className="rounded-full border-4 border-gray-200 shadow-lg"
@@ -83,7 +59,7 @@ const ProfilePage: React.FC = () => {
               <div className="w-2/3 pl-6">
                 <div className="border-b pb-4 mb-4">
                   <h2 className="text-2xl font-bold text-gray-800">
-                    {userData.name}
+                    {user.username}
                   </h2>
                 </div>
                 {userDetails.map((detail, index) => (

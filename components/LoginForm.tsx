@@ -1,6 +1,9 @@
 "use client";
 import * as React from "react";
-
+import { useUserContext } from '@/context/UserContext';
+import { login } from '@/app/services/userApi';
+import { User } from '@/components/types';
+import { useRouter } from 'next/navigation';
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/new-york/button";
@@ -12,15 +15,56 @@ interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function LoginForm({ className, ...props }: LoginFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
+  const { setUser } = useUserContext();
+  const [errorMessage, setErrorMessage] = React.useState<string>("");
+  const router = useRouter();
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
+    setErrorMessage("");
 
-    setTimeout(() => {
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
+
+    const credentials = {
+      username: formData.get('username') as string,
+      password: formData.get('password') as string,
+    };
+    try {
+      const response = await login(credentials);
+      console.log('Response from login:', response);
+
+      if (response && response.userDTO) {
+        const user: User = {
+          username: response.userDTO.username,
+          email: response.userDTO.email,
+          profileImageUrl: response.userDTO.profileImageUrl,
+          role: response.userDTO.role,
+          mu: response.userDTO.mu,
+          sigma: response.userDTO.sigma,
+          skillIndex: response.userDTO.skillIndex,
+        };
+        console.log('Mapped user object:', user);
+        setUser(user);
+        router.push('/'); //TODO: redirect to relevant home page
+      } else {
+        console.error('Unexpected response structure:', response);
+        setErrorMessage('Unexpected response structure');
+      }
+    } catch (error: any) {
+      console.error('Error logging in:', error);
+      setErrorMessage(
+          error.response?.data?.message ||
+          error.message ||
+          'Login failed. Please try again.'
+      );
+    } finally {
       setIsLoading(false);
-    }, 3000);
+    }
+
   }
+
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -29,12 +73,14 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
   const inputFields = [
     {
       id: "username",
+      name: "username",
       label: "Username",
       type: "text",
       autoComplete: "username",
     },
     {
       id: "password",
+      name: "password",
       label: "Password",
       type: passwordVisible ? "text" : "password",
       autoComplete: "password",
@@ -58,6 +104,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                 <div className="relative">
                   <Input
                     id={field.id}
+                    name={field.name}
                     placeholder=""
                     type={field.type}
                     autoCapitalize="none"
@@ -82,9 +129,10 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
               </React.Fragment>
             ))}
           </div>
-          <Button disabled={isLoading}>
+          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+          <Button type="submit" disabled={isLoading}>
             {isLoading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Next
           </Button>
