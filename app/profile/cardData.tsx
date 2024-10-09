@@ -1,5 +1,6 @@
 import { UserStats } from "@/components/types"; //for temp hardcode
 import {User} from "@/components/types";
+import {isToday} from "date-fns";
 
 export const getCardData = (userData : User) => [
   {
@@ -19,7 +20,7 @@ export const getCardData = (userData : User) => [
         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 19.59 21.15 12 17.96 4.41 21.15 7 14.14 2 9.27 8.91 8.26" />
       </svg>
     ),
-    description: `Last updated: ${new Date(userData.eloDate)
+    description: `Last updated: ${new Date(2024, 9,7,0)
       .toLocaleDateString("en-GB", {
         day: "2-digit",
         month: "short",
@@ -29,7 +30,7 @@ export const getCardData = (userData : User) => [
   },
   {
     title: "Matches Played",
-    value: userData.matchesPlayed,
+    value: 0,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +51,7 @@ export const getCardData = (userData : User) => [
   },
   {
     title: "Wins",
-    value: userData.wins,
+    value: 0,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +70,7 @@ export const getCardData = (userData : User) => [
   },
   {
     title: "Losses",
-    value: userData.losses,
+    value: 0,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
