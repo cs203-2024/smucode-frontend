@@ -41,7 +41,7 @@ export default function TournamentCardWrapper() {
                                 <ScrollArea className='max-w-9/12 whitespace-nowrap'>
                                     <div className='flex justify-start items-center gap-3 pb-4'>
                                         {tournamentCardData.filter((item) => item.status === "active").map((data) => (
-                                            <TournamentCard {...data as TournamentCardInfo} />
+                                            <TournamentCard key={data.id} {...data as TournamentCardInfo} />
                                         ))}                               
                                     </div>
                                     <ScrollBar orientation="horizontal" />
@@ -51,7 +51,7 @@ export default function TournamentCardWrapper() {
                                 <ScrollArea className='max-w-9/12 whitespace-nowrap'>
                                     <div className='flex justify-start items-center gap-3 pb-4'>
                                         {tournamentCardData.filter((item) => item.status != "active").map((data) => (
-                                            <TournamentCard {...data as TournamentCardInfo} />
+                                            <TournamentCard key={data.id} {...data as TournamentCardInfo} />
                                         ))}                              
                                     </div>
                                     <ScrollBar orientation="horizontal" />
