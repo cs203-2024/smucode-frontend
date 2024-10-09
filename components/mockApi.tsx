@@ -430,3 +430,26 @@ export const fetchOpponentsData = async () => {
   await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate a delay
   return opponents;
 };
+
+
+export const updateBracketScore = async (
+  roundId: number,
+  bracketId: number,
+  playerOneScore: number,
+  playerTwoScore: number
+) => {
+
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+
+  const round = mockTournamentBracketsData.rounds.find((round) => round.id === roundId);
+  if (!round) return { success: false, message: "Round not found" };
+
+  const bracket = round.brackets.find((bracket) => bracket.id === bracketId);
+  if (!bracket) return { success: false, message: "Bracket not found" };
+
+  if (bracket.playerOne) bracket.playerOne.score = playerOneScore;
+  if (bracket.playerTwo) bracket.playerTwo.score = playerTwoScore;
+
+  return { success: true, message: "Bracket score updated successfully" };
+};

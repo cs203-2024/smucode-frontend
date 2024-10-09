@@ -14,7 +14,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     const testuser: User = {
         username: "Adrian",
-        image: '/assets/images/avatar.png'
+        image: '/assets/images/avatar.png',
+        role: 'ADMIN'
     };
 
   useEffect(() => {

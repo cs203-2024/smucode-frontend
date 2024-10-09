@@ -25,6 +25,7 @@ export type TournamentProps = {
 export type User = {
     username: string;
     image: string;
+    role: string;
   }
   
 export type UserContextType = {
