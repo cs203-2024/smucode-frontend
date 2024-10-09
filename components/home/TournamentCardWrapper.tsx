@@ -17,9 +17,11 @@ import {
 } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import TournamentCard from './TournamentCard';
+import UserTournamentCard from './UserTournamentCard';
 import { TournamentCardInfo } from '../types';
-
+import { UserTournamentCardInfo } from '../types';
 import { tournamentCardData } from './testdata';
+import { userTournamentCardData } from './testdata';
 
 export default function TournamentCardWrapper() {
     
@@ -40,9 +42,12 @@ export default function TournamentCardWrapper() {
                             <TabsContent value="ongoing" className='w-full'>
                                 <ScrollArea className='max-w-9/12 whitespace-nowrap'>
                                     <div className='flex justify-start items-center gap-3 pb-4'>
-                                        {tournamentCardData.filter((item) => item.status === "active").map((data) => (
+                                        {/* {tournamentCardData.filter((item) => item.status === "active").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
-                                        ))}                               
+                                        ))}                                */}
+                                        {userTournamentCardData.filter((item) => item.status === "active").map((data) => (
+                                            <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
+                                        ))}
                                     </div>
                                     <ScrollBar orientation="horizontal" />
                                 </ScrollArea>
@@ -50,9 +55,12 @@ export default function TournamentCardWrapper() {
                             <TabsContent value="completed" className='w-full'>
                                 <ScrollArea className='max-w-9/12 whitespace-nowrap'>
                                     <div className='flex justify-start items-center gap-3 pb-4'>
-                                        {tournamentCardData.filter((item) => item.status != "active").map((data) => (
+                                        {/* {tournamentCardData.filter((item) => item.status != "active").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
-                                        ))}                              
+                                        ))}                               */}
+                                        {userTournamentCardData.filter((item) => item.status != "active").map((data) => (
+                                            <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
+                                        ))}
                                     </div>
                                     <ScrollBar orientation="horizontal" />
                                 </ScrollArea>

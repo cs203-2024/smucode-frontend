@@ -88,3 +88,27 @@ export interface TournamentOverviewProps {
     wins: number;
     losses: number;
   }
+
+export type UserTournamentCardInfo = {
+    id: number;
+    icon: string;
+    name: string;
+    capacity: number;
+    format: string;
+    band: string;
+    startDate: Date;
+    endDate: Date;
+    signUpDeadline: Date;
+    status: string;
+    signUpPercentage: number;
+    actualSignUp: number;
+    timeWeight: number;
+    memWeight: number;
+    testCaseWeight: number;
+    currentRound: string;
+    roundEnds: Date;
+    signedUp: boolean;
+    participated: boolean;
+    signUpsOpen: boolean;
+    placing: number;
+}
