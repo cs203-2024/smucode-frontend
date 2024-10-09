@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 // import { useUserContext } from '@/app/context/UserContext';
-import { signup } from '@/app/services/userApi';
+import { signup } from '@/services/userApi';
 import { useRouter } from 'next/navigation';
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
