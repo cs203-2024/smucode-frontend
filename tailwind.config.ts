@@ -22,10 +22,10 @@ const config: Config = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
-			ongoing: '#2a9d90',
-			timeWeight: "#0371bd",
-			memWeight: "#c63514",
-			testCaseWeight: "#5a64f7",
+			ongoing: '#2a9d90', //'#2a9d90',
+			timeWeight: "#0371bd", //'#0371bd',
+			memWeight: "#c63514", //'#c63514',
+			testCaseWeight: "#5a64f7", //'#5a64f7',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
