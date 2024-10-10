@@ -453,3 +453,22 @@ export const updateBracketScore = async (
 
   return { success: true, message: "Bracket score updated successfully" };
 };
+
+export const endBracket = async (
+  roundId: number,
+  bracketId: number,
+) => {
+
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+
+  const round = mockTournamentBracketsData.rounds.find((round) => round.id === roundId);
+  if (!round) return { success: false, message: "Round not found" };
+
+  const bracket = round.brackets.find((bracket) => bracket.id === bracketId);
+  if (!bracket) return { success: false, message: "Bracket not found" };
+
+  bracket.status = "completed";
+
+  return { success: true, message: "Bracket ended successfully" };
+};

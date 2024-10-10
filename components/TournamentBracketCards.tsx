@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TournamentProps, RoundProps, PlayerInfo } from './types';
 import { Button } from './ui/button';
-import { Edit } from 'lucide-react';
+import { Edit, LoaderCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogOverlay, DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
 import { DialogFooter, DialogHeader } from './ui/dialog';
 import { Input } from './ui/input';
-import { updateBracketScore } from './mockApi';
+import { updateBracketScore, endBracket } from './mockApi';
 import { toast } from "sonner";
 
 interface BracketProps {
@@ -20,7 +20,6 @@ interface BracketProps {
 
 const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; status: string }> = ({ player, isWinner, status }) => {
   if (!player) return <div className="flex items-center justify-between bg-transparent p-1.5 h-10 border-gray-400 rounded-full"></div>;
-
   return (
     <div className={`${!isWinner && status === "completed" ? "opacity-40" : ""} flex items-center py-1 justify-between text-sm`}>
       <div className="flex items-center space-x-2">
@@ -70,44 +69,79 @@ const TournamentBracket: React.FC<BracketProps> = ({ roundid, id, status, player
   const [editedPlayerOne, setEditedPlayerOne] = useState(playerOne);
   const [editedPlayerTwo, setEditedPlayerTwo] = useState(playerTwo);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isEnding, setIsEnding] = useState(false);
+  const [isEditable, setIsEditable] = useState(status === "ongoing");
+  const [bracketStatus, setBracketStatus] = useState(status);
   const getWinner = (playerOne: PlayerInfo | undefined, playerTwo: PlayerInfo | undefined) => {
-    if (playerOne && playerTwo && status === "completed") {
+    if (playerOne && playerTwo && bracketStatus === "completed") {
       if (playerOne.score === 0 && playerTwo.score === 0) return "";
+      console.log(playerOne.score > playerTwo.score ? playerOne.name : playerTwo.name);
       return playerOne.score > playerTwo.score ? playerOne.name : playerTwo.name;
     }
     return undefined;
   };
-
-  const isWinner = getWinner(playerOne, playerTwo);
+  
+  const [isWinner, setIsWinner] = useState(getWinner(playerOne, playerTwo)); 
+  
+  useEffect(() => {
+    if (bracketStatus === "completed") {
+      setIsWinner(getWinner(playerOne, playerTwo));
+    }
+  }, [bracketStatus]);
 
   const handleUpdate = () => {
-    if (editedPlayerOne && editedPlayerTwo) {
+    if (editedPlayerOne && editedPlayerTwo && !isUpdating) {
+      setIsUpdating(true);
       updateBracketScore(roundid, id, editedPlayerOne.score, editedPlayerTwo.score)
         .then(() => {
           toast.success("Bracket score updated successfully!");
+          setIsUpdating(false);
           setIsDialogOpen(false);
         })
         .catch((error) => {
           console.error("Failed to update bracket:", error);
           toast.error("Failed to update bracket. Please try again.");
+          setIsUpdating(false);
         });
     } else {
       setIsDialogOpen(false);
     }
   };
 
+  const handleEnd = () => {
+    if (!isEnding) {
+      setIsEnding(true);
+      endBracket(roundid, id)
+        .then(() => {
+          setIsEnding(false);
+          toast.success("Bracket ended!");
+          setBracketStatus("completed");
+          setIsEditable(false);
+          setIsDialogOpen(false);
+          setIsConfirmDialogOpen(false);
+        })
+        .catch((error) => {
+          console.error("Failed to end bracket:", error);
+          toast.error("Failed to end bracket. Please try again.");
+          setIsEnding(false);
+        });
+    }
+  };
+
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <>
+    <Dialog open={isDialogOpen} onOpenChange={(isOpen) => {isEditable && setIsDialogOpen(isOpen)}}>
       <DialogTrigger asChild>
         <div 
           className="relative group py-2 px-1 cursor-pointer"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          onMouseEnter={() => isEditable && setIsHovered(true)}
+          onMouseLeave={() => isEditable && setIsHovered(false)}
         >
           <div className={`space-y-1 ${isHovered ? 'blur-sm' : ''} transition-all duration-300`}>
-            <PlayerCard player={playerOne} isWinner={isWinner === playerOne?.name} status={status} />
-            <PlayerCard player={playerTwo} isWinner={isWinner === playerTwo?.name} status={status} />
+            <PlayerCard player={playerOne} isWinner={isWinner === playerOne?.name} status={bracketStatus} />
+            <PlayerCard player={playerTwo} isWinner={isWinner === playerTwo?.name} status={bracketStatus} />
           </div>
           {isHovered && (
             <div className="absolute inset-0 flex items-center justify-center">
@@ -118,20 +152,46 @@ const TournamentBracket: React.FC<BracketProps> = ({ roundid, id, status, player
       </DialogTrigger>
       <DialogOverlay className="fixed inset-0 flex items-center justify-center bg-black z-50 bg-opacity-50">
         <DialogContent className="w-[280px] bg-white p-6 rounded-md shadow-md">
-          <DialogHeader>
-            <DialogTitle className="text-center font-medium">Edit Bracket</DialogTitle>
-          </DialogHeader>
+            <DialogHeader>
+              <DialogTitle className="flex justify-between items-center font-medium text-center">
+                Edit Bracket
+                <Button
+                  variant="ghost"
+                  className="px-2 py-1 text-red-600 font-normal border-transparent hover:border-red-600 border-2 hover:bg-transparent rounded-md transition-all ml-2 hover:text-red-600"
+                  onClick={() => setIsConfirmDialogOpen(true)}
+                >
+                  End
+              </Button>
+              </DialogTitle>
+            </DialogHeader>
           <div className="space-y-2 py-4">
             <EditPlayerCard player={editedPlayerOne} onChange={(score) => setEditedPlayerOne(prev => prev ? {...prev, score} : undefined)} />
             <EditPlayerCard player={editedPlayerTwo} onChange={(score) => setEditedPlayerTwo(prev => prev ? {...prev, score} : undefined)} />
           </div>
           <DialogFooter>
               <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-              <Button onClick={handleUpdate}>Update</Button>
+              <Button className="w-[100px]" onClick={handleUpdate}>
+                {isUpdating?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Update")}
+              </Button>
           </DialogFooter>
         </DialogContent>
       </DialogOverlay>
     </Dialog>
+     <Dialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
+     <DialogOverlay className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+       <DialogContent className="bg-white p-6 rounded-md shadow-md">
+         <DialogTitle className="font-medium text-sm">Confirm End Bracket</DialogTitle>
+         <p className="text-sm">Bracket scores will be finalized</p>
+         <div className="flex justify-end space-x-2 mt-4">
+           <Button variant="outline" onClick={() => setIsConfirmDialogOpen(false)}>Cancel</Button>
+           <Button className="w-[150px]" onClick={handleEnd}>
+                {isEnding?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Yes, end bracket")}
+            </Button>
+         </div>
+       </DialogContent>
+     </DialogOverlay>
+   </Dialog>
+   </>
   );
 };
 
