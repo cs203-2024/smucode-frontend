@@ -82,9 +82,9 @@ export const tournamentCardData = [
         "signUpPercentage": 60,
         "actualSignUp": 38,
         "capacity": 64,
-        "timeWeight": 30,
-        "memWeight": 20,
-        "testCaseWeight": 50,
+        "timeWeight": 40,
+        "memWeight": 15,
+        "testCaseWeight": 45,
         "currentRound": "Quarter-Finals",
         "roundEnds": new Date("2024-10-17T03:24:00"),
     },
@@ -203,9 +203,9 @@ export const userTournamentCardData = [
         "signUpPercentage": 60,
         "actualSignUp": 38,
         "capacity": 64,
-        "timeWeight": 30,
-        "memWeight": 20,
-        "testCaseWeight": 50,
+        "timeWeight": 40,
+        "memWeight": 15,
+        "testCaseWeight": 45,
         "currentRound": "Quarter-Finals",
         "roundEnds": new Date("2024-10-17T03:24:00"),
         "signedUp": true,
@@ -304,6 +304,57 @@ export const userTournamentCardData = [
         "participated": false,
         "signUpsOpen": false,
         "placing": -1,
+    },
+]
+
+export const userNotificationData = [
+    {
+        "id": 1,
+        "category": "alert",
+        "message": "Round Ending Soon",
+        "description": "Your have an uncompleted round in this tournament. Please attempt the round before it ends. Failure to do so will result in a walkover for your opponent",
+        "datetime": new Date(),
+        "tournament": {
+            "id": 1,
+            "name": "SMU Gardening Championships"
+        },
+        "read": false
+    },
+    {
+        "id": 2,
+        "category": "issue",
+        "message": "Performance Update Required",
+        "description": "Please review your submitted code.",
+        "datetime": new Date(),
+        "tournament": {
+            "id": 1,
+            "name": "SMU Gardening Championships"
+        },
+        "read": false
+    },
+    {
+        "id": 3,
+        "category": "notification",
+        "message": "Tournament Registration Approved",
+        "description": "Congratulations! You have been accepted into this tournament, which will commence on 14 Oct 2024, 12:00",
+        "datetime": new Date(),
+        "tournament": {
+            "id": 1,
+            "name": "SMU Gardening Championships"
+        },        
+        "read": true
+    },
+    {
+        "id": 4,
+        "category": "notification",
+        "message": "Test Message",
+        "description": "This is some text that is supposed to be very long to check if the line clamp function works properly because I cannot think of any other way to test this functionality.",
+        "datetime": new Date(),
+        "tournament": {
+            "id": 1,
+            "name": "SMU Gardening Championships"
+        },        
+        "read": true
     },
 ]
 

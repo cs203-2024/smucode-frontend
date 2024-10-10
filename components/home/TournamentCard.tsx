@@ -92,7 +92,7 @@ export default function TournamentCard(data: TournamentCardInfo) {
                 <CardDescription className='py-2'>
                     {getFormattedDate(data.startDate)} - {getFormattedDate(data.endDate)}
                 </CardDescription>
-                <Link href={`tournaments/${data.id}`}>
+                <Link href={`tournaments/${data.id}/overview`}>
                     <Button className='font-semibold'>Manage</Button>
                 </Link>
             </CardFooter>

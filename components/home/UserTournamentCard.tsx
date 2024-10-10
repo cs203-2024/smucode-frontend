@@ -128,7 +128,7 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
                             <div className='flex justify-center items-center text-gray-500 font-semibold text-sm px-2 gap-2'>Closed</div>
                         )
                     )}
-                    <Link href={`tournaments/${data.id}`}>
+                    <Link href={`tournaments/${data.id}/overview`}>
                         <Button className='font-semibold'>View</Button>
                     </Link>
                 </div>

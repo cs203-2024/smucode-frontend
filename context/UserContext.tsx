@@ -8,6 +8,21 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
+  useEffect(() => {
+    const dummyAdminUser: User = {
+      username: "adminDaddy",
+      email: "admin@example.com",
+      profileImageUrl: null,
+      role: "user", // Role is "admin"
+      mu: 25,
+      sigma: 8.333,
+      skillIndex: 0,
+    };
+
+    // Set the dummy user with the admin role
+    setUser(dummyAdminUser);
+  }, []);
+
   const logout = async () => {
     try {
       setUser(null);
