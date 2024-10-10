@@ -22,17 +22,27 @@ export type TournamentProps = {
     rounds: RoundProps[];
 };
 
-export type User = {
+// export type User = {
+//     username: string;
+//     image: string;
+//   }
+export interface User {
     username: string;
-    image: string;
-  }
-  
-export type UserContextType = {
+    email: string;
+    profileImageUrl: string | null;
+    role: string;
+    mu: number;
+    sigma: number;
+    skillIndex: number;
+}
+
+export interface UserContextType {
     user: User | null;
-    loading: boolean;
-    login: () => void;
-    logout: () => void;
-  }
+    setUser: React.Dispatch<React.SetStateAction<User | null>>;
+    // loading: boolean;
+    // login: () => Promise<void>;
+    logout: () => Promise<void>;
+}
 
 export type TournamentCardInfo = {
     id: number;
