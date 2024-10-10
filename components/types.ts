@@ -22,26 +22,46 @@ export type TournamentProps = {
     rounds: RoundProps[];
 };
 
-export type User = {
-    username: string;
-    image: string;
-    role: string;
-  }
-  
+// export type User = {
+//     username: string;
+//     image: string;
+//   }
+
 export type UserContextType = {
+    email: string;
+    profileImageUrl: string | null;
+    role: string;
+    mu: number;
+    sigma: number;
+    skillIndex: number;
+}
+
+export interface UserContextType {
     user: User | null;
-    loading: boolean;
-    login: () => void;
-    logout: () => void;
-  }
+    setUser: React.Dispatch<React.SetStateAction<User | null>>;
+    // loading: boolean;
+    // login: () => Promise<void>;
+    logout: () => Promise<void>;
+}
 
 export type TournamentCardInfo = {
+    id: number;
+    icon: string;
     name: string;
-    id: string;
-    ongoing: boolean;
     capacity: number;
+    format: string;
+    band: string;
     startDate: Date;
     endDate: Date;
+    signUpDeadline: Date;
+    status: string;
+    signUpPercentage: number;
+    actualSignUp: number;
+    timeWeight: number;
+    memWeight: number;
+    testCaseWeight: number;
+    currentRound: string;
+    roundEnds: Date;
 };
 
 export interface TournamentOverviewProps {
@@ -79,6 +99,7 @@ export interface TournamentOverviewProps {
     losses: number;
   }
 
+
   export type ParticipantCardListProp = {
     participants: Participant[];
   };
@@ -96,3 +117,27 @@ export interface TournamentOverviewProps {
     participants: Participant;
     viewMode: 'grid' | 'list';
   };
+
+export type UserTournamentCardInfo = {
+    id: number;
+    icon: string;
+    name: string;
+    capacity: number;
+    format: string;
+    band: string;
+    startDate: Date;
+    endDate: Date;
+    signUpDeadline: Date;
+    status: string;
+    signUpPercentage: number;
+    actualSignUp: number;
+    timeWeight: number;
+    memWeight: number;
+    testCaseWeight: number;
+    currentRound: string;
+    roundEnds: Date;
+    signedUp: boolean;
+    participated: boolean;
+    signUpsOpen: boolean;
+    placing: number;
+}
