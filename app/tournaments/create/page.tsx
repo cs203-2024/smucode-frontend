@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -42,6 +43,10 @@ import {
     TooltipTrigger,
   } from "@/components/ui/tooltip"
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons"
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
+
+import { createTournament } from "@/services/tournamentAPI";
 
 const TournamentStatusEnum = z.enum(["active", "inactive", "suspended"]);
 type TournamentStatusEnum = z.infer<typeof TournamentStatusEnum>;
@@ -92,7 +97,7 @@ const formSchema = z.object({
     testCaseWeight: z.number({required_error: "This field is required."}).refine((value) => value <= 100 && value >= 0, {
         message: "Test case ratio weight must be between 0% and 100%."
     }),
-    image: z.instanceof(File, {message: "Please select a valid file."}).optional()
+    icon: z.instanceof(File, {message: "Please select a valid file."}).optional()
 })
 .superRefine((data, ctx) => {
     if (data.timeWeight + data.memWeight + data.testCaseWeight !== 100) {
@@ -130,6 +135,11 @@ const formSchema = z.object({
 
 export default function CreateTournament() {
 
+    const [waitingForAxios, setWaitingForAxios] = useState(false);
+
+    const router = useRouter();
+    const { toast } = useToast();
+
     const [startHour, setStartHour] = useState(0);
     const [startMin, setStartMin] = useState(0);
     const [endHour, setEndHour] = useState(0);
@@ -159,8 +169,10 @@ export default function CreateTournament() {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+
         console.log("submit clicked");
+        setWaitingForAxios(true);
         const startDateWithTime = new Date(values.startDate);
         startDateWithTime.setHours(startHour, startMin, 0, 0);
         const endDateWithTime = new Date(values.endDate);
@@ -179,6 +191,26 @@ export default function CreateTournament() {
         };
         // console.log(updatedValues);
 
+        // create tournament with axios
+        try {
+            const response = await createTournament(updatedValues);
+            toast({
+                title: "Tournament Created",
+                description: "Tournament has been created successfully.",
+            });
+            router.push("/dashboard");
+        } catch (error: any) {
+            console.log("error creatingg tournament");
+            toast({
+                title: "Error Creating Tournament",
+                description: "Uh-oh, there was a problem creating the tournament. Please try again.",
+                variant: "destructive",  
+            });
+            console.log("toast passed");
+        } finally {
+            setWaitingForAxios(false);
+        }
+
         return updatedValues;
     }
 
@@ -191,7 +223,14 @@ export default function CreateTournament() {
                             <div className="text-2xl font-bold">Create Tournament</div>
                             <div className="text-sm font-medium text-gray-500">Fill in details about your new tournament</div>
                         </div>
-                        <Button type="submit">Create</Button>
+                        {waitingForAxios ? (
+                            <Button disabled>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Submitting
+                            </Button>
+                        ):(
+                            <Button type="submit">Create</Button>
+                        )}
                     </div>
                     <div className="col-span-5 flex flex-col gap-4">
                         <FormField
@@ -621,7 +660,7 @@ export default function CreateTournament() {
                             <div className="col-span-1 flex flex-col justify-center">
                                 <FormField
                                     control={form.control}
-                                    name="image"
+                                    name="icon"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="font-semibold">Logo (optional)</FormLabel>
@@ -639,7 +678,7 @@ export default function CreateTournament() {
                                                         const file = e.target.files?.[0];
                                                         if (file && file instanceof File) {
                                                             field.onChange(file);  
-                                                            form.trigger("image"); 
+                                                            form.trigger("icon"); 
                                                             const objectUrl = URL.createObjectURL(file);
                                                             setImagePreview(objectUrl);
                                                         }

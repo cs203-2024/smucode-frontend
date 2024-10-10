@@ -13,7 +13,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       username: "adminDaddy",
       email: "admin@example.com",
       profileImageUrl: null,
-      role: "user", // Role is "admin"
+      role: "admin", // Role is "admin"
       mu: 25,
       sigma: 8.333,
       skillIndex: 0,

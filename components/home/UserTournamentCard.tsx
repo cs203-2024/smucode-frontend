@@ -34,6 +34,8 @@ import { capitalise, getFormattedDate, getPlacingString, getTimeDifference } fro
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
+import { signUpForTournament, removeSignUpForTournament } from '@/services/tournamentAPI';
+
 export default function UserTournamentCard(data: UserTournamentCardInfo) {
     const [registered, setRegistered] = useState(data.signedUp);
     return (

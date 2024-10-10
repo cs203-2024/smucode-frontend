@@ -2,6 +2,7 @@ import "./globals.css";
 import Nav from '@/components/Nav';
 import { UserProvider } from '@/context/UserContext';
 import { ReactNode } from 'react';
+import { Toaster } from "@/components/ui/toaster";
 
 // Metadata
 export const metadata = {
@@ -25,6 +26,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           <main className="">
             <Nav />
             {children}
+            <Toaster />
           </main>
         </UserProvider>
       </body>
