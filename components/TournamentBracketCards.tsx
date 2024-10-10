@@ -77,7 +77,6 @@ const TournamentBracket: React.FC<BracketProps> = ({ roundid, id, status, player
   const getWinner = (playerOne: PlayerInfo | undefined, playerTwo: PlayerInfo | undefined) => {
     if (playerOne && playerTwo && bracketStatus === "completed") {
       if (playerOne.score === 0 && playerTwo.score === 0) return "";
-      console.log(playerOne.score > playerTwo.score ? playerOne.name : playerTwo.name);
       return playerOne.score > playerTwo.score ? playerOne.name : playerTwo.name;
     }
     return undefined;
