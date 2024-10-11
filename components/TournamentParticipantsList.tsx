@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { User, Trophy, Medal, Grid, List } from 'lucide-react';
-import { useTournamentId } from "@/context/TournamentIdContext";
+import { useTournamentContext } from "@/context/TournamentContext";
 import { fetchTournamentParticipantsData } from '@/components/mockApi';
 import { ParticipantCardListProp, Participant } from '@/components/types';
 import { Skeleton } from './ui/skeleton';
@@ -43,7 +43,8 @@ const ParticipantCard: React.FC<ParticipantCardProps> = ({ participant, viewMode
 
 
 const TournamentParticipantsList: React.FC = () => {
-  const tournamentId = useTournamentId();
+  const tournamentContext = useTournamentContext();
+  const tournamentId = tournamentContext.id;
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

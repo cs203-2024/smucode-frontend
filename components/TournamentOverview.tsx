@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import Image from 'next/image';
 import { fetchTournamentOverviewData } from './mockApi';
 import { TournamentOverviewProps } from './types';
-import { useTournamentId } from "@/context/TournamentIdContext";
+import { useTournamentContext } from "@/context/TournamentContext";
 import { Skeleton } from "@/components/ui/skeleton"
 
 
@@ -13,7 +13,8 @@ const TournamentOverview: React.FC = () => {
   const [tournamentData, setTournamentData] = useState<TournamentOverviewProps | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const tournamentId = useTournamentId();
+  const tournamentContext = useTournamentContext();
+  const tournamentId = tournamentContext.id;
   useEffect(() => {
     const loadTournamentData = async () => {
       try {
