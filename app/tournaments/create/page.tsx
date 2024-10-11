@@ -46,9 +46,11 @@ import { QuestionMarkCircledIcon } from "@radix-ui/react-icons"
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
+import { useUserContext } from '@/context/UserContext';
+
 import { createTournament } from "@/services/tournamentAPI";
 
-const TournamentStatusEnum = z.enum(["active", "inactive", "suspended"]);
+const TournamentStatusEnum = z.enum(["upcoming", "ongoing", "completed"]);
 type TournamentStatusEnum = z.infer<typeof TournamentStatusEnum>;
 
 const BandEnum = z.enum(["lower", "middle", "upper"]);
@@ -82,7 +84,10 @@ const formSchema = z.object({
     endDate: z.date({
         required_error: "End date is required."
     }),
-    signUpDeadline: z.date({
+    signUpStartDate: z.date({
+        required_error: "Signup start date is required."
+    }),
+    signUpEndDate: z.date({
         required_error: "Signup deadline is required."
     }),
     capacity: z.number().refine((value) => isPowerOfTwo(value) && value > 0, {
@@ -97,7 +102,8 @@ const formSchema = z.object({
     testCaseWeight: z.number({required_error: "This field is required."}).refine((value) => value <= 100 && value >= 0, {
         message: "Test case ratio weight must be between 0% and 100%."
     }),
-    icon: z.instanceof(File, {message: "Please select a valid file."}).optional()
+    owner: z.string(),
+    icon: z.instanceof(File, {message: "Please select a valid file."}).optional(),
 })
 .superRefine((data, ctx) => {
     if (data.timeWeight + data.memWeight + data.testCaseWeight !== 100) {
@@ -126,14 +132,17 @@ const formSchema = z.object({
     path: ["startDate"]
 })
 .refine((data) => {
-    console.log(data.signUpDeadline.getTime() + ", " + data.startDate.getTime());
-    return data.signUpDeadline.getTime() < data.startDate.getTime();
+    console.log(data.signUpEndDate.getTime() + ", " + data.startDate.getTime());
+    return data.signUpEndDate.getTime() < data.startDate.getTime();
 }, {
     message: "Signups must end before Start Date Time.",
-    path: ["signUpDeadline"]
+    path: ["signUpEndDate"]
 });
 
 export default function CreateTournament() {
+
+    const {user, logout} = useUserContext();
+    const validUsername = user ? user.username:""
 
     const [waitingForAxios, setWaitingForAxios] = useState(false);
 
@@ -156,16 +165,19 @@ export default function CreateTournament() {
         defaultValues: {
             name: "",
             description: "",
-            status: "active",
+            status: "upcoming",
             format: "single-elimination",
             band: "upper",
             capacity: 2,
             startDate: new Date(),
             endDate: new Date(),
-            signUpDeadline: new Date(),
+            signUpStartDate: new Date(),
+            signUpEndDate: new Date(),
             timeWeight: 0,
             memWeight: 0,
-            testCaseWeight: 0
+            testCaseWeight: 0,
+            owner: validUsername,
+            icon: new File([], "nullIcon.png", { type: "image/png" })
         },
     })
 
@@ -184,10 +196,10 @@ export default function CreateTournament() {
             ...values,
             startDate: startDateWithTime,
             endDate: endDateWithTime,
-            signUpDeadline: signUpDateWithTime,
+            signUpEndDate: signUpDateWithTime,
             timeWeight: timeW,
             memWeight: spaceW,
-            testCaseWeight: tcW
+            testCaseWeight: tcW,
         };
         // console.log(updatedValues);
 
@@ -328,7 +340,7 @@ export default function CreateTournament() {
                         </div>
                         <FormField
                             control={form.control}
-                            name="signUpDeadline"
+                            name="signUpEndDate"
                             render={({ field }) => (
                                 <FormItem className="flex flex-col">
                                 <FormLabel>Registration Deadline</FormLabel>

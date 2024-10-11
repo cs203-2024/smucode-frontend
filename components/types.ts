@@ -122,3 +122,8 @@ export type UserTournamentCardInfo = {
     signUpsOpen: boolean;
     placing: number;
 }
+
+export type TournamentSignUpInfo = {
+    username: string;
+    tournamentId: number;
+}

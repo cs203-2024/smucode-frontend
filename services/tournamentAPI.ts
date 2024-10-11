@@ -1,5 +1,5 @@
 import axiosClient from './http';
-import { User } from '@/components/types';
+import { TournamentSignUpInfo } from '@/components/types';
 import Cookies from "js-cookie";
 
 //interface for tournament
@@ -11,12 +11,14 @@ interface Tournament {
     band: string;
     startDate: Date;
     endDate: Date;
-    signUpDeadline: Date;
+    signUpStartDate: Date;
+    signUpEndDate: Date;
     status: string;
     timeWeight: number;
     memWeight: number;
     testCaseWeight: number;
-    //icon: File | undefined;
+    owner: string;
+    icon?: File | undefined;
 }
 
 interface CreateTournamentResponse {
@@ -26,7 +28,7 @@ interface CreateTournamentResponse {
 }
 
 interface SignUpInfo {
-    userId: string;
+    username: string;
     tournamentId: string;
 }
 
@@ -37,7 +39,7 @@ interface SignUpResponse {
 
 export const createTournament = async (tournamentData: Tournament):Promise<Tournament> => {
     try {
-        const response = await axiosClient.post<Tournament>(`/tournaments/create`);
+        const response = await axiosClient.post<Tournament>(`/create`);
         return response.data;
     } catch (error) {
         console.error('Error creating tournament:', error);
@@ -45,9 +47,9 @@ export const createTournament = async (tournamentData: Tournament):Promise<Tourn
     }
 }
 
-export const signUpForTournament = async (data: SignUpInfo):Promise<SignUpResponse> => {
+export const signUpForTournament = async (data: TournamentSignUpInfo):Promise<SignUpResponse> => {
     try {
-        const response = await axiosClient.post<SignUpResponse>('/tournaments/signup');
+        const response = await axiosClient.post<SignUpResponse>('/tournaments/signup'); //need actual path
         return response.data;
     } catch (error) {
         console.error("Error signing up for tournament");
@@ -55,6 +57,12 @@ export const signUpForTournament = async (data: SignUpInfo):Promise<SignUpRespon
     }
 }
 
-export const removeSignUpForTournament = async () => {
-    
+export const removeSignUpForTournament = async (data: TournamentSignUpInfo):Promise<SignUpResponse> => {
+    try {
+        const response = await axiosClient.delete<SignUpResponse>('/tournaments/signup'); //need actual path
+        return response.data;
+    } catch (error) {
+        console.error("Error signing up for tournament");
+        throw error;
+    }
 }

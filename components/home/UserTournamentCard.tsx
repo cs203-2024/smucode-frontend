@@ -33,10 +33,16 @@ import { UserTournamentCardInfo } from '../types';
 import { capitalise, getFormattedDate, getPlacingString, getTimeDifference } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
+import { useUserContext } from '@/context/UserContext';
 
 import { signUpForTournament, removeSignUpForTournament } from '@/services/tournamentAPI';
+import { TournamentSignUpInfo } from '../types';
 
 export default function UserTournamentCard(data: UserTournamentCardInfo) {
+    const {user, logout} = useUserContext();
+    const username = user ? user.username:"";
     const [registered, setRegistered] = useState(data.signedUp);
     return (
         <Card>
@@ -118,7 +124,7 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
                 </CardDescription>
                 <div className='flex justify-end items-center gap-2'>
                     {data.signUpsOpen ? (
-                        <AlertDialogDemo registered={data.signedUp} />
+                        <AlertDialogDemo registered={data.signedUp} tournamentId={data.id} username={username} />
                     ):(
                         data.participated ? (
                             data.status === "active" ? (
@@ -139,7 +145,48 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
     )
 }
 
-function AlertDialogDemo({registered}:{registered: boolean}) {
+function AlertDialogDemo({registered, tournamentId, username}:{registered: boolean, tournamentId: number, username:string}) {
+    const signUpData = {
+        username: username,
+        tournamentId: tournamentId
+    } as TournamentSignUpInfo;
+
+    const { toast } = useToast();
+
+    async function confirmSignUp() {
+        try {
+            console.log("signing up...");
+            const response = await signUpForTournament(signUpData);
+            toast({
+                title: "Registration Successful!",
+                description: "You have successfully registered for this tournament. You will be notified should your application to participate be accepted",
+            });
+        } catch (error) {
+            toast({
+                title: "Unsuccessful Registration",
+                description: "Uh-oh, we encountered a problem while signing you up. Please try again.",
+                variant: "destructive",  
+            });
+        }
+    }
+
+    async function removeSignUp() {
+        try {
+            console.log("removing signup...")
+            const response = await removeSignUpForTournament(signUpData);
+            toast({
+                title: "Successfully Removed Registration!",
+                description: "You have successfully removed your registration from this tournament.",
+            });
+        } catch (error) {
+            toast({
+                title: "Error Removing Registration",
+                description: "Looks like you were unable to leave this tournament. Please try again.",
+                variant: "destructive",  
+            });
+        }
+    }
+
     if (registered) {
         return (
             <AlertDialog>
@@ -161,7 +208,7 @@ function AlertDialogDemo({registered}:{registered: boolean}) {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Confirm</AlertDialogAction>
+                    <AlertDialogAction onClick={confirmSignUp}>Confirm</AlertDialogAction>
                 </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
@@ -190,7 +237,7 @@ function AlertDialogDemo({registered}:{registered: boolean}) {
             </AlertDialogHeader>
             <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction>Confirm</AlertDialogAction>
+                <AlertDialogAction onClick={removeSignUp}>Confirm</AlertDialogAction>
             </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
