@@ -3,7 +3,7 @@ import Nav from '@/components/Nav';
 import { UserProvider } from '@/context/UserContext';
 import { ReactNode } from 'react';
 import { Toaster } from "@/components/ui/sonner"
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Toaster2 } from "@/components/ui/toaster";
 
 // Metadata
 export const metadata = {
@@ -29,7 +29,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
             {children}
             <Toaster />
           </main>
-          <Toaster />
+          <Toaster2 />
         </UserProvider>
       </body>
     </html>
