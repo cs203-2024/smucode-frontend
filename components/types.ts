@@ -27,7 +27,8 @@ export type TournamentProps = {
 //     image: string;
 //   }
 
-export type UserContextType = {
+export type User = {
+    username: string;
     email: string;
     profileImageUrl: string | null;
     role: string;
