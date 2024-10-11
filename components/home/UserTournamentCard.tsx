@@ -54,25 +54,25 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
                             <AvatarFallback>{data.name.substring(0, 3)}</AvatarFallback>
                         </Avatar>
                         <CardTitle className={cn(
-                            data.status === "active" ? "text-black":"text-gray-500"
+                            data.status != "completed" ? "text-black":"text-gray-500"
                         )}>{data.name}</CardTitle>
                     </div>
                     <Badge className={cn(
                         'rounded-full',
-                        data.status === "active" ? "bg-ongoing hover:bg-ongoing":"bg-gray-100 hover:bg-gray-100 text-gray-400"
+                        data.status != "completed" ? "bg-ongoing hover:bg-ongoing":"bg-gray-100 hover:bg-gray-100 text-gray-400"
                     )}>{capitalise(data.status)}</Badge>
                 </div>
                 {data.signUpsOpen ? (
                     <CardDescription className={cn(
                         'pt-2',
-                        data.status === "active" ? "":"text-gray-400"
+                        data.status != "completed" ? "":"text-gray-400"
                     )}>
                         Registration ends <span className='font-semibold'>{getFormattedDate(data.signUpEndDate)} ({getTimeDifference(new Date(), data.signUpEndDate)})</span>
                     </CardDescription>
                 ):(
                     <CardDescription className={cn(
                         'pt-2',
-                        data.status === "active" ? "":"text-gray-400"
+                        data.status != "completed" ? "":"text-gray-400"
                     )}>
                         {data.currentRound}  (<span className={cn(
                             data.status === "active" ? "inline-block text-red-500":"inline-block"
@@ -83,26 +83,26 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
             <CardContent className="space-y-1">
                 <div className={cn(
                     'text-sm font-medium pb-1',
-                    data.status === "active" ? "":"text-gray-400"
+                    data.status != "completed" ? "":"text-gray-400"
                 )}>
                     {capitalise(data.format)} • {capitalise(data.band)} Band
                 </div>
                 <div className='flex items-center justify-start gap-2 py-2'>
                     <Badge className={cn(
                         'py-1 bg-timeWeight',
-                        data.status === "active" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
+                        data.status != "completed" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
                     )}>
                         <MdAccessTimeFilled className='pr-1 text-lg' />Time - {data.timeWeight}%
                     </Badge>
                     <Badge className={cn(
                         'py-1 bg-memWeight',
-                        data.status === "active" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
+                        data.status != "completed" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
                     )}>
                         <MdMemory className='pr-1 text-lg' />Memory - {data.memWeight}%
                     </Badge>
                     <Badge className={cn(
                         'py-1 bg-testCaseWeight',
-                        data.status === "active" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
+                        data.status != "completed" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
                     )}>
                         <RiNumbersFill className='pr-1 text-lg' />Test Cases - {data.testCaseWeight}%
                     </Badge>
@@ -110,11 +110,11 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
                 <div className='flex items-center gap-2 justify-between py-2'>
                     <Progress value={data.signUpPercentage} className={cn(
                         'h-[8px]',
-                        data.status === "active" ? "":"bg-gray-300"
+                        data.status != "completed" ? "":"bg-gray-300"
                     )} />
                     <div className={cn(
                         'text-sm font-medium text-right',
-                        data.status === "active" ? "":"text-gray-400"
+                        data.status != "completed" ? "":"text-gray-400"
                     )}>{data.actualSignUp}/{data.capacity} participants ({data.signUpPercentage}%)</div>
                 </div>
             </CardContent>
@@ -127,7 +127,7 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
                         <AlertDialogDemo registered={data.signedUp} tournamentId={data.id} username={username} />
                     ):(
                         data.participated ? (
-                            data.status === "active" ? (
+                            data.status != "completed" ? (
                                 <div className='flex justify-center items-center text-green-600 font-semibold text-sm px-2 gap-2'>In Progress</div>
                             ):(
                                 <div className='text-gray-400 font-semibold text-sm px-2'>{getPlacingString(data.placing)}</div>
@@ -208,7 +208,7 @@ function AlertDialogDemo({registered, tournamentId, username}:{registered: boole
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={confirmSignUp}>Confirm</AlertDialogAction>
+                    <AlertDialogAction onClick={removeSignUp}>Leave</AlertDialogAction>
                 </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
@@ -237,7 +237,7 @@ function AlertDialogDemo({registered, tournamentId, username}:{registered: boole
             </AlertDialogHeader>
             <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={removeSignUp}>Confirm</AlertDialogAction>
+                <AlertDialogAction onClick={confirmSignUp}>Confirm</AlertDialogAction>
             </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

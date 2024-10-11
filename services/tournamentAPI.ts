@@ -1,5 +1,5 @@
 import axiosClient from './http';
-import { TournamentSignUpInfo } from '@/components/types';
+import { TournamentSignUpInfo, TournamentCardInfo, UserTournamentCardInfo } from '@/components/types';
 import Cookies from "js-cookie";
 
 //interface for tournament
@@ -39,7 +39,7 @@ interface SignUpResponse {
 
 export const createTournament = async (tournamentData: Tournament):Promise<Tournament> => {
     try {
-        const response = await axiosClient.post<Tournament>(`/create`);
+        const response = await axiosClient.post<Tournament>(`/tournaments/create`, tournamentData);
         return response.data;
     } catch (error) {
         console.error('Error creating tournament:', error);
@@ -52,7 +52,7 @@ export const signUpForTournament = async (data: TournamentSignUpInfo):Promise<Si
         const response = await axiosClient.post<SignUpResponse>('/tournaments/signup'); //need actual path
         return response.data;
     } catch (error) {
-        console.error("Error signing up for tournament");
+        console.error("Error signing up for tournament:", error);
         throw error;
     }
 }
@@ -62,7 +62,27 @@ export const removeSignUpForTournament = async (data: TournamentSignUpInfo):Prom
         const response = await axiosClient.delete<SignUpResponse>('/tournaments/signup'); //need actual path
         return response.data;
     } catch (error) {
-        console.error("Error signing up for tournament");
+        console.error("Error signing up for tournament:", error);
         throw error;
     }
+}
+
+export const getAllTournamentsCreatedByAdmin = async (username: string):Promise<TournamentCardInfo[]> => {
+    try {
+        const response = await axiosClient.get<TournamentCardInfo[]>('/tournaments/signup'); //need actual path
+        return response.data;
+    } catch (error) {
+        console.error("Error retrieving tournaments created by admin:", error);
+        throw error;
+    } 
+}
+
+export const getAllTournamentsForUser = async (username: string):Promise<UserTournamentCardInfo[]> => {
+    try {
+        const response = await axiosClient.get<UserTournamentCardInfo[]>('/tournaments/signup'); //need actual path
+        return response.data;
+    } catch (error) {
+        console.error("Error retrieving tournaments for user:", error);
+        throw error;
+    } 
 }
