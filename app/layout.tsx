@@ -2,6 +2,7 @@ import "./globals.css";
 import Nav from '@/components/Nav';
 import { UserProvider } from '@/context/UserContext';
 import { ReactNode } from 'react';
+import { Toaster } from "@/components/ui/sonner"
 import { Toaster } from "@/components/ui/toaster";
 
 // Metadata
@@ -28,6 +29,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
             {children}
             <Toaster />
           </main>
+          <Toaster />
         </UserProvider>
       </body>
     </html>

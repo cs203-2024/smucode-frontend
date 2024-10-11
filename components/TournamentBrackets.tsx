@@ -37,17 +37,17 @@ const TournamentBrackets: React.FC = () => {
       <div>
         <div className="items-center"> 
           <p className="font-bold text-2xl ml-3 mt-[2px] mb-5">Tournament Brackets</p>
-          <div className="flex flex-col bg-slate-50 w-[80vw] h-[85vh] space-y-8 overflow-y-auto p-1">
+          <div className="flex flex-col bg-slate-50 w-full h-[85vh] space-y-8 overflow-y-auto p-1">
           <div className="mb-3">
             <Skeleton className="w-[250px] h-8 ml-5" />
           </div>
-          <div className='overflow-y-auto h-[80vh]'>
+          <div className='overflow-y-auto h-[80vh] w-full'>
             <div key="1" className="flex-shrink-0">
                 <div className="p-6 h-full w-full">
                   <Skeleton className="w-40 h-8 mb-5" />
                   <Skeleton className="w-32 h-6 mb-4" />
-                  <div className="overflow-x-auto">
-                    <div className="inline-grid grid-cols-4 gap-x-5 gap-y-8 pb-4 min-w-[1050px]">
+                  <div className="overflow-x-auto mr-[100px]">
+                  <div className="inline-grid grid-cols-4 gap-x-5 gap-y-8 pb-4 min-w-[1050px] mr-[130px]">
                       {[1, 2].map((bracketIndex) => (
                       <Skeleton key={bracketIndex} className="w-[250px] h-[132px] shadow-sm p-4 rounded-lg" />
                       ))}
@@ -60,8 +60,8 @@ const TournamentBrackets: React.FC = () => {
                 <div className="p-6 h-full w-full">
                   <Skeleton className="w-40 h-6 mb-5" />
                   <Skeleton className="w-32 h-4 mb-4" />
-                  <div className="overflow-x-auto">
-                    <div className="inline-grid grid-cols-4 gap-x-5 gap-y-8 pb-4 min-w-[1050px]">
+                  <div className="overflow-x-auto mr-[100px]">
+                  <div className="inline-grid grid-cols-4 gap-x-5 gap-y-8 pb-4 min-w-[1050px] mr-[130px]">
                       {[1, 2, 3, 4].map((bracketIndex) => (
                       <Skeleton key={bracketIndex} className="w-[250px] h-[125px] shadow-sm p-4 rounded-lg" />
                       ))}
@@ -74,7 +74,6 @@ const TournamentBrackets: React.FC = () => {
         </div>
       </div>
     </div>
-
 
     );
   }

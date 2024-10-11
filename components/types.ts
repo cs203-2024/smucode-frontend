@@ -36,6 +36,15 @@ export interface User {
     skillIndex: number;
 }
 
+// export type UserContextType = {
+//     email: string;
+//     profileImageUrl: string | null;
+//     role: string;
+//     mu: number;
+//     sigma: number;
+//     skillIndex: number;
+// }
+
 export interface UserContextType {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
@@ -98,6 +107,25 @@ export interface TournamentOverviewProps {
     wins: number;
     losses: number;
   }
+
+
+  export type ParticipantCardListProp = {
+    participants: Participant[];
+  };
+
+  export type Participant = {
+    id: string;
+    name: string;
+    profilePicture: string;
+    rank: number;
+    wins: number;
+    losses: number;
+  };
+
+  export type ParticipantCardProps = {
+    participants: Participant;
+    viewMode: 'grid' | 'list';
+  };
 
 export type UserTournamentCardInfo = {
     id: number;

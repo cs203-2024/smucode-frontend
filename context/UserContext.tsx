@@ -8,6 +8,15 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
+<!--   const [loading, setLoading] = useState<boolean>(true);
+
+    const testuser: User = {
+        username: "Adrian",
+        image: '/assets/images/avatar.png',
+        role: 'ADMIN'
+    }; -->
+
+
   useEffect(() => {
     const dummyAdminUser: User = {
       username: "adminDaddy",
