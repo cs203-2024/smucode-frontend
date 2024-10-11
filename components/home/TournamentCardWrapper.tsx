@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import {
     Card,
     CardContent,
@@ -34,6 +34,8 @@ export default function TournamentCardWrapper() {
     async function getDataForAdmin(username: string) {
         try {
             adminData = await getAllTournamentsCreatedByAdmin(username);
+            console.log("Admin data received in wrapper");
+            console.log(adminData[0]);
             return adminData;
         } catch (error) {
             console.error(error);
@@ -49,11 +51,20 @@ export default function TournamentCardWrapper() {
         }
     }
 
-    if (user?.role === "admin") {
-        getDataForAdmin(username);
-    } else {
-        getDataForUser(username);
-    }
+    useEffect(() => {
+        async function fetchData(username: string) {
+            if (user?.role === "admin") {
+                adminData = (await getDataForAdmin(username)) ?? []; // Fallback to empty array
+                console.log("Admin data received:", adminData);
+                adminData.map((item) => console.log(item.status.toLowerCase()==="upcoming"));
+            } else {
+                userData = (await getDataForUser(username)) ?? []; // Fallback to empty array
+                console.log("User data received:", userData);
+            }
+        }
+    
+        fetchData(username); // Call the function
+    }, [user]); // Ensure it runs when `user` is available
     
     return (
         <div>
@@ -83,7 +94,7 @@ export default function TournamentCardWrapper() {
 
                                         {/* Uncomment below when real data is present */}
 
-                                        {/* {user?.role === "admin" ? adminData.filter((item) => item.status === "upcoming").map((data) => (
+                                        {/* {user?.role === "admin" ? adminData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
                                         )):userData.filter((item) => item.status === "upcoming").map((data) => (
                                             <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
@@ -104,10 +115,13 @@ export default function TournamentCardWrapper() {
 
                                         {/* Uncomment below when real data is present */}
 
-                                        {/* {user?.role === "admin" ? adminData.filter((item) => item.status === "ongoing").map((data) => (
+                                        {/* {user?.role === "admin" ? adminData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
                                         )):userData.filter((item) => item.status === "ongoing").map((data) => (
                                             <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
+                                        ))}
+                                        {adminData.map((item) => (
+                                            <div className='font-bold text-lg p-8'>{item.id}</div>
                                         ))} */}
                                     </div>
                                     <ScrollBar orientation="horizontal" />
@@ -125,7 +139,7 @@ export default function TournamentCardWrapper() {
 
                                         {/* Uncomment below when real data is present */}
                                         
-                                        {/* {user?.role === "admin" ? adminData.filter((item) => item.status === "completed").map((data) => (
+                                        {/* {user?.role === "admin" ? adminData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
                                         )):userData.filter((item) => item.status === "completed").map((data) => (
                                             <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />

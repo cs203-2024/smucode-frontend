@@ -84,10 +84,10 @@ const formSchema = z.object({
     endDate: z.date({
         required_error: "End date is required."
     }),
-    signUpStartDate: z.date({
+    signupStartDate: z.date({
         required_error: "Signup start date is required."
     }),
-    signUpEndDate: z.date({
+    signupEndDate: z.date({
         required_error: "Signup deadline is required."
     }),
     capacity: z.number().refine((value) => isPowerOfTwo(value) && value > 0, {
@@ -103,7 +103,7 @@ const formSchema = z.object({
         message: "Test case ratio weight must be between 0% and 100%."
     }),
     owner: z.string(),
-    icon: z.instanceof(File, {message: "Please select a valid file."}).optional(),
+    icon: z.string() //z.instanceof(File, {message: "Please select a valid file."}).optional(),
 })
 .superRefine((data, ctx) => {
     if (data.timeWeight + data.memWeight + data.testCaseWeight !== 100) {
@@ -132,11 +132,11 @@ const formSchema = z.object({
     path: ["startDate"]
 })
 .refine((data) => {
-    console.log(data.signUpEndDate.getTime() + ", " + data.startDate.getTime());
-    return data.signUpEndDate.getTime() < data.startDate.getTime();
+    console.log(data.signupEndDate.getTime() + ", " + data.startDate.getTime());
+    return data.signupEndDate.getTime() < data.startDate.getTime();
 }, {
     message: "Signups must end before Start Date Time.",
-    path: ["signUpEndDate"]
+    path: ["signupEndDate"]
 });
 
 export default function CreateTournament() {
@@ -171,13 +171,13 @@ export default function CreateTournament() {
             capacity: 2,
             startDate: new Date(),
             endDate: new Date(),
-            signUpStartDate: new Date(),
-            signUpEndDate: new Date(),
+            signupStartDate: new Date(),
+            signupEndDate: new Date(),
             timeWeight: 0,
             memWeight: 0,
             testCaseWeight: 0,
             owner: validUsername,
-            icon: new File([], "nullIcon.png", { type: "image/png" })
+            icon: ""//new File([], "nullIcon.png", { type: "image/png" })
         },
     })
 
@@ -191,15 +191,19 @@ export default function CreateTournament() {
         endDateWithTime.setHours(endHour, endMin, 0, 0);
         const signUpDateWithTime = new Date(values.startDate);
         signUpDateWithTime.setHours(signUpHour, signUpMin, 0, 0);
+        const statusCaps = values.status.toUpperCase();
+        const bandCaps = values.band.toUpperCase();
 
         const updatedValues = {
             ...values,
             startDate: startDateWithTime,
             endDate: endDateWithTime,
-            signUpEndDate: signUpDateWithTime,
+            signupEndDate: signUpDateWithTime,
             timeWeight: timeW,
             memWeight: spaceW,
             testCaseWeight: tcW,
+            status: statusCaps,
+            band: bandCaps,
         };
         // console.log(updatedValues);
 
@@ -261,7 +265,7 @@ export default function CreateTournament() {
                                 </FormItem>
                             )}
                         />
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-3 gap-2 items-center">
                             <FormField
                                 control={form.control}
                                 name="format"
@@ -317,7 +321,7 @@ export default function CreateTournament() {
                                 name="band"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="font-semibold flex justify-start items-center gap-2">Band <TooltipLabel info="This is the band of players to select from in the case of an oversubscription for the tournament. E.g., if a tournament of capacity 32 has 60 players registered, selecting the 'Upper' band will result in the top 32 players with the highest ELO rating to be selected for registration" /></FormLabel>
+                                        <FormLabel className="font-semibold gap-2">Band <TooltipLabel info="This is the band of players to select from in the case of an oversubscription for the tournament. E.g., if a tournament of capacity 32 has 60 players registered, selecting the 'Upper' band will result in the top 32 players with the highest ELO rating to be selected for registration" /></FormLabel>
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
                                                 <SelectTrigger>
@@ -340,7 +344,7 @@ export default function CreateTournament() {
                         </div>
                         <FormField
                             control={form.control}
-                            name="signUpEndDate"
+                            name="signupEndDate"
                             render={({ field }) => (
                                 <FormItem className="flex flex-col">
                                 <FormLabel>Registration Deadline</FormLabel>

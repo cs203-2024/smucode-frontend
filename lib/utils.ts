@@ -81,3 +81,7 @@ export function getPlacingString(i: number):string {
   }
   return i + "th place";
 }
+
+export function upperCaseToCapitalised(s: string):string {
+  return capitalise(s.toLowerCase());
+}

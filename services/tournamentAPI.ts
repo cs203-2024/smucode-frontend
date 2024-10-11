@@ -11,14 +11,14 @@ interface Tournament {
     band: string;
     startDate: Date;
     endDate: Date;
-    signUpStartDate: Date;
-    signUpEndDate: Date;
+    signupStartDate: Date;
+    signupEndDate: Date;
     status: string;
     timeWeight: number;
     memWeight: number;
     testCaseWeight: number;
     owner: string;
-    icon?: File | undefined;
+    icon?: string;//File | undefined;
 }
 
 interface CreateTournamentResponse {
@@ -69,7 +69,8 @@ export const removeSignUpForTournament = async (data: TournamentSignUpInfo):Prom
 
 export const getAllTournamentsCreatedByAdmin = async (username: string):Promise<TournamentCardInfo[]> => {
     try {
-        const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?id=${username}`); 
+        const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?id=`); 
+        console.log(response);
         return response.data;
     } catch (error) {
         console.error("Error retrieving tournaments created by admin:", error);
