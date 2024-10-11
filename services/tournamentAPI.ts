@@ -49,7 +49,7 @@ export const createTournament = async (tournamentData: Tournament):Promise<Tourn
 
 export const signUpForTournament = async (data: TournamentSignUpInfo):Promise<SignUpResponse> => {
     try {
-        const response = await axiosClient.post<SignUpResponse>('/tournaments/signup'); //need actual path
+        const response = await axiosClient.post<SignUpResponse>(`/tournaments/${data.tournamentId}/signup?user=${data.username}`); 
         return response.data;
     } catch (error) {
         console.error("Error signing up for tournament:", error);
@@ -59,7 +59,7 @@ export const signUpForTournament = async (data: TournamentSignUpInfo):Promise<Si
 
 export const removeSignUpForTournament = async (data: TournamentSignUpInfo):Promise<SignUpResponse> => {
     try {
-        const response = await axiosClient.delete<SignUpResponse>('/tournaments/signup'); //need actual path
+        const response = await axiosClient.delete<SignUpResponse>(`/tournaments/${data.tournamentId}/signup?user=${data.username}`); 
         return response.data;
     } catch (error) {
         console.error("Error signing up for tournament:", error);
@@ -69,7 +69,7 @@ export const removeSignUpForTournament = async (data: TournamentSignUpInfo):Prom
 
 export const getAllTournamentsCreatedByAdmin = async (username: string):Promise<TournamentCardInfo[]> => {
     try {
-        const response = await axiosClient.get<TournamentCardInfo[]>('/tournaments/signup'); //need actual path
+        const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?id=${username}`); 
         return response.data;
     } catch (error) {
         console.error("Error retrieving tournaments created by admin:", error);
@@ -79,7 +79,7 @@ export const getAllTournamentsCreatedByAdmin = async (username: string):Promise<
 
 export const getAllTournamentsForUser = async (username: string):Promise<UserTournamentCardInfo[]> => {
     try {
-        const response = await axiosClient.get<UserTournamentCardInfo[]>('/tournaments/signup'); //need actual path
+        const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments?id=${username}`); 
         return response.data;
     } catch (error) {
         console.error("Error retrieving tournaments for user:", error);
