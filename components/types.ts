@@ -26,7 +26,8 @@ export type TournamentProps = {
 //     username: string;
 //     image: string;
 //   }
-export interface User {
+
+export type User = {
     username: string;
     email: string;
     profileImageUrl: string | null;

@@ -14,7 +14,7 @@ import {
   } from "@/components/ui/dropdown-menu"
   
 const Nav = () => {
-    const { user, loading, login, logout } = useUserContext();
+    const { user, logout } = useUserContext();
 
     return (
         <nav className="fixed top-0 flex z-50 justify-between h-[60px] items-center w-full bg-white shadow-md p-4">
@@ -24,12 +24,12 @@ const Nav = () => {
             </Link>
 
             <div className="relative flex gap-3">
-                {user && !loading ? (
+                {user ? (
                     <>
                         <div className="relative">
                         <DropdownMenu>
                         <DropdownMenuTrigger><Image
-                                src={user?.image || '/assets/images/avatar.png'}
+                                src={user?.profileImageUrl || '/assets/images/avatar.png'}
                                 width={35}
                                 height={35}
                                 className="rounded-full cursor-pointer"
@@ -45,8 +45,8 @@ const Nav = () => {
                         </div>
                     </>
                 ) : (
-                    <Button asChild className="mr-4" onClick={login}>
-                        <Link href="/tournaments/1/overview">Login</Link>
+                    <Button asChild className="mr-4">
+                        <Link href="/login">Login</Link>
                     </Button>
                 )}
             </div>

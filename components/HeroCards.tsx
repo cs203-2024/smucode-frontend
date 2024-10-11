@@ -30,7 +30,7 @@ export const HeroCards = () => {
           </div>
         </CardHeader>
 
-        <CardContent>SMUCode is awesome!</CardContent>
+        <CardContent>SMUCode is easy, simple, & flawless!</CardContent>
       </Card>
 
       {/* Team */}
@@ -48,12 +48,12 @@ export const HeroCards = () => {
         </CardHeader>
 
         <CardContent className="text-center pb-2">
-          <p>I really enjoy organizing tournaments using SMUCode</p>
+          <p>SMUCode has transformed the way I organize my tournaments!</p>
         </CardContent>
 
         <CardFooter>
           <div>
-            <a
+            {/* <a
               rel="noreferrer noopener"
               href="https://github.com/leoMirandaa"
               target="_blank"
@@ -97,7 +97,7 @@ export const HeroCards = () => {
             >
               <span className="sr-only">Linkedin icon</span>
               <Linkedin size="20" />
-            </a>
+            </a> */}
           </div>
         </CardFooter>
       </Card>
@@ -117,7 +117,7 @@ export const HeroCards = () => {
           </div>
 
           <CardDescription>
-            Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.
+          The perfect plan to get started with SMUCode.
           </CardDescription>
         </CardHeader>
 
@@ -131,7 +131,7 @@ export const HeroCards = () => {
 
         <CardFooter className="flex">
           <div className="space-y-4">
-            {["4 Team member", "4 GB Storage", "Upto 6 pages"].map(
+            {["4 Team member", "4 GB Storage", "Up to 6 tournament pages"].map(
               (benefit: string) => (
                 <span key={benefit} className="flex">
                   <Check className="text-green-500" />{" "}
@@ -150,10 +150,9 @@ export const HeroCards = () => {
             <LightBulbIcon />
           </div>
           <div>
-            <CardTitle>Light & dark mode</CardTitle>
+            <CardTitle>Bright Ideas for Tournaments</CardTitle>
             <CardDescription className="text-md mt-2">
-              Lorem ipsum dolor sit amet consect adipisicing elit. Consectetur
-              natusm.
+            Easily plan and organize your tournaments with SMUCode’s intuitive tools.
             </CardDescription>
           </div>
         </CardHeader>

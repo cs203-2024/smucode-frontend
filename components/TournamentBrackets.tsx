@@ -6,12 +6,13 @@ import TournamentBracketCards from '@/components/TournamentBracketCards';
 import { fetchTournamentBracketsData } from '@/components/mockApi'; 
 import { TournamentProps } from '@/components/types';
 import { Icons } from "@/components/icons";
-import { useTournamentId } from "@/context/TournamentIdContext";
+import { useTournamentContext } from "@/context/TournamentContext";
 import { Skeleton } from './ui/skeleton';
 import { LayoutGrid } from 'lucide-react';
 
 const TournamentBrackets: React.FC = () => {
-  const tournamentId = useTournamentId();
+  const tournamentContext = useTournamentContext();
+  const tournamentId = tournamentContext.id;
   const [viewMode, setViewMode] = useState<string>('card');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

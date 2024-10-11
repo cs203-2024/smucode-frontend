@@ -1,11 +1,49 @@
 import { UserStats } from "@/components/types"; //for temp hardcode
 import {User} from "@/components/types";
 import {isToday} from "date-fns";
+import * as Tooltip from "@radix-ui/react-tooltip";
 
-export const getCardData = (userData : User) => [
-  {
-    title: "Rating",
-    value: userData.mu,
+const getRank = (rating: number) => {
+  if (rating < 20) {
+    return { name: "Bronze", image: "/assets/rank/00_Bronze.png" };
+  } else if (rating < 30) {
+    return { name: "Silver", image: "/assets/rank/01_Silver.png" };
+  } else if (rating < 40) {
+    return { name: "Gold", image: "/assets/rank/02_Gold.png" };
+  } else {
+    return { name: "Immortal", image: "/assets/rank/03_Immortal.png" };
+  }
+};
+
+export const getCardData = (userData: User) => {
+  const rank = getRank(userData.mu);
+
+  return [
+    {
+      title: "Rating",
+      value: (
+        <div className="flex items-center">
+          <Tooltip.Root>
+            <Tooltip.Trigger asChild>
+              <img src={rank.image} alt={rank.name} className="h-8 w-8 mr-2 cursor-pointer" />
+            </Tooltip.Trigger>
+            <Tooltip.Content
+              side="top"
+              align="center"
+              className="bg-white p-2 rounded shadow-lg text-sm text-gray-700"
+            >
+              <p>Rank Progression:</p>
+              <ul>
+                <li><img src="/assets/rank/00_Bronze.png" alt="Bronze" className="inline-block h-4 w-4 mr-1" /> Bronze: 0 - 19</li>
+                <li><img src="/assets/rank/01_Silver.png" alt="Silver" className="inline-block h-4 w-4 mr-1" /> Silver: 20 - 29</li>
+                <li><img src="/assets/rank/02_Gold.png" alt="Gold" className="inline-block h-4 w-4 mr-1" /> Gold: 30 - 39</li>
+                <li><img src="/assets/rank/03_Immortal.png" alt="Immortal" className="inline-block h-4 w-4 mr-1" /> Immortal: 40+</li>
+              </ul>
+            </Tooltip.Content>
+          </Tooltip.Root>
+          <span>{rank.name}</span>
+        </div>
+      ),
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -88,3 +126,4 @@ export const getCardData = (userData : User) => [
     description: "",
   },
 ];
+};

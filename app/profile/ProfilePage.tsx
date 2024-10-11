@@ -9,11 +9,10 @@ import {
 } from "@/components/ui/new-york/card";
 import { RecentOpponents } from "@/app/profile/RecentOpponents";
 import { Button } from "@/components/ui/new-york/button";
-
 import { useUserContext } from "@/context/UserContext";
 import { getCardData } from "./cardData";
 import { User } from "@/components/types";
-
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 const ProfilePage: React.FC = () => {
   const { user, loading, error } = useUserContext();
@@ -32,20 +31,21 @@ const ProfilePage: React.FC = () => {
 
   const cardData = getCardData(user);
 
-  const userDetails = [
-    { label: "Email", value: user.email },
-  ];
+  const userDetails = [{ label: "Email", value: user.email }];
 
   return (
-    <>
+    <Tooltip.Provider>
       <div className="container mx-auto p-4 md:p-6 lg:p-8">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <Card className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="flex items-center p-6">
               <div className="w-1/3 flex flex-col items-center">
                 <Image
-                    src={user.profileImageUrl || /*default img*/ '/assets/images/avatar.png'}
-                    alt={`${user.username}'s Profile Picture`}
+                  src={
+                    user.profileImageUrl ||
+                    /*default img*/ "/assets/images/avatar.png"
+                  }
+                  alt={`${user.username}'s Profile Picture`}
                   width={256} // Increased width
                   height={256} // Increased height
                   className="rounded-full border-4 border-gray-200 shadow-lg"
@@ -109,7 +109,7 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
+    </Tooltip.Provider>
   );
 };
 

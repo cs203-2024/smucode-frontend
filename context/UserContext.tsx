@@ -8,13 +8,13 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
-   const [loading, setLoading] = useState<boolean>(true);
+  // const [loading, setLoading] = useState<boolean>(true);
 
-    // const testuser: User = {
-    //     username: "Adrian",
-    //     image: '/assets/images/avatar.png',
-    //     role: 'ADMIN'
-    // }; 
+  //   const testuser: User = {
+  //       username: "Adrian",
+  //       image: '/assets/images/avatar.png',
+  //       role: 'ADMIN'
+  //   };
 
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       username: "adminDaddy",
       email: "admin@example.com",
       profileImageUrl: null,
-      role: "user", // Role is "admin"
+      role: "admin", // Role is "admin"
       mu: 25,
       sigma: 8.333,
       skillIndex: 0,
