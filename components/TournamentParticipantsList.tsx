@@ -43,8 +43,7 @@ const ParticipantCard: React.FC<ParticipantCardProps> = ({ participant, viewMode
 
 
 const TournamentParticipantsList: React.FC = () => {
-  const tournamentContext = useTournamentContext();
-  const tournamentId = tournamentContext.id;
+  const {tournamentId} = useTournamentContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

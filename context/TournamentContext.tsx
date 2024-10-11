@@ -2,11 +2,13 @@
 
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useParams } from 'next/navigation';
-import { fetchTournamentOrganizerId } from '@/components/mockApi'; 
-
+import { fetchTournamentOverviewData } from '@/components/mockApi'; 
+import { TournamentOverviewProps } from '@/components/types'; 
 interface TournamentContextType {
-  id?: string;
+  loadingTournamentContext: boolean;
+  tournamentId?: string;
   organizerId?: string;
+  overviewData?: TournamentOverviewProps | null;
 }
 
 const TournamentContext = createContext<TournamentContextType | undefined>(undefined);
@@ -26,29 +28,35 @@ interface TournamentContextProviderProps {
 
 export const TournamentContextProvider = ({ children }: TournamentContextProviderProps) => {
   const params = useParams();
-  const id = params?.id as string | undefined;
+  const tournamentId = params?.id as string | undefined;
   const [organizerId, setOrganizerId] = useState<string | undefined>(undefined);
+  const [overviewData, setOverviewData] = useState<TournamentOverviewProps | null>(null);
+  const [loadingTournamentContext, setLoadingTournamentContext] = useState(true);
 
   useEffect(() => {
-    if (id) {
-      // Fetch the organizerId based on the id
+    if (tournamentId) {
+      setLoadingTournamentContext(true);
       const fetchOrganizerId = async () => {
         try {
-          const response = await fetchTournamentOrganizerId(id);
-          setOrganizerId(response.organizerId);
+          const response = await fetchTournamentOverviewData(tournamentId);
+          setOrganizerId(response?.organizerId);
+          setOverviewData(response);
         } catch (error) {
           console.error("Failed to fetch organizerId:", error);
+        } finally {
+          setLoadingTournamentContext(false);
         }
       };
 
       fetchOrganizerId();
     } else {
       setOrganizerId(undefined);
+      setOverviewData(null);
     }
-  }, [id]);
+  }, [tournamentId]);
 
   return (
-    <TournamentContext.Provider value={{ id, organizerId }}>
+    <TournamentContext.Provider value={{ loadingTournamentContext, tournamentId, organizerId, overviewData }}>
       {children}
     </TournamentContext.Provider>
   );

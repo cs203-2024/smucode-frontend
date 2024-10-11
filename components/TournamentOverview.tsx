@@ -1,36 +1,17 @@
 "use client"
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Badge } from "@/components/ui/badge"
 import Image from 'next/image';
-import { fetchTournamentOverviewData } from './mockApi';
-import { TournamentOverviewProps } from './types';
 import { useTournamentContext } from "@/context/TournamentContext";
 import { Skeleton } from "@/components/ui/skeleton"
 
 
 const TournamentOverview: React.FC = () => {
-  const [tournamentData, setTournamentData] = useState<TournamentOverviewProps | null>(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const tournamentContext = useTournamentContext();
-  const tournamentId = tournamentContext.id;
-  useEffect(() => {
-    const loadTournamentData = async () => {
-      try {
-        const data = await fetchTournamentOverviewData(tournamentId);
-        setTournamentData(data);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to load tournament data');
-        setLoading(false);
-      }
-    };
+  const { loadingTournamentContext, overviewData } = useTournamentContext();
 
-    loadTournamentData();
-  }, [tournamentId]);
-
-  if (loading) {
+  if (loadingTournamentContext) {
     return (
       <div className="w-full space-y-6">
         <h2 className="text-2xl font-bold text-black ml-[12px] mt-[2px]">Tournament Overview</h2>
@@ -54,7 +35,7 @@ const TournamentOverview: React.FC = () => {
     return <div className="text-center p-4 text-red-500 mt-10">{error}</div>;
   }
 
-  if (!tournamentData) {
+  if (!overviewData) {
     return <div className="text-center p-4 mt-10">No tournament data available</div>;
   }
 
@@ -71,7 +52,7 @@ const TournamentOverview: React.FC = () => {
     participantsCount,
     maxParticipants,
     scoreCriteria
-  } = tournamentData;
+  } = overviewData;
 
   return (
     <div className="w-full space-y-6">

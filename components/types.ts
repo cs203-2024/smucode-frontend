@@ -83,6 +83,7 @@ export interface TournamentOverviewProps {
       space: number;
       testCases: number;
     };
+    organizerId: string;
   }
 
   // For testing the profile page

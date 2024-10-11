@@ -11,8 +11,7 @@ import { Skeleton } from './ui/skeleton';
 import { LayoutGrid } from 'lucide-react';
 
 const TournamentBrackets: React.FC = () => {
-  const tournamentContext = useTournamentContext();
-  const tournamentId = tournamentContext.id;
+  const { loadingTournamentContext, tournamentId } = useTournamentContext();
   const [viewMode, setViewMode] = useState<string>('card');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +24,7 @@ const TournamentBrackets: React.FC = () => {
         setTournamentData(data);
         setLoading(false);
       } catch (err) {
-        setError('Failed to load tournament data');
+        setError('Failed to load tournament brackets data');
         setLoading(false);
       }
     };
@@ -33,7 +32,7 @@ const TournamentBrackets: React.FC = () => {
     loadTournamentData();
   }, [tournamentId]);
 
-  if (loading) {
+  if (loading || loadingTournamentContext) {
     return (
       <div>
         <div className="items-center"> 
