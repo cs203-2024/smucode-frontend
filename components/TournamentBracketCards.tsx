@@ -9,6 +9,8 @@ import { DialogFooter, DialogHeader } from './ui/dialog';
 import { Input } from './ui/input';
 import { updateBracketScore, endBracket } from './mockApi';
 import { toast } from "sonner";
+import { useTournamentContext } from '@/context/TournamentContext';
+import { useUserContext } from '@/context/UserContext';
 
 interface BracketProps {
   roundid: number;
@@ -65,6 +67,9 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
 };
 
 const TournamentBracket: React.FC<BracketProps> = ({ roundid, id, status, playerOne, playerTwo }) => {
+  const tournamentContext = useTournamentContext();
+  const { user } = useUserContext();
+  const tournamentOrganizerId = tournamentContext.organizerId;
   const [isHovered, setIsHovered] = useState(false);
   const [editedPlayerOne, setEditedPlayerOne] = useState(playerOne);
   const [editedPlayerTwo, setEditedPlayerTwo] = useState(playerTwo);
@@ -72,7 +77,7 @@ const TournamentBracket: React.FC<BracketProps> = ({ roundid, id, status, player
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isEnding, setIsEnding] = useState(false);
-  const [isEditable, setIsEditable] = useState(status === "ongoing");
+  const [isEditable, setIsEditable] = useState(status === "ongoing" && tournamentOrganizerId === user?.username);
   const [bracketStatus, setBracketStatus] = useState(status);
   const getWinner = (playerOne: PlayerInfo | undefined, playerTwo: PlayerInfo | undefined) => {
     if (playerOne && playerTwo && bracketStatus === "completed") {
@@ -90,44 +95,42 @@ const TournamentBracket: React.FC<BracketProps> = ({ roundid, id, status, player
     }
   }, [bracketStatus]);
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (editedPlayerOne && editedPlayerTwo && !isUpdating) {
       setIsUpdating(true);
-      updateBracketScore(roundid, id, editedPlayerOne.score, editedPlayerTwo.score)
-        .then(() => {
-          toast.success("Bracket score updated successfully!");
-          setIsUpdating(false);
-          setIsDialogOpen(false);
-        })
-        .catch((error) => {
-          console.error("Failed to update bracket:", error);
-          toast.error("Failed to update bracket. Please try again.");
-          setIsUpdating(false);
-        });
+      try {
+        await updateBracketScore(roundid, id, editedPlayerOne.score, editedPlayerTwo.score);
+        toast.success("Bracket score updated successfully!");
+        setIsDialogOpen(false);
+      } catch (error) {
+        console.error("Failed to update bracket:", error);
+        toast.error("Failed to update bracket. Please try again.");
+      } finally {
+        setIsUpdating(false);
+      }
     } else {
       setIsDialogOpen(false);
     }
   };
-
-  const handleEnd = () => {
+  
+  const handleEnd = async () => {
     if (!isEnding) {
       setIsEnding(true);
-      endBracket(roundid, id)
-        .then(() => {
-          setIsEnding(false);
-          toast.success("Bracket ended!");
-          setBracketStatus("completed");
-          setIsEditable(false);
-          setIsDialogOpen(false);
-          setIsConfirmDialogOpen(false);
-        })
-        .catch((error) => {
-          console.error("Failed to end bracket:", error);
-          toast.error("Failed to end bracket. Please try again.");
-          setIsEnding(false);
-        });
+      try {
+        await endBracket(roundid, id);
+        toast.success("Bracket ended!");
+        setBracketStatus("completed");
+        setIsEditable(false);
+        setIsDialogOpen(false);
+        setIsConfirmDialogOpen(false);
+      } catch (error) {
+        console.error("Failed to end bracket:", error);
+        toast.error("Failed to end bracket. Please try again.");
+      } finally {
+        setIsEnding(false);
+      }
     }
-  };
+  };  
 
   return (
     <>

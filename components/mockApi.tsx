@@ -472,3 +472,14 @@ export const endBracket = async (
 
   return { success: true, message: "Bracket ended successfully" };
 };
+
+
+const mockTournamentOrganizerId: {organizerId : string} = {
+  organizerId: "adminDaddy"
+};
+
+export const fetchTournamentOrganizerId = async (id: string) => {
+  await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate a delay
+
+  return mockTournamentOrganizerId;
+};
