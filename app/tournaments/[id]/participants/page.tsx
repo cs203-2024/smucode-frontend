@@ -1,9 +1,11 @@
-import React from 'react'
 
-const TournamentParticipantsPage = () => {
+import TournamentParticipantsList from "@/components/TournamentParticipantsList";
+const TournamentParticipantsPage: React.FC = () => {
   return (
-    <div>TournamentParticipantsPage</div>
-  )
-}
+    <>
+        <TournamentParticipantsList />
+    </>
+  );
+};
 
-export default TournamentParticipantsPage
+export default TournamentParticipantsList;

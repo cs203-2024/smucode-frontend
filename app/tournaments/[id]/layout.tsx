@@ -3,6 +3,7 @@ import Sidebar from "@/components/sidebar";
 import { TournamentIdProvider } from "@/context/TournamentIdContext"; 
 import "../../globals.css";  
 
+
 type LayoutProps = {
   children: ReactNode;
 };

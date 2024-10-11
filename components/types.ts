@@ -26,8 +26,8 @@ export type TournamentProps = {
 //     username: string;
 //     image: string;
 //   }
-export interface User {
-    username: string;
+
+export type UserContextType = {
     email: string;
     profileImageUrl: string | null;
     role: string;
@@ -98,6 +98,25 @@ export interface TournamentOverviewProps {
     wins: number;
     losses: number;
   }
+
+
+  export type ParticipantCardListProp = {
+    participants: Participant[];
+  };
+
+  export type Participant = {
+    id: string;
+    name: string;
+    profilePicture: string;
+    rank: number;
+    wins: number;
+    losses: number;
+  };
+
+  export type ParticipantCardProps = {
+    participants: Participant;
+    viewMode: 'grid' | 'list';
+  };
 
 export type UserTournamentCardInfo = {
     id: number;
