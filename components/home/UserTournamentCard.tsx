@@ -67,7 +67,7 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
                         'pt-2',
                         data.status === "active" ? "":"text-gray-400"
                     )}>
-                        Registration ends <span className='font-semibold'>{getFormattedDate(data.signUpDeadline)} ({getTimeDifference(new Date(), data.signUpDeadline)})</span>
+                        Registration ends <span className='font-semibold'>{getFormattedDate(data.signUpEndDate)} ({getTimeDifference(new Date(), data.signUpEndDate)})</span>
                     </CardDescription>
                 ):(
                     <CardDescription className={cn(

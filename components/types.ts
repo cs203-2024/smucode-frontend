@@ -62,7 +62,7 @@ export type TournamentCardInfo = {
     band: string;
     startDate: Date;
     endDate: Date;
-    signUpDeadline: Date;
+    signUpEndDate: Date;
     status: string;
     signUpPercentage: number;
     actualSignUp: number;
@@ -136,7 +136,7 @@ export type UserTournamentCardInfo = {
     band: string;
     startDate: Date;
     endDate: Date;
-    signUpDeadline: Date;
+    signUpEndDate: Date;
     status: string;
     signUpPercentage: number;
     actualSignUp: number;
@@ -148,7 +148,7 @@ export type UserTournamentCardInfo = {
     signedUp: boolean;
     participated: boolean;
     signUpsOpen: boolean;
-    placing: number;
+    placing: number; // -1 if tournament incomplete, actual placing number otherwise (1 - number of players)
 }
 
 export type TournamentSignUpInfo = {
