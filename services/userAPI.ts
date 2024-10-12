@@ -25,7 +25,7 @@ interface SignupResponse {
 // Get user by username
 export const getUserByUsername = async (username: string): Promise<User> => {
     try {
-        const response = await axiosClient.get<User>(`/${username}`);
+        const response = await axiosClient.get<User>(`/users/${username}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching user by username:', error);
@@ -35,7 +35,7 @@ export const getUserByUsername = async (username: string): Promise<User> => {
 
 export const login = async (credentials: UserCredentials): Promise<LoginResponse> => {
     try {
-        const response = await axiosClient.post<LoginResponse>('/login', credentials);
+        const response = await axiosClient.post<LoginResponse>('/users/login', credentials);
         const { token } = response.data;
 
         //store the jwt token in cookies
@@ -50,7 +50,7 @@ export const login = async (credentials: UserCredentials): Promise<LoginResponse
 
 export const signup = async (newUser: Omit<User, 'id'>): Promise<SignupResponse> => {
     try {
-        const response = await axiosClient.post<SignupResponse>('/signup', newUser);
+        const response = await axiosClient.post<SignupResponse>('/users/signup', newUser);
         const { token } = response.data;
 
         //store JWT token if provided
@@ -68,7 +68,7 @@ export const signup = async (newUser: Omit<User, 'id'>): Promise<SignupResponse>
 
 export const logout = async (): Promise<string> => {
     try {
-        const response = await axiosClient.post<string>('/logout');
+        const response = await axiosClient.post<string>('/users/logout');
 
         // Remove the JWT token
         Cookies.remove('authToken');
@@ -82,7 +82,7 @@ export const logout = async (): Promise<string> => {
 
 export const getUserProfile = async (username: string): Promise<User> => {
     try {
-        const response = await axiosClient.get<User>('/profile', { params: { username } });
+        const response = await axiosClient.get<User>('/users/profile', { params: { username } });
         return response.data;
     } catch (error) {
         console.error('Error fetching user profile:', error);

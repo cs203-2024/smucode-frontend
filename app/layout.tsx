@@ -3,6 +3,8 @@ import Nav from '@/components/Nav';
 import { UserProvider } from '@/context/UserContext';
 import { ReactNode } from 'react';
 import { Toaster } from "@/components/ui/sonner"
+import { Toaster as Toaster2 } from "@/components/ui/toaster";
+
 // Metadata
 export const metadata = {
     title: "SMUCode",
@@ -25,8 +27,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           <main className="">
             <Nav />
             {children}
+            <Toaster />
           </main>
-          <Toaster />
+          <Toaster2 />
         </UserProvider>
       </body>
     </html>
