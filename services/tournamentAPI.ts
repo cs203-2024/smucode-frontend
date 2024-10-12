@@ -136,7 +136,7 @@ export const updateBracketScore = async (
         }
       };
 
-      const response = await axiosClient.put<string>(`/api/brackets/${id}`, payload);
+      const response = await axiosClient.put<string>(`/brackets/${id}`, payload);
   
       return response.data;
     } catch (error) {
@@ -154,7 +154,7 @@ export const endBracket = async (
           winner: updateWinner
         };
 
-    const response = await axiosClient.put<string>(`/api/brackets/${id}`, payload);
+    const response = await axiosClient.put<string>(`/brackets/${id}`, payload);
       
     return response.data;
 
@@ -169,7 +169,7 @@ export const endRound = async (
     ): Promise<string> => {
     try {
 
-    const response = await axiosClient.put<string>(`/api/tournaments/${id}/progress`);
+    const response = await axiosClient.put<string>(`/tournaments/${id}/progress`);
       
     return response.data;
 
