@@ -89,19 +89,19 @@ export default function TournamentCardWrapper() {
                         <TabsContent value="upcoming" className='w-full'>
                                 <ScrollArea className='max-w-9/12 whitespace-nowrap'>
                                     <div className='flex justify-start items-center gap-3 pb-4'>
-                                        {user?.role === "admin" ? tournamentCardData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
+                                        {/* {user?.role === "admin" ? tournamentCardData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
                                         )):userTournamentCardData.filter((item) => item.status === "upcoming").map((data) => (
                                             <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
-                                        ))}
+                                        ))} */}
 
                                         {/* Uncomment below when real data is present */}
 
-                                        {/* {user?.role === "admin" ? adminData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
+                                        {user?.role === "admin" ? adminData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
                                         )):userData.filter((item) => item.status === "upcoming").map((data) => (
                                             <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
-                                        ))} */}
+                                        ))}
                                     </div>
                                     <ScrollBar orientation="horizontal" />
                                 </ScrollArea>
@@ -110,20 +110,21 @@ export default function TournamentCardWrapper() {
                             <TabsContent value="ongoing" className='w-full'>
                                 <ScrollArea className='max-w-9/12 whitespace-nowrap'>
                                     <div className='flex justify-start items-center gap-3 pb-4'>
-                                        {user?.role === "admin" ? tournamentCardData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
+                                        {/* {user?.role === "admin" ? tournamentCardData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
                                         )):userTournamentCardData.filter((item) => item.status === "ongoing").map((data) => (
                                             <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
-                                        ))}
+                                        ))} */}
 
                                         {/* Uncomment below when real data is present */}
 
-                                        {/* {user?.role === "admin" ? adminData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
+                                        {user?.role === "admin" ? adminData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
                                         )):userData.filter((item) => item.status === "ongoing").map((data) => (
                                             <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
                                         ))}
-                                        {adminData.map((item) => (
+
+                                        {/* {adminData.map((item) => (
                                             <div className='font-bold text-lg p-8'>{item.id}</div>
                                         ))} */}
                                     </div>

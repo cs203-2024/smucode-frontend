@@ -72,7 +72,7 @@ export type TournamentCardInfo = {
     memWeight: number;
     testCaseWeight: number;
     currentRound: string; // sname of current round
-    roundEnds: Date; //datetime of when current round ends
+    currentRoundEndDate: Date; //datetime of when current round ends
 };
 
 export interface TournamentOverviewProps {
@@ -148,7 +148,7 @@ export type UserTournamentCardInfo = {
     memWeight: number;
     testCaseWeight: number;
     currentRound: string; // sname of current round
-    roundEnds: Date; //datetime of when current round ends
+    currentRoundEndDate: Date; //datetime of when current round ends
     signedUp: boolean; // true if user signed up for tournament
     participated: boolean; // true if user is actual participant in tournament
     signUpsOpen: boolean; // derived from backend attributes

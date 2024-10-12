@@ -69,8 +69,8 @@ export const removeSignUpForTournament = async (data: TournamentSignUpInfo):Prom
 
 export const getAllTournamentsCreatedByAdmin = async (username: string):Promise<TournamentCardInfo[]> => {
     try {
-        // const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?id=`);
-        const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?id=${username}`); 
+         const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?id=`);
+        //const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?id=${username}`); 
         console.log(response);
         return response.data;
     } catch (error) {

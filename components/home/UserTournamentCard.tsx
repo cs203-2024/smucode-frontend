@@ -78,7 +78,7 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
                     )}>
                         {data.currentRound}  (<span className={cn(
                             data.status === "active" ? "inline-block text-red-500":"inline-block"
-                        )}>{getTimeDifference(new Date(), data.roundEnds)}</span>)
+                        )}>{getTimeDifference(new Date(), data.currentRoundEndDate)}</span>)
                     </CardDescription>
                 )}
             </CardHeader>
