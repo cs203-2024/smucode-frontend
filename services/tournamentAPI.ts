@@ -174,7 +174,7 @@ export const endRound = async (
     return response.data;
 
     } catch (error) {
-     console.error("Error ennding round:", error);
+     console.error("Error ending round:", error);
      throw error;
     }
 };

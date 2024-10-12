@@ -18,6 +18,7 @@ export function getFormattedDate(input: Date) {
 }
 
 export function getTimeDifference(date1: Date, date2: Date): string {
+    if (date1 == null || date2 == null) return "Tournament has not commenced";
     // Get the time difference in milliseconds
     if (date2.getTime() - date1.getTime() < 0) {
       return "Tournament Completed";
@@ -80,4 +81,8 @@ export function getPlacingString(i: number):string {
       return i + "rd place";
   }
   return i + "th place";
+}
+
+export function upperCaseToCapitalised(s: string):string {
+  return capitalise(s.toLowerCase());
 }

@@ -47,7 +47,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
         };
         console.log('Mapped user object:', user);
         setUser(user);
-        router.push('/'); //TODO: redirect to relevant home page
+        router.push('/dashboard'); //TODO: redirect to relevant home page
       } else {
         console.error('Unexpected response structure:', response);
         setErrorMessage('Unexpected response structure');
