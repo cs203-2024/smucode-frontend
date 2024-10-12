@@ -1,5 +1,5 @@
 import axiosClient from './http';
-import { TournamentSignUpInfo, TournamentCardInfo, UserTournamentCardInfo, TournamentProps, TournamentOverviewProps, ParticipantCardListProp } from '@/components/types';
+import { TournamentSignUpInfo, TournamentCardInfo, UserTournamentCardInfo, TournamentProps, TournamentOverviewProps, ParticipantCardListProp, PlayerInfo } from '@/components/types';
 import Cookies from "js-cookie";
 
 //interface for tournament
@@ -119,40 +119,62 @@ export const fetchTournamentParticipantsData = async (id: string):Promise<Partic
     } 
 };
 
-export const fetchTournamentOrganizerId = async (id: string):Promise<string> => {
-    try {
-        const response = await axiosClient.get<string>(`/tournaments/organizer?id=${id}`); 
-        return response.data;
-    } catch (error) {
-        console.error("Error retrieving tournament organizer:", error);
-        throw error;
-    } 
-};
-
 export const updateBracketScore = async (
-    roundId: number,
-    bracketId: number,
-    playerOneScore: number,
-    playerTwoScore: number
-  ):Promise<string> => {
+    id: string,
+    playerOne: PlayerInfo,
+    playerTwo: PlayerInfo
+  ): Promise<string> => {
     try {
-        const response = await axiosClient.put<string>(`/tournaments/update?roundId=${roundId}&bracketId=${bracketId}&p1=${playerOneScore}&p2=${playerTwoScore}`); 
-        return response.data;
+      const payload = {
+        playerOne: {
+          id: playerOne.id,
+          score: playerOne.score
+        },
+        playerTwo: {
+          id: playerTwo.id,
+          score: playerTwo.score
+        }
+      };
+
+      const response = await axiosClient.put<string>(`/api/brackets/${id}`, payload);
+  
+      return response.data;
     } catch (error) {
-        console.error("Error updating bracket:", error);
-        throw error;
-    } 
-};
+      console.error("Error updating bracket:", error);
+      throw error;
+    }
+  };
 
 export const endBracket = async (
-    roundId: number,
-    bracketId: number,
-  ):Promise<string> => {
+    id: string,
+    updateWinner: string | undefined
+    ): Promise<string> => {
     try {
-        const response = await axiosClient.post<string>(`/tournaments/end?roundId=${roundId}&bracketId=${bracketId}`); 
-        return response.data;
+        const payload = {
+          winner: updateWinner
+        };
+
+    const response = await axiosClient.put<string>(`/api/brackets/${id}`, payload);
+      
+    return response.data;
+
     } catch (error) {
-        console.error("Error ending bracket:", error);
-        throw error;
-    } 
+     console.error("Error ending bracket:", error);
+     throw error;
+    }
+};
+
+export const endRound = async (
+    id: string | undefined,
+    ): Promise<string> => {
+    try {
+
+    const response = await axiosClient.put<string>(`/api/tournaments/${id}/progress`);
+      
+    return response.data;
+
+    } catch (error) {
+     console.error("Error ending round:", error);
+     throw error;
+    }
 };

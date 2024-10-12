@@ -10,7 +10,7 @@ const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) =
       if (playerOne.score === 0 && playerTwo.score === 0) {
         return ""; 
       }
-      return playerOne.score > playerTwo.score ? playerOne.name : playerTwo.name;
+      return playerOne.score > playerTwo.score ? playerOne.id : playerTwo.id;
     }
     return undefined;
   };
@@ -29,12 +29,12 @@ const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) =
         <div className="flex items-center space-x-2">
           <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
             {player.image ? (
-              <img src={player.image} alt={player.name} className="w-full h-full rounded-full object-cover" />
+              <img src={player.image} alt={player.id} className="w-full h-full rounded-full object-cover" />
             ) : (
-              <span className="text-sm">{player.name.charAt(0)}</span>
+              <span className="text-sm">{player.id.charAt(0)}</span>
             )}
           </div>
-          <p className={`${status !== "completed" ? "font-medium text-black-500" : ""} font-medium`}>{player.name}</p>
+          <p className={`${status !== "completed" ? "font-medium text-black-500" : ""} font-medium`}>{player.id}</p>
         </div>
         <div className={`${status !== "completed" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
           <span className="font-semibold">{player.score}</span>
@@ -46,8 +46,8 @@ const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) =
   return (
     <div className="p-4 w-64 min-w-64">
       <div className="space-y-1">
-        <PlayerCard player={playerOne} isWinner={isWinner === playerOne?.name} />
-        <PlayerCard player={playerTwo} isWinner={isWinner === playerTwo?.name} />
+        <PlayerCard player={playerOne} isWinner={isWinner === playerOne?.id} />
+        <PlayerCard player={playerTwo} isWinner={isWinner === playerTwo?.id} />
       </div>
     </div>
   );
@@ -55,7 +55,7 @@ const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) =
 
 
 
-const TournamentRound: React.FC<RoundProps> = ({ name, id, brackets }) => {
+const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDate, endDate }) => {
 
   const getSpacingClass = (count: number) => {
     switch (count) {
@@ -77,12 +77,15 @@ const TournamentRound: React.FC<RoundProps> = ({ name, id, brackets }) => {
   return (
     <div className={`p-6 h-full w-[20vw] min-w-80 flex flex-col`}>
       <h2 className="font-bold mb-4 min-w-70 text-2xl">{name}</h2>
-      <p className="text-gray-700 mb-4">Round ID: {id}</p>
+      <p className="text-gray-700">Start Date: {startDate}</p>
+      <p className="text-gray-700 mb-4">End Date: {endDate}</p>
       <div className={`${spacingClass} h-fit justify-center flex flex-col flex-grow overflow-hidden`}>
         {brackets.map((bracket) => (
           <div key={bracket.id} className="flex items-center">
             <TournamentBracket
+              key={bracket.id}
               id={bracket.id}
+              seqId={bracket.seqId}
               status={bracket.status}
               playerOne={bracket.playerOne}
               playerTwo={bracket.playerTwo}
@@ -94,13 +97,21 @@ const TournamentRound: React.FC<RoundProps> = ({ name, id, brackets }) => {
   );
 };
 
-
 const TournamentWrapper = ({ rounds } : TournamentProps) => {
   return (
     <div className="flex flex-row min-w-[100vw] space-x-4 overflow-x-auto p-4">
     {rounds.map((round) => (
       <div key={round.id} className="flex-shrink-0">
-       <TournamentRound key={round.id} name={round.name} id={round.id} brackets={round.brackets} />
+       <TournamentRound 
+          key={round.id} 
+          id={round.id} 
+          seqId={round.seqId}
+          name={round.name} 
+          startDate={round.startDate}
+          endDate={round.endDate}
+          status={round.status}
+          brackets={round.brackets}
+         />
       </div>
     ))}
   </div>
