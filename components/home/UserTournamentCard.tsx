@@ -59,7 +59,9 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
                     </div>
                     <Badge className={cn(
                         'rounded-full',
-                        data.status != "completed" ? "bg-ongoing hover:bg-ongoing":"bg-gray-100 hover:bg-gray-100 text-gray-400"
+                        data.status === "ongoing" ? "bg-ongoing hover:bg-ongoing":"",
+                        data.status === "upcoming" ? "bg-yellow-500 hover:bg-yellow-500":"",
+                        data.status === "completed" ? "bg-gray-100 hover:bg-gray-100 text-gray-400":""
                     )}>{capitalise(data.status)}</Badge>
                 </div>
                 {data.signUpsOpen ? (
