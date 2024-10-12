@@ -18,6 +18,7 @@ const mockTournamentData: TournamentOverviewProps = {
     space: 30,
     testCases: 30,
   },
+  organizerId: "adminDaddy",
 };
 
 const mockTournamentBracketsData: TournamentProps = {
@@ -471,15 +472,4 @@ export const endBracket = async (
   bracket.status = "completed";
 
   return { success: true, message: "Bracket ended successfully" };
-};
-
-
-const mockTournamentOrganizerId: {organizerId : string} = {
-  organizerId: "adminDaddy"
-};
-
-export const fetchTournamentOrganizerId = async (id: string) => {
-  await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate a delay
-
-  return mockTournamentOrganizerId;
 };
