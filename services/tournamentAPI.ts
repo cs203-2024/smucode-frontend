@@ -1,4 +1,4 @@
-import axiosClient from './http';
+import tournamentAxiosClient from './tournamentAxios';
 import { TournamentSignUpInfo, TournamentCardInfo, UserTournamentCardInfo, TournamentProps, TournamentOverviewProps, ParticipantCardListProp } from '@/components/types';
 import Cookies from "js-cookie";
 
@@ -39,7 +39,7 @@ interface SignUpResponse {
 
 export const createTournament = async (tournamentData: Tournament):Promise<Tournament> => {
     try {
-        const response = await axiosClient.post<Tournament>(`/tournaments/create`, tournamentData);
+        const response = await tournamentAxiosClient.post<Tournament>(`/tournaments/create`, tournamentData);
         return response.data;
     } catch (error) {
         console.error('Error creating tournament:', error);
@@ -49,7 +49,7 @@ export const createTournament = async (tournamentData: Tournament):Promise<Tourn
 
 export const signUpForTournament = async (data: TournamentSignUpInfo):Promise<SignUpResponse> => {
     try {
-        const response = await axiosClient.post<SignUpResponse>(`/tournaments/${data.tournamentId}/signup?user=${data.username}`); 
+        const response = await tournamentAxiosClient.post<SignUpResponse>(`/tournaments/${data.tournamentId}/signup?user=${data.username}`); 
         return response.data;
     } catch (error) {
         console.error("Error signing up for tournament:", error);
@@ -59,7 +59,7 @@ export const signUpForTournament = async (data: TournamentSignUpInfo):Promise<Si
 
 export const removeSignUpForTournament = async (data: TournamentSignUpInfo):Promise<SignUpResponse> => {
     try {
-        const response = await axiosClient.delete<SignUpResponse>(`/tournaments/${data.tournamentId}/signup?user=${data.username}`); 
+        const response = await tournamentAxiosClient.delete<SignUpResponse>(`/tournaments/${data.tournamentId}/signup?user=${data.username}`); 
         console.log(`changed ${data.tournamentId}, ${data.username}`);
         return response.data;
     } catch (error) {
@@ -70,8 +70,8 @@ export const removeSignUpForTournament = async (data: TournamentSignUpInfo):Prom
 
 export const getAllTournamentsCreatedByAdmin = async (username: string):Promise<TournamentCardInfo[]> => {
     try {
-         const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?id=admin`);
-        //const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?id=${username}`); 
+         const response = await tournamentAxiosClient.get<TournamentCardInfo[]>(`/tournaments?id=admin`);
+        //const response = await tournamentAxiosClient.get<TournamentCardInfo[]>(`/tournaments?id=${username}`); 
         console.log(response);
         return response.data;
     } catch (error) {
@@ -82,8 +82,8 @@ export const getAllTournamentsCreatedByAdmin = async (username: string):Promise<
 
 export const getAllTournamentsForUser = async (username: string):Promise<UserTournamentCardInfo[]> => {
     try {
-        const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments?id=`);
-        //const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments?id=${username}`); 
+        const response = await tournamentAxiosClient.get<UserTournamentCardInfo[]>(`/tournaments?id=`);
+        //const response = await tournamentAxiosClient.get<UserTournamentCardInfo[]>(`/tournaments?id=${username}`); 
         return response.data;
     } catch (error) {
         console.error("Error retrieving tournaments for user:", error);
@@ -93,7 +93,7 @@ export const getAllTournamentsForUser = async (username: string):Promise<UserTou
 
 export const fetchTournamentOverviewData = async (id: string):Promise<TournamentOverviewProps> => {
     try {
-        const response = await axiosClient.get<TournamentOverviewProps>(`/tournaments/overview?id=${id}`); 
+        const response = await tournamentAxiosClient.get<TournamentOverviewProps>(`/tournaments/overview?id=${id}`); 
         return response.data;
     } catch (error) {
         console.error("Error retrieving tournament overview:", error);
@@ -103,7 +103,7 @@ export const fetchTournamentOverviewData = async (id: string):Promise<Tournament
   
 export const fetchTournamentBracketsData = async (id: string):Promise<TournamentProps> => {
     try {
-        const response = await axiosClient.get<TournamentProps>(`/tournaments/brackets?id=${id}`); 
+        const response = await tournamentAxiosClient.get<TournamentProps>(`/tournaments/brackets?id=${id}`); 
         return response.data;
     } catch (error) {
         console.error("Error retrieving tournament brackets:", error);
@@ -113,7 +113,7 @@ export const fetchTournamentBracketsData = async (id: string):Promise<Tournament
 
 export const fetchTournamentParticipantsData = async (id: string):Promise<ParticipantCardListProp> => {
     try {
-        const response = await axiosClient.get<ParticipantCardListProp>(`/tournaments/participants?id=${id}`); 
+        const response = await tournamentAxiosClient.get<ParticipantCardListProp>(`/tournaments/participants?id=${id}`); 
         return response.data;
     } catch (error) {
         console.error("Error retrieving tournament participants:", error);
@@ -123,7 +123,7 @@ export const fetchTournamentParticipantsData = async (id: string):Promise<Partic
 
 export const fetchTournamentOrganizerId = async (id: string):Promise<string> => {
     try {
-        const response = await axiosClient.get<string>(`/tournaments/organizer?id=${id}`); 
+        const response = await tournamentAxiosClient.get<string>(`/tournaments/organizer?id=${id}`); 
         return response.data;
     } catch (error) {
         console.error("Error retrieving tournament organizer:", error);
@@ -138,7 +138,7 @@ export const updateBracketScore = async (
     playerTwoScore: number
   ):Promise<string> => {
     try {
-        const response = await axiosClient.put<string>(`/tournaments/update?roundId=${roundId}&bracketId=${bracketId}&p1=${playerOneScore}&p2=${playerTwoScore}`); 
+        const response = await tournamentAxiosClient.put<string>(`/tournaments/update?roundId=${roundId}&bracketId=${bracketId}&p1=${playerOneScore}&p2=${playerTwoScore}`); 
         return response.data;
     } catch (error) {
         console.error("Error updating bracket:", error);
@@ -151,7 +151,7 @@ export const endBracket = async (
     bracketId: number,
   ):Promise<string> => {
     try {
-        const response = await axiosClient.post<string>(`/tournaments/end?roundId=${roundId}&bracketId=${bracketId}`); 
+        const response = await tournamentAxiosClient.post<string>(`/tournaments/end?roundId=${roundId}&bracketId=${bracketId}`); 
         return response.data;
     } catch (error) {
         console.error("Error ending bracket:", error);

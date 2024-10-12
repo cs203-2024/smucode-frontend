@@ -136,7 +136,7 @@ export default function UserTournamentCard({data,fetchData}: UserTournamentCardP
                     {getFormattedDate(new Date(data.startDate))} - {getFormattedDate(new Date(data.endDate))}
                 </CardDescription>
                 <div className='flex justify-end items-center gap-2'>
-                    {data.signupsOpen ? (
+                    {data.signedUp ? (
                         <AlertDialogDemo fetchData={fetchData} registered={registered} setRegistered={setRegistered} tournamentId={data.id} username={username} />
                     ):(
                         data.participated ? (
