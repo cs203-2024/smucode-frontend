@@ -63,11 +63,11 @@ export type TournamentCardInfo = {
     band: string;
     startDate: Date;
     endDate: Date;
-    signUpStartDate: Date;
-    signUpEndDate: Date;
+    signupStartDate: Date;
+    signupEndDate: Date;
     status: string;
-    signUpPercentage: number; // actualSignUp/capcity, computed from backend
-    actualSignUp: number; // derived from signup entity computed from backend
+    signUpPercentage: number; // numberOfSignups/capcity, computed from backend
+    numberOfSignups: number; // derived from signup entity computed from backend
     timeWeight: number;
     memWeight: number;
     testCaseWeight: number;
@@ -139,11 +139,11 @@ export type UserTournamentCardInfo = {
     band: string;
     startDate: Date;
     endDate: Date;
-    signUpStartDate: Date;
-    signUpEndDate: Date;
+    signupStartDate: Date;
+    signupEndDate: Date;
     status: string;
     signUpPercentage: number;
-    actualSignUp: number;
+    numberOfSignups: number;
     timeWeight: number;
     memWeight: number;
     testCaseWeight: number;
@@ -151,7 +151,7 @@ export type UserTournamentCardInfo = {
     currentRoundEndDate: Date; //datetime of when current round ends
     signedUp: boolean; // true if user signed up for tournament
     participated: boolean; // true if user is actual participant in tournament
-    signUpsOpen: boolean; // derived from backend attributes
+    signupsOpen: boolean; // derived from backend attributes
     placing: number; // -1 if tournament incomplete, actual placing number otherwise (1 - number of players)
 }
 

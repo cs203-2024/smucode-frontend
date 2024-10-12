@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
 import {
     Card,
     CardContent,
@@ -53,21 +53,22 @@ export default function TournamentCardWrapper() {
         }
     }
 
-    useEffect(() => {
-        async function fetchData(username: string) {
-            if (user?.role === "admin") {
-                const adminDataResponse = (await getDataForAdmin(username)) ?? [];
-                console.log("Admin data received:", adminDataResponse);
-                setAdminData(adminDataResponse); // Update the state with the fetched data
-            } else {
-                const userDataResponse = (await getDataForUser(username)) ?? [];
-                console.log("User data received:", userDataResponse);
-                setUserData(userDataResponse); // Update the state with the fetched data
-            }
+    async function fetchData(username: string) {
+        if (user?.role === "admin") {
+            const adminDataResponse = (await getDataForAdmin(username)) ?? [];
+            console.log("Admin data received:", adminDataResponse);
+            setAdminData(adminDataResponse); // Update the state with the fetched data
+        } else {
+            const userDataResponse = (await getDataForUser(username)) ?? [];
+            console.log("User data received:", userDataResponse);
+            setUserData(userDataResponse); // Update the state with the fetched data
         }
-    
+    }
+
+    useEffect(() => {     
+
         fetchData(username); // Call the function
-    }, [user, username]); // Ensure it runs when `user` or `username` is available
+    }, [user]); // Ensure it runs when `user` or `username` is available
     
     return (
         <div>
@@ -89,19 +90,19 @@ export default function TournamentCardWrapper() {
                         <TabsContent value="upcoming" className='w-full'>
                                 <ScrollArea className='max-w-9/12 whitespace-nowrap'>
                                     <div className='flex justify-start items-center gap-3 pb-4'>
-                                        {user?.role === "admin" ? tournamentCardData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
+                                        {/* {user?.role === "admin" ? tournamentCardData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
                                         )):userTournamentCardData.filter((item) => item.status === "upcoming").map((data) => (
                                             <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
-                                        ))}
+                                        ))} */}
 
                                         {/* Uncomment below when real data is present */}
 
-                                        {/* {user?.role === "admin" ? adminData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
+                                        {user?.role === "admin" ? adminData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
-                                        )):userData.filter((item) => item.status === "upcoming").map((data) => (
-                                            <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
-                                        ))} */}
+                                        )):userData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
+                                            <UserTournamentCard key={data.id} data={data} fetchData={() => fetchData(username)}  />
+                                        ))}
                                     </div>
                                     <ScrollBar orientation="horizontal" />
                                 </ScrollArea>
@@ -110,21 +111,25 @@ export default function TournamentCardWrapper() {
                             <TabsContent value="ongoing" className='w-full'>
                                 <ScrollArea className='max-w-9/12 whitespace-nowrap'>
                                     <div className='flex justify-start items-center gap-3 pb-4'>
-                                        {user?.role === "admin" ? tournamentCardData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
+                                        {/* {user?.role === "admin" ? tournamentCardData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
                                         )):userTournamentCardData.filter((item) => item.status === "ongoing").map((data) => (
                                             <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
-                                        ))}
+                                        ))} */}
 
                                         {/* Uncomment below when real data is present */}
 
-                                        {/* {user?.role === "admin" ? adminData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
+                                        {user?.role === "admin" ? adminData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
-                                        )):userData.filter((item) => item.status === "ongoing").map((data) => (
-                                            <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
-                                        ))} */}
+                                        )):userData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
+                                            <UserTournamentCard key={data.id} data={data} fetchData={() => fetchData(username)} />
+                                        ))}
 
                                         {/* {adminData.map((item) => (
+                                            <div className='font-bold text-lg p-8'>{item.id}</div>
+                                        ))} */}
+
+                                        {/* {userData.map((item) => (
                                             <div className='font-bold text-lg p-8'>{item.id}</div>
                                         ))} */}
                                     </div>
@@ -135,19 +140,19 @@ export default function TournamentCardWrapper() {
                             <TabsContent value="completed" className='w-full'>
                                 <ScrollArea className='max-w-9/12 whitespace-nowrap'>
                                     <div className='flex justify-start items-center gap-3 pb-4'>
-                                        {user?.role === "admin" ? tournamentCardData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
+                                        {/* {user?.role === "admin" ? tournamentCardData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
-                                        )):userTournamentCardData.filter((item) => item.status === "completed").map((data) => (
+                                        )):userTournamentCardData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
                                             <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
-                                        ))}
+                                        ))} */}
 
                                         {/* Uncomment below when real data is present */}
                                         
-                                        {/* {user?.role === "admin" ? adminData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
+                                        {user?.role === "admin" ? adminData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
                                             <TournamentCard key={data.id} {...data as TournamentCardInfo} />
                                         )):userData.filter((item) => item.status === "completed").map((data) => (
-                                            <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
-                                        ))} */}
+                                            <UserTournamentCard key={data.id} data={data} fetchData={() => fetchData(username)}  />
+                                        ))}
                                     </div>
                                     <ScrollBar orientation="horizontal" />
                                 </ScrollArea>

@@ -86,3 +86,7 @@ export function getPlacingString(i: number):string {
 export function upperCaseToCapitalised(s: string):string {
   return capitalise(s.toLowerCase());
 }
+
+export function getPercentage(n: number, total: number): number {
+  return 100 * n / total;
+}

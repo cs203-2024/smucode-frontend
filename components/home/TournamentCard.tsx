@@ -18,7 +18,7 @@ import { MdMemory } from "react-icons/md";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { RiNumbersFill } from "react-icons/ri";
 import { TournamentCardInfo } from '../types';
-import { capitalise, getFormattedDate, getTimeDifference } from '@/lib/utils';
+import { capitalise, getFormattedDate, getPercentage, getTimeDifference, upperCaseToCapitalised } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
@@ -38,8 +38,10 @@ export default function TournamentCard(data: TournamentCardInfo) {
                     </div>
                     <Badge className={cn(
                         'rounded-full',
-                        data.status != "completed" ? "bg-ongoing hover:bg-ongoing":"bg-gray-100 hover:bg-gray-100 text-gray-400"
-                    )}>{capitalise(data.status)}</Badge>
+                        data.status === "ONGOING" ? "bg-ongoing hover:bg-ongoing":"",
+                        data.status === "UPCOMING" ? "bg-yellow-500 hover:bg-yellow-500":"",
+                        data.status === "COMPLETED" ? "bg-gray-100 hover:bg-gray-100 text-gray-400":""
+                    )}>{upperCaseToCapitalised(data.status)}</Badge>
                 </div>
                 <CardDescription className={cn(
                     'pt-2',
@@ -85,12 +87,12 @@ export default function TournamentCard(data: TournamentCardInfo) {
                     <div className={cn(
                         'text-sm font-medium text-right',
                         data.status != "completed" ? "":"text-gray-400"
-                    )}>{data.actualSignUp}/{data.capacity} participants ({data.signUpPercentage}%)</div>
+                    )}>{data.numberOfSignups}/{data.capacity} participants ({getPercentage(data.numberOfSignups, data.capacity)}%)</div>
                 </div>
             </CardContent>
             <CardFooter className='flex justify-between items-center'>
                 <CardDescription className='py-2'>
-                    {getFormattedDate(data.startDate)} - {getFormattedDate(data.endDate)}
+                    {getFormattedDate(new Date(data.startDate))} - {getFormattedDate(new Date(data.endDate))}
                 </CardDescription>
                 <Link href={`tournaments/${data.id}/overview`}>
                     <Button className='font-semibold'>Manage</Button>

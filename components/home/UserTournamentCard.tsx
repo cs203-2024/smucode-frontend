@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
 import {
     Card,
     CardContent,
@@ -30,7 +30,7 @@ import { MdAccessTimeFilled } from "react-icons/md";
 import { RiNumbersFill } from "react-icons/ri";
 import { FaCircleCheck } from "react-icons/fa6";
 import { UserTournamentCardInfo } from '../types';
-import { capitalise, getFormattedDate, getPlacingString, getTimeDifference } from '@/lib/utils';
+import { capitalise, getFormattedDate, getPercentage, getPlacingString, getTimeDifference, upperCaseToCapitalised } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useToast } from "@/hooks/use-toast";
@@ -40,10 +40,20 @@ import { useUserContext } from '@/context/UserContext';
 import { signUpForTournament, removeSignUpForTournament } from '@/services/tournamentAPI';
 import { TournamentSignUpInfo } from '../types';
 
-export default function UserTournamentCard(data: UserTournamentCardInfo) {
+interface UserTournamentCardProps {
+    data: UserTournamentCardInfo;
+    fetchData: () => Promise<void>; // fetchData is a function that returns a Promise<void>
+};
+
+export default function UserTournamentCard({data,fetchData}: UserTournamentCardProps) {
     const {user, logout} = useUserContext();
     const username = user ? user.username:"";
     const [registered, setRegistered] = useState(data.signedUp);
+
+    useEffect(() => {
+        setRegistered(data.signedUp);
+    }, [user, registered]);
+
     return (
         <Card>
             <CardHeader>
@@ -59,17 +69,17 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
                     </div>
                     <Badge className={cn(
                         'rounded-full',
-                        data.status === "ongoing" ? "bg-ongoing hover:bg-ongoing":"",
-                        data.status === "upcoming" ? "bg-yellow-500 hover:bg-yellow-500":"",
-                        data.status === "completed" ? "bg-gray-100 hover:bg-gray-100 text-gray-400":""
-                    )}>{capitalise(data.status)}</Badge>
+                        data.status === "ONGOING" ? "bg-ongoing hover:bg-ongoing":"",
+                        data.status === "UPCOMING" ? "bg-yellow-500 hover:bg-yellow-500":"",
+                        data.status === "COMPLETED" ? "bg-gray-100 hover:bg-gray-100 text-gray-400":""
+                    )}>{upperCaseToCapitalised(data.status)}</Badge>
                 </div>
-                {data.signUpsOpen ? (
+                {data.signupsOpen ? (
                     <CardDescription className={cn(
                         'pt-2',
                         data.status != "completed" ? "":"text-gray-400"
                     )}>
-                        Registration ends <span className='font-semibold'>{getFormattedDate(data.signUpEndDate)} ({getTimeDifference(new Date(), data.signUpEndDate)})</span>
+                        Registration ends <span className='font-semibold'>{getFormattedDate(new Date(data.signupEndDate))} ({getTimeDifference(new Date(), new Date(data.signupEndDate))})</span>
                     </CardDescription>
                 ):(
                     <CardDescription className={cn(
@@ -87,7 +97,8 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
                     'text-sm font-medium pb-1',
                     data.status != "completed" ? "":"text-gray-400"
                 )}>
-                    {capitalise(data.format)} • {capitalise(data.band)} Band
+                    {capitalise(data.format)} 
+                    {/* • {capitalise(data.band)} Band */}
                 </div>
                 <div className='flex items-center justify-start gap-2 py-2'>
                     <Badge className={cn(
@@ -117,16 +128,16 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
                     <div className={cn(
                         'text-sm font-medium text-right',
                         data.status != "completed" ? "":"text-gray-400"
-                    )}>{data.actualSignUp}/{data.capacity} participants ({data.signUpPercentage}%)</div>
+                    )}>{data.numberOfSignups}/{data.capacity} participants ({getPercentage(data.numberOfSignups, data.capacity)}%)</div>
                 </div>
             </CardContent>
             <CardFooter className='flex justify-between items-center'>
                 <CardDescription className='py-2'>
-                    {getFormattedDate(data.startDate)} - {getFormattedDate(data.endDate)}
+                    {getFormattedDate(new Date(data.startDate))} - {getFormattedDate(new Date(data.endDate))}
                 </CardDescription>
                 <div className='flex justify-end items-center gap-2'>
-                    {data.signUpsOpen ? (
-                        <AlertDialogDemo registered={data.signedUp} tournamentId={data.id} username={username} />
+                    {data.signupsOpen ? (
+                        <AlertDialogDemo fetchData={fetchData} registered={registered} setRegistered={setRegistered} tournamentId={data.id} username={username} />
                     ):(
                         data.participated ? (
                             data.status != "completed" ? (
@@ -147,7 +158,21 @@ export default function UserTournamentCard(data: UserTournamentCardInfo) {
     )
 }
 
-function AlertDialogDemo({registered, tournamentId, username}:{registered: boolean, tournamentId: number, username:string}) {
+interface AlertDialogDemoProps {
+    registered: boolean;
+    fetchData: () => Promise<void>; // fetchData function returning a Promise
+    setRegistered: Dispatch<SetStateAction<boolean>>; // State setter for 'registered'
+    tournamentId: number;
+    username: string;
+}
+
+function AlertDialogDemo({
+    registered,
+    fetchData,
+    setRegistered,
+    tournamentId,
+    username,
+}: AlertDialogDemoProps) {
     const signUpData = {
         username: username,
         tournamentId: tournamentId
@@ -163,6 +188,8 @@ function AlertDialogDemo({registered, tournamentId, username}:{registered: boole
                 title: "Registration Successful!",
                 description: "You have successfully registered for this tournament. You will be notified should your application to participate be accepted",
             });
+            fetchData();
+            //setRegistered(true);
         } catch (error) {
             toast({
                 title: "Unsuccessful Registration",
@@ -180,6 +207,8 @@ function AlertDialogDemo({registered, tournamentId, username}:{registered: boole
                 title: "Successfully Removed Registration!",
                 description: "You have successfully removed your registration from this tournament.",
             });
+            fetchData();
+            //setRegistered(false);
         } catch (error) {
             toast({
                 title: "Error Removing Registration",
