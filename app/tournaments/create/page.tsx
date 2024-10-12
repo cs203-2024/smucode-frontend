@@ -297,7 +297,7 @@ export default function CreateTournament() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="font-semibold">Capacity</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={""+field.value}>
+                                        <Select  onValueChange={(value) => field.onChange(parseInt(value))} defaultValue={""+field.value}>
                                             <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select a capacity" />
