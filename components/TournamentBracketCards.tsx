@@ -1,24 +1,17 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { TournamentProps, RoundProps, PlayerInfo } from './types';
+import { TournamentProps, RoundProps, PlayerInfo, BracketProps } from './types';
 import { Button } from './ui/button';
 import { Edit, LoaderCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogOverlay, DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
 import { DialogFooter, DialogHeader } from './ui/dialog';
 import { Input } from './ui/input';
-import { updateBracketScore, endBracket } from './mockApi';
+import { updateBracketScore, endBracket, endRound } from '@/services/tournamentAPI';
 import { toast } from "sonner";
 import { useTournamentContext } from '@/context/TournamentContext';
 import { useUserContext } from '@/context/UserContext';
 
-interface BracketProps {
-  roundid: number;
-  id: number;
-  status: string;
-  playerOne: PlayerInfo | undefined;
-  playerTwo: PlayerInfo | undefined;
-}
 
 const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; status: string }> = ({ player, isWinner, status }) => {
   if (!player) return <div className="flex items-center justify-between bg-transparent p-1.5 h-10 border-gray-400 rounded-full"></div>;
@@ -27,12 +20,12 @@ const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; 
       <div className="flex items-center space-x-2">
         <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
           {player.image ? (
-            <img src={player.image} alt={player.name} className="w-full h-full rounded-full object-cover" />
+            <img src={player.image} alt={player.id} className="w-full h-full rounded-full object-cover" />
           ) : (
-            <span className="text-sm">{player.name.charAt(0)}</span>
+            <span className="text-sm">{player.id.charAt(0)}</span>
           )}
         </div>
-        <p className={`${status !== "completed" ? "font-medium text-black-500" : ""} font-medium`}>{player.name}</p>
+        <p className={`${status !== "completed" ? "font-medium text-black-500" : ""} font-medium`}>{player.id}</p>
       </div>
       <div className={`${status !== "completed" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
         <span className="font-semibold">{player.score}</span>
@@ -49,12 +42,12 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
       <div className="flex items-center space-x-2">
         <div className="bg-gray-300 text-gray-600 w-8 h-8 rounded-full flex items-center justify-center">
           {player.image ? (
-            <img src={player.image} alt={player.name} className="w-full h-full rounded-full object-cover" />
+            <img src={player.image} alt={player.id} className="w-full h-full rounded-full object-cover" />
           ) : (
-            <span className="text-sm">{player.name.charAt(0)}</span>
+            <span className="text-sm">{player.id.charAt(0)}</span>
           )}
         </div>
-        <p className="font-medium">{player.name}</p>
+        <p className="font-medium">{player.id}</p>
       </div>
       <Input
         type="number"
@@ -66,7 +59,7 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
   );
 };
 
-const TournamentBracket: React.FC<BracketProps> = ({ roundid, id, status, playerOne, playerTwo }) => {
+const TournamentBracket: React.FC<BracketProps> = ({ id, status, playerOne, playerTwo }) => {
   const tournamentContext = useTournamentContext();
   const { user } = useUserContext();
   const tournamentOrganizerId = tournamentContext.organizerId;
@@ -82,7 +75,7 @@ const TournamentBracket: React.FC<BracketProps> = ({ roundid, id, status, player
   const getWinner = (playerOne: PlayerInfo | undefined, playerTwo: PlayerInfo | undefined) => {
     if (playerOne && playerTwo && bracketStatus === "completed") {
       if (playerOne.score === 0 && playerTwo.score === 0) return "";
-      return playerOne.score > playerTwo.score ? playerOne.name : playerTwo.name;
+      return playerOne.score > playerTwo.score ? playerOne.id : playerTwo.id;
     }
     return undefined;
   };
@@ -99,7 +92,7 @@ const TournamentBracket: React.FC<BracketProps> = ({ roundid, id, status, player
     if (editedPlayerOne && editedPlayerTwo && !isUpdating) {
       setIsUpdating(true);
       try {
-        await updateBracketScore(roundid, id, editedPlayerOne.score, editedPlayerTwo.score);
+        await updateBracketScore(id, editedPlayerOne, editedPlayerTwo);
         toast.success("Bracket score updated successfully!");
         setIsDialogOpen(false);
       } catch (error) {
@@ -114,10 +107,10 @@ const TournamentBracket: React.FC<BracketProps> = ({ roundid, id, status, player
   };
   
   const handleEnd = async () => {
-    if (!isEnding) {
+    if (playerOne && playerTwo && !isEnding) {
       setIsEnding(true);
       try {
-        await endBracket(roundid, id);
+        await endBracket(id, getWinner(playerOne, playerTwo));
         toast.success("Bracket ended!");
         setBracketStatus("completed");
         setIsEditable(false);
@@ -141,9 +134,9 @@ const TournamentBracket: React.FC<BracketProps> = ({ roundid, id, status, player
           onMouseEnter={() => isEditable && setIsHovered(true)}
           onMouseLeave={() => isEditable && setIsHovered(false)}
         >
-          <div className={`space-y-1 ${isHovered ? 'blur-sm' : ''} transition-all duration-300`}>
-            <PlayerCard player={playerOne} isWinner={isWinner === playerOne?.name} status={bracketStatus} />
-            <PlayerCard player={playerTwo} isWinner={isWinner === playerTwo?.name} status={bracketStatus} />
+          <div className={`space-y-1 ${isHovered ? 'blur-sm' : ''} transition-all duration-200`}>
+            <PlayerCard player={playerOne} isWinner={isWinner === playerOne?.id} status={bracketStatus} />
+            <PlayerCard player={playerTwo} isWinner={isWinner === playerTwo?.id} status={bracketStatus} />
           </div>
           {isHovered && (
             <div className="absolute inset-0 flex items-center justify-center">
@@ -197,30 +190,102 @@ const TournamentBracket: React.FC<BracketProps> = ({ roundid, id, status, player
   );
 };
 
-const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name, id, brackets, searchQuery }) => {
+const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name, id, status, startDate, endDate, brackets, searchQuery }) => {
+  const tournamentContext = useTournamentContext();
+  const { user } = useUserContext();
+  const tournamentOrganizerId = tournamentContext.organizerId;
+  const tournamentId = tournamentContext.tournamentId;
+  const [isEditable, setIsEditable] = useState(status === "ongoing" && tournamentOrganizerId === user?.username);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isEndingRound, setIsEndingRound] = useState(false);
+  const [roundStatus, setRoundStatus] = useState(status);
   const filteredBrackets = brackets.filter(
     (bracket) =>
-      bracket.playerOne?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      bracket.playerTwo?.name.toLowerCase().includes(searchQuery.toLowerCase())
+      bracket.playerOne?.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      bracket.playerTwo?.id.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleEndRound = async () => {
+    const allBracketsCompleted = brackets.every((bracket) => bracket.status === "completed");
+
+    if (!allBracketsCompleted) {
+      toast.error("All brackets must be completed before ending the round.");
+      return; 
+    }
+
+    if (!isEndingRound) {
+      setIsEndingRound(true);
+      try {
+        await endRound(tournamentId);
+        toast.success("Round ended!");
+        setRoundStatus("completed");
+        setIsEditable(false);
+        setIsDialogOpen(false);
+      } catch (error) {
+        console.error("Failed to end round:", error);
+        toast.error("Failed to end round. Please try again.");
+      } finally {
+        setIsEndingRound(false);
+      }
+    }
+  };  
+
   if (filteredBrackets.length === 0) {
-    return <div className="text-center text-gray-600"><p>No results found.</p></div>;
+    return (
+      <div className="text-center text-gray-600">
+        <p>No results found.</p>
+      </div>
+    );
   }
 
   return (
     <div className="p-6 h-full w-full">
-      <h2 className="font-bold mb-4 text-xl">{name}</h2>
-      <p className="text-gray-700 mb-4">Round ID: {id}</p>
+      <div className="flex items-center mb-4">
+        <h2 className="font-bold text-xl">{name}</h2>
+
+        {isEditable && (
+          <Button
+            variant="outline"
+            className="ml-5 text-sm"
+            onClick={() => setIsDialogOpen(true)} // Open the dialog on click
+          >
+            End Round
+          </Button>
+        )}
+      </div>
+      <p className="text-sm text-gray-700">Start Date: {startDate}</p>
+      <p className="text-sm text-gray-700 mb-4">End Date: {endDate}</p>
       <div className="overflow-x-auto mr-[100px]">
         <div className="inline-grid grid-cols-4 gap-x-5 gap-y-8 pb-4 min-w-[1050px] mr-[130px]">
           {filteredBrackets.map((bracket) => (
             <div key={bracket.id} className="w-[250px] bg-white shadow-sm p-4 rounded-lg">
-              <TournamentBracket roundid={id} id={bracket.id} status={bracket.status} playerOne={bracket.playerOne} playerTwo={bracket.playerTwo} />
+              <TournamentBracket
+                key={bracket.id}
+                id={bracket.id}
+                seqId={bracket.seqId}
+                status={bracket.status}
+                playerOne={bracket.playerOne}
+                playerTwo={bracket.playerTwo}
+              />
             </div>
           ))}
         </div>
       </div>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogOverlay className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <DialogContent className="bg-white p-6 rounded-md shadow-md">
+         <DialogTitle className="font-medium text-sm">Confirm End Round</DialogTitle>
+         <p className="text-sm">Are you sure you want to end this round?</p>
+         <div className="flex justify-end space-x-2 mt-4">
+           <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+           <Button className="w-[150px]" onClick={handleEndRound}>
+                {isEndingRound?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Yes, end round")}
+            </Button>
+         </div>
+       </DialogContent>
+       </DialogOverlay>
+      </Dialog>
     </div>
   );
 };
@@ -231,8 +296,8 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
   const filteredRounds = rounds.filter((round) => {
     return round.brackets.some(
       (bracket) =>
-        bracket.playerOne?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        bracket.playerTwo?.name.toLowerCase().includes(searchQuery.toLowerCase())
+        bracket.playerOne?.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        bracket.playerTwo?.id.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }).reverse();
 
@@ -256,12 +321,17 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
       <div className="overflow-y-auto h-[80vh] w-full">
         {filteredRounds.map((round) => (
           <div key={round.id} className="flex-shrink-0">
-            <TournamentRound
-              name={round.name}
-              id={round.id}
+            <TournamentRound 
+              key={round.id}
+              id={round.id} 
+              seqId={round.seqId}
+              name={round.name} 
+              startDate={round.startDate}
+              endDate={round.endDate}
+              status={round.status}
               brackets={round.brackets}
               searchQuery={searchQuery}
-            />
+              />
           </div>
         ))}
       </div>

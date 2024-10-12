@@ -1,20 +1,25 @@
 export type PlayerInfo = {
-    name: string;
     id: string;
     image: string;
     score: number;
 };
 
 export type BracketProps = {
-    id: number;
+    id: string;
+    seqId: number;
     status: string;
     playerOne?: PlayerInfo;
     playerTwo?: PlayerInfo;
+    winner?: string;
 };
 
 export type RoundProps = {
+    id: string;
+    seqId: number;
     name: string;
-    id: number;
+    startDate: string;
+    endDate: string;
+    status: string;
     brackets: BracketProps[];
 };
 
