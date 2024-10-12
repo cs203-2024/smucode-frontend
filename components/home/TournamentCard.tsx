@@ -43,14 +43,23 @@ export default function TournamentCard(data: TournamentCardInfo) {
                         data.status === "COMPLETED" ? "bg-gray-100 hover:bg-gray-100 text-gray-400":""
                     )}>{upperCaseToCapitalised(data.status)}</Badge>
                 </div>
-                <CardDescription className={cn(
-                    'pt-2',
-                    data.status != "completed" ? "":"text-gray-400"
-                )}>
-                    {data.currentRound}  (<span className={cn(
-                        data.status != "completed" ? "inline-block text-red-500":"inline-block"
-                    )}>{getTimeDifference(new Date(), data.currentRoundEndDate)}</span>)
-                </CardDescription>
+                {data.signupsOpen ? (
+                    <CardDescription className={cn(
+                        'pt-2',
+                        data.status != "completed" ? "":"text-gray-400"
+                    )}>
+                        Registration ends <span className='font-semibold'>{getFormattedDate(new Date(data.signupEndDate))} ({getTimeDifference(new Date(), new Date(data.signupEndDate))})</span>
+                    </CardDescription>
+                ):(
+                    <CardDescription className={cn(
+                        'pt-2',
+                        data.status != "completed" ? "":"text-gray-400"
+                    )}>
+                        {data.currentRound}  (<span className={cn(
+                            data.status === "active" ? "inline-block text-red-500":"inline-block"
+                        )}>{getTimeDifference(new Date(), data.currentRoundEndDate)}</span>)
+                    </CardDescription>
+                )}
             </CardHeader>
             <CardContent className="space-y-1">
                 <div className={cn(

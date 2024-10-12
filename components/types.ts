@@ -73,6 +73,7 @@ export type TournamentCardInfo = {
     testCaseWeight: number;
     currentRound: string; // sname of current round
     currentRoundEndDate: Date; //datetime of when current round ends
+    signupsOpen: boolean; // derived from backend attributes
 };
 
 export interface TournamentOverviewProps {
