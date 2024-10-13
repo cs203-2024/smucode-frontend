@@ -240,7 +240,7 @@ function AlertDialogDemo({
                     <AlertDialogTitle>Leave Tournament</AlertDialogTitle>
                     <AlertDialogDescription>
                     This action cannot be undone. 
-                    Your registration will be removed from the tournament's system and you may not be able to participate in the tournament again.
+                    Your registration will be removed from the tournament system and you may not be able to participate in the tournament again.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
