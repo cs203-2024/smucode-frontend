@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import TournamentBracketZoomable from '@/components/TournamentBracketZoomable';
 import TournamentBracketCards from '@/components/TournamentBracketCards'; 
-import { fetchTournamentBracketsData } from '@/components/mockApi'; 
+import { fetchTournamentBracketsData } from '@/services/tournamentAPI'; 
 import { TournamentProps } from '@/components/types';
 import { Icons } from "@/components/icons";
 import { useTournamentContext } from "@/context/TournamentContext";

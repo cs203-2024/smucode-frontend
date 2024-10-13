@@ -82,23 +82,28 @@ export type TournamentCardInfo = {
 
 export interface TournamentOverviewProps {
     id: string;
-    imageUrl: string;
+    icon?: string;
     name: string;
-    startDateTime: string;
-    endDateTime: string;
-    signUpStartDateTime: string;
-    signUpCloseDateTime: string;
-    signUpStatus: 'Open' | 'Closed';
-    tournamentStatus: 'Upcoming' | 'Ongoing' | 'Completed';
+    capacity: number;  //to edit from maxParticipants
+    description: string;
+    format: string;
+    band?: string;
+    startDate: Date; 
+    endDate: Date;
+    signUpStartDate: Date;
+    signUpEndDate: Date;
+    status: 'UPCOMING' | 'ONGOING' | 'COMPLETED';
+    signUpStatus?: 'OPEN' | 'CLOSED';
+    organiser: string;
+    numberOfSignups: number;
     currentRound?: string;
-    participantsCount: number;
-    maxParticipants: number;
-    scoreCriteria: {
+    currentRoundEndDate?: Date;
+    participantsCount?: number;
+    scoreCriteria?: {
       time: number;
       space: number;
       testCases: number;
     };
-    organizerId: string;
   }
 
   // For testing the profile page
