@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 // import { useUserContext } from '@/app/context/UserContext';
-import { signup } from '@/services/userApi';
+import { signup } from '@/services/userAPI';
 import { useRouter } from 'next/navigation';
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
@@ -28,7 +28,7 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
       email: form.email.value,
       password: form.password.value,
       verifyPassword: form.verifyPassword.value,
-      role: form.role.value,
+      role: form.role?.value,
     };
 
     if (formData.password !== formData.verifyPassword) {
