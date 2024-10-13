@@ -18,7 +18,7 @@ import { MdMemory } from "react-icons/md";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { RiNumbersFill } from "react-icons/ri";
 import { TournamentCardInfo } from '../types';
-import { capitalise, getFormattedDate, getTimeDifference } from '@/lib/utils';
+import { capitalise, getFormattedDate, getPercentage, getTimeDifference, upperCaseToCapitalised } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
@@ -33,46 +33,57 @@ export default function TournamentCard(data: TournamentCardInfo) {
                             <AvatarFallback>{data.name.substring(0, 3)}</AvatarFallback>
                         </Avatar>
                         <CardTitle className={cn(
-                            data.status != "completed" ? "text-black":"text-gray-500"
+                            data.status != "COMPLETED" ? "text-black":"text-gray-500"
                         )}>{data.name}</CardTitle>
                     </div>
                     <Badge className={cn(
                         'rounded-full',
-                        data.status != "completed" ? "bg-ongoing hover:bg-ongoing":"bg-gray-100 hover:bg-gray-100 text-gray-400"
-                    )}>{capitalise(data.status)}</Badge>
+                        data.status === "ONGOING" ? "bg-ongoing hover:bg-ongoing":"",
+                        data.status === "UPCOMING" ? "bg-yellow-500 hover:bg-yellow-500":"",
+                        data.status === "COMPLETED" ? "bg-gray-100 hover:bg-gray-100 text-gray-400":""
+                    )}>{upperCaseToCapitalised(data.status)}</Badge>
                 </div>
-                <CardDescription className={cn(
-                    'pt-2',
-                    data.status != "completed" ? "":"text-gray-400"
-                )}>
-                    {data.currentRound}  (<span className={cn(
-                        data.status != "completed" ? "inline-block text-red-500":"inline-block"
-                    )}>{getTimeDifference(new Date(), data.currentRoundEndDate)}</span>)
-                </CardDescription>
+                {data.signupsOpen ? (
+                    <CardDescription className={cn(
+                        'pt-2',
+                        data.status != "COMPLETED" ? "":"text-gray-400"
+                    )}>
+                        Registration ends <span className='font-semibold'>{getFormattedDate(new Date(data.signupEndDate))} ({getTimeDifference(new Date(), new Date(data.signupEndDate))})</span>
+                    </CardDescription>
+                ):(
+                    <CardDescription className={cn(
+                        'pt-2',
+                        data.status != "COMPLETED" ? "":"text-gray-400"
+                    )}>
+                        {data.currentRound}  (<span className={cn(
+                            data.status === "ACTIVE" ? "inline-block text-red-500":"inline-block"
+                        )}>{getTimeDifference(new Date(), data.currentRoundEndDate)}</span>)
+                    </CardDescription>
+                )}
             </CardHeader>
             <CardContent className="space-y-1">
                 <div className={cn(
                     'text-sm font-medium pb-1',
-                    data.status != "completed" ? "":"text-gray-400"
+                    data.status != "COMPLETED" ? "":"text-gray-400"
                 )}>
                     {capitalise(data.format)} • {capitalise(data.band)} Band
                 </div>
                 <div className='flex items-center justify-start gap-2 py-2'>
                     <Badge className={cn(
                         'py-1 bg-timeWeight',
-                        data.status != "completed" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
+                        data.status != "COMPLETED" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
                     )}>
                         <MdAccessTimeFilled className='pr-1 text-lg' />Time - {data.timeWeight}%
                     </Badge>
                     <Badge className={cn(
                         'py-1 bg-memWeight',
-                        data.status != "completed" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
+                        data.status != "COMPLETED" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
                     )}>
                         <MdMemory className='pr-1 text-lg' />Memory - {data.memWeight}%
                     </Badge>
                     <Badge className={cn(
                         'py-1 bg-testCaseWeight',
-                        data.status != "completed" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
+                        data.status != "COMPLETED" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
                     )}>
                         <RiNumbersFill className='pr-1 text-lg' />Test Cases - {data.testCaseWeight}%
                     </Badge>
@@ -80,17 +91,17 @@ export default function TournamentCard(data: TournamentCardInfo) {
                 <div className='flex items-center gap-2 justify-between py-2'>
                     <Progress value={data.signUpPercentage} className={cn(
                         'h-[8px]',
-                        data.status != "completed" ? "":"bg-gray-300"
+                        data.status != "COMPLETED" ? "":"bg-gray-300"
                     )} />
                     <div className={cn(
                         'text-sm font-medium text-right',
-                        data.status != "completed" ? "":"text-gray-400"
-                    )}>{data.actualSignUp}/{data.capacity} participants ({data.signUpPercentage}%)</div>
+                        data.status != "COMPLETED" ? "":"text-gray-400"
+                    )}>{data.numberOfSignups}/{data.capacity} participants ({getPercentage(data.numberOfSignups, data.capacity)}%)</div>
                 </div>
             </CardContent>
             <CardFooter className='flex justify-between items-center'>
                 <CardDescription className='py-2'>
-                    {getFormattedDate(data.startDate)} - {getFormattedDate(data.endDate)}
+                    {getFormattedDate(new Date(data.startDate))} - {getFormattedDate(new Date(data.endDate))}
                 </CardDescription>
                 <Link href={`tournaments/${data.id}/overview`}>
                     <Button className='font-semibold'>Manage</Button>
