@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const tournamentAxiosClient = axios.create({
-    baseURL: 'https://28ab-14-100-103-99.ngrok-free.app/api/', //TODO: change to API gateway; hardcoded for now
+const axiosClient = axios.create({
+    baseURL: 'http://localhost:9000/api', //TODO: change to API gateway; hardcoded for now
     headers: {
         'Content-Type': 'application/json',
     },
@@ -9,7 +9,7 @@ const tournamentAxiosClient = axios.create({
 });
 
 // Response interceptor for handling errors globally
-tournamentAxiosClient.interceptors.response.use(
+axiosClient.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response) {
@@ -26,4 +26,4 @@ tournamentAxiosClient.interceptors.response.use(
     }
 );
 
-export default tournamentAxiosClient;
+export default axiosClient;

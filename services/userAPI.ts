@@ -1,4 +1,4 @@
-import axiosClient from './http';
+import axiosClient from './axiosClient';
 import { User } from '@/components/types';
 import Cookies from "js-cookie";
 
