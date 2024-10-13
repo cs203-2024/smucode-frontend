@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-    baseURL: 'https://28ab-14-100-103-99.ngrok-free.app/api/', //TODO: change to API gateway; hardcoded for now
+    baseURL: 'localhost:9000/api', //TODO: change to API gateway; hardcoded for now
     headers: {
         'Content-Type': 'application/json',
     },
