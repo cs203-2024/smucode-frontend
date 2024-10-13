@@ -2,7 +2,7 @@ name: Build image and push to ECR
 
 on: # workflow trigger on manual, PR & push to dev
   push:
-    branches: [dev]
+    branches: [dev, prod]
   workflow_dispatch:
 
 permissions:
@@ -15,6 +15,16 @@ jobs:
     steps:
       - name: Pull code
         uses: actions/checkout@v4
+
+      - name: Set environment variables
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "SPRING_PROFILE=prod" >> $GITHUB_ENV
+            echo "DOCKER_TAG=prod" >> $GITHUB_ENV
+          else
+            echo "SPRING_PROFILE=local" >> $GITHUB_ENV
+            echo "DOCKER_TAG=dev" >> $GITHUB_ENV
+          fi
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -30,10 +40,9 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: ${{ env.DOCKER_TAG }}-${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker build  .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.DOCKER_TAG }}
 
           docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
