@@ -33,7 +33,7 @@ export default function TournamentCard(data: TournamentCardInfo) {
                             <AvatarFallback>{data.name.substring(0, 3)}</AvatarFallback>
                         </Avatar>
                         <CardTitle className={cn(
-                            data.status != "completed" ? "text-black":"text-gray-500"
+                            data.status != "COMPLETED" ? "text-black":"text-gray-500"
                         )}>{data.name}</CardTitle>
                     </div>
                     <Badge className={cn(
@@ -46,17 +46,17 @@ export default function TournamentCard(data: TournamentCardInfo) {
                 {data.signupsOpen ? (
                     <CardDescription className={cn(
                         'pt-2',
-                        data.status != "completed" ? "":"text-gray-400"
+                        data.status != "COMPLETED" ? "":"text-gray-400"
                     )}>
                         Registration ends <span className='font-semibold'>{getFormattedDate(new Date(data.signupEndDate))} ({getTimeDifference(new Date(), new Date(data.signupEndDate))})</span>
                     </CardDescription>
                 ):(
                     <CardDescription className={cn(
                         'pt-2',
-                        data.status != "completed" ? "":"text-gray-400"
+                        data.status != "COMPLETED" ? "":"text-gray-400"
                     )}>
                         {data.currentRound}  (<span className={cn(
-                            data.status === "active" ? "inline-block text-red-500":"inline-block"
+                            data.status === "ACTIVE" ? "inline-block text-red-500":"inline-block"
                         )}>{getTimeDifference(new Date(), data.currentRoundEndDate)}</span>)
                     </CardDescription>
                 )}
@@ -64,26 +64,26 @@ export default function TournamentCard(data: TournamentCardInfo) {
             <CardContent className="space-y-1">
                 <div className={cn(
                     'text-sm font-medium pb-1',
-                    data.status != "completed" ? "":"text-gray-400"
+                    data.status != "COMPLETED" ? "":"text-gray-400"
                 )}>
                     {capitalise(data.format)} • {capitalise(data.band)} Band
                 </div>
                 <div className='flex items-center justify-start gap-2 py-2'>
                     <Badge className={cn(
                         'py-1 bg-timeWeight',
-                        data.status != "completed" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
+                        data.status != "COMPLETED" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
                     )}>
                         <MdAccessTimeFilled className='pr-1 text-lg' />Time - {data.timeWeight}%
                     </Badge>
                     <Badge className={cn(
                         'py-1 bg-memWeight',
-                        data.status != "completed" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
+                        data.status != "COMPLETED" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
                     )}>
                         <MdMemory className='pr-1 text-lg' />Memory - {data.memWeight}%
                     </Badge>
                     <Badge className={cn(
                         'py-1 bg-testCaseWeight',
-                        data.status != "completed" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
+                        data.status != "COMPLETED" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
                     )}>
                         <RiNumbersFill className='pr-1 text-lg' />Test Cases - {data.testCaseWeight}%
                     </Badge>
@@ -91,11 +91,11 @@ export default function TournamentCard(data: TournamentCardInfo) {
                 <div className='flex items-center gap-2 justify-between py-2'>
                     <Progress value={data.signUpPercentage} className={cn(
                         'h-[8px]',
-                        data.status != "completed" ? "":"bg-gray-300"
+                        data.status != "COMPLETED" ? "":"bg-gray-300"
                     )} />
                     <div className={cn(
                         'text-sm font-medium text-right',
-                        data.status != "completed" ? "":"text-gray-400"
+                        data.status != "COMPLETED" ? "":"text-gray-400"
                     )}>{data.numberOfSignups}/{data.capacity} participants ({getPercentage(data.numberOfSignups, data.capacity)}%)</div>
                 </div>
             </CardContent>
