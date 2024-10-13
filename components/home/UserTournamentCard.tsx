@@ -48,11 +48,11 @@ interface UserTournamentCardProps {
 export default function UserTournamentCard({data,fetchData}: UserTournamentCardProps) {
     const {user, logout} = useUserContext();
     const username = user ? user.username:"";
-    const [registered, setRegistered] = useState(data.signedUp);
+    //const [registered, setRegistered] = useState(data.signedUp);
 
-    useEffect(() => {
-        setRegistered(data.signedUp);
-    }, [user, registered]);
+    // useEffect(() => {
+    //     setRegistered(data.signedUp);
+    // }, [user, registered]);
 
     return (
         <Card>
@@ -142,8 +142,8 @@ export default function UserTournamentCard({data,fetchData}: UserTournamentCardP
                     {getFormattedDate(new Date(data.startDate))} - {getFormattedDate(new Date(data.endDate))}
                 </CardDescription>
                 <div className='flex justify-end items-center gap-2'>
-                    {data.signedUp ? (
-                        <AlertDialogDemo fetchData={fetchData} registered={registered} setRegistered={setRegistered} tournamentId={data.id} username={username} />
+                    {data.signupsOpen ? (
+                        <AlertDialogDemo fetchData={fetchData} registered={data.signedUp} tournamentId={data.id} username={username} />
                     ):(
                         data.participated ? (
                             data.status != "COMPLETED" ? (
@@ -167,7 +167,7 @@ export default function UserTournamentCard({data,fetchData}: UserTournamentCardP
 interface AlertDialogDemoProps {
     registered: boolean;
     fetchData: () => Promise<void>; // fetchData function returning a Promise
-    setRegistered: Dispatch<SetStateAction<boolean>>; // State setter for 'registered'
+    //setRegistered: Dispatch<SetStateAction<boolean>>; // State setter for 'registered'
     tournamentId: number;
     username: string;
 }
@@ -175,7 +175,7 @@ interface AlertDialogDemoProps {
 function AlertDialogDemo({
     registered,
     fetchData,
-    setRegistered,
+    //setRegistered,
     tournamentId,
     username,
 }: AlertDialogDemoProps) {
