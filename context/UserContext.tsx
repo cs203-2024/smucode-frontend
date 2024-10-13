@@ -17,18 +17,18 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
 
   // useEffect(() => {
-  //   const dummyAdminUser: User = {
-  //     username: "adminDaddy",
-  //     email: "admin@example.com",
-  //     profileImageUrl: null,
-  //     role: "admin", // Role is "admin"
-  //     mu: 25,
-  //     sigma: 8.333,
-  //     skillIndex: 0,
-  //   };
-  //
-  //   // Set the dummy user with the admin role
-  //   setUser(dummyAdminUser);
+    // const dummyAdminUser: User = {
+    //   username: "adminDaddy",
+    //   email: "admin@example.com",
+    //   profileImageUrl: null,
+    //   role: "admin", // Role is "admin"
+    //   mu: 25,
+    //   sigma: 8.333,
+    //   skillIndex: 0,
+    // };
+  
+    // // Set the dummy user with the admin role
+    // setUser(dummyAdminUser);
   // }, []);
   useEffect(() => {
     const dummyAdminUser: User = {
@@ -47,6 +47,18 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    const dummyAdminUser: User = {
+      username: "adminDaddy",
+      email: "admin@example.com",
+      profileImageUrl: null,
+      role: "admin", // Role is "admin"
+      mu: 25,
+      sigma: 8.333,
+      skillIndex: 0,
+    };
+  
+    // Set the dummy user with the admin role
+    setUser(dummyAdminUser);
   }, []);
 
   useEffect(() => {

@@ -2,7 +2,7 @@
 
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useParams } from 'next/navigation';
-import { fetchTournamentOverviewData } from '@/components/mockApi'; 
+import { fetchTournamentOverviewData } from '@/services/tournamentAPI'; 
 import { TournamentOverviewProps } from '@/components/types'; 
 interface TournamentContextType {
   loadingTournamentContext: boolean;
@@ -39,7 +39,7 @@ export const TournamentContextProvider = ({ children }: TournamentContextProvide
       const fetchOrganizerId = async () => {
         try {
           const response = await fetchTournamentOverviewData(tournamentId);
-          setOrganizerId(response?.organizerId);
+          setOrganizerId(response?.organiser);
           setOverviewData(response);
         } catch (error) {
           console.error("Failed to fetch organizerId:", error);

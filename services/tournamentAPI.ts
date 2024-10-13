@@ -91,9 +91,12 @@ export const getAllTournamentsForUser = async (username: string):Promise<UserTou
     } 
 }
 
-export const fetchTournamentOverviewData = async (id: string):Promise<TournamentOverviewProps> => {
+export const fetchTournamentOverviewData = async (id: string | undefined):Promise<TournamentOverviewProps | null> => {
+    if(!id){
+        return null;
+    }
     try {
-        const response = await axiosClient.get<TournamentOverviewProps>(`/tournaments/overview?id=${id}`); 
+        const response = await axiosClient.get<TournamentOverviewProps>(`/tournaments/${id}`); 
         return response.data;
     } catch (error) {
         console.error("Error retrieving tournament overview:", error);
@@ -101,9 +104,12 @@ export const fetchTournamentOverviewData = async (id: string):Promise<Tournament
     } 
   };
   
-export const fetchTournamentBracketsData = async (id: string):Promise<TournamentProps> => {
+export const fetchTournamentBracketsData = async (id: string | undefined):Promise<TournamentProps | null> => {
+    if(!id){
+        return null;
+    }
     try {
-        const response = await axiosClient.get<TournamentProps>(`/tournaments/brackets?id=${id}`); 
+        const response = await axiosClient.get<TournamentProps>(`/tournaments/${id}/brackets`); 
         return response.data;
     } catch (error) {
         console.error("Error retrieving tournament brackets:", error);

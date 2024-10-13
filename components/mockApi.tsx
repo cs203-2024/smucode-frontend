@@ -1,285 +1,285 @@
 import { TournamentProps, TournamentOverviewProps, ParticipantCardListProp } from "./types";
 
-const mockTournamentData: TournamentOverviewProps = {
-  id: "1",
-  name: "Summer Coding Challenge 2024",
-  imageUrl: "",
-  startDateTime: "2024-08-15 09:00 AM",
-  endDateTime: "2024-08-20 06:00 PM",
-  signUpStartDateTime: "2024-07-01 12:00 PM",
-  signUpCloseDateTime: "2024-08-10 11:59 PM",
-  signUpStatus: "Open",
-  tournamentStatus: "Upcoming",
-  currentRound: "Not Started",
-  participantsCount: 30,
-  maxParticipants: 32,
-  scoreCriteria: {
-    time: 40,
-    space: 30,
-    testCases: 30,
-  },
-  organizerId: "adminDaddy",
-};
+// const mockTournamentData: TournamentOverviewProps = {
+//   id: "1",
+//   name: "Summer Coding Challenge 2024",
+//   imageUrl: "",
+//   startDateTime: "2024-08-15 09:00 AM",
+//   endDateTime: "2024-08-20 06:00 PM",
+//   signUpStartDateTime: "2024-07-01 12:00 PM",
+//   signUpCloseDateTime: "2024-08-10 11:59 PM",
+//   signUpStatus: "Open",
+//   tournamentStatus: "Upcoming",
+//   currentRound: "Not Started",
+//   participantsCount: 30,
+//   maxParticipants: 32,
+//   scoreCriteria: {
+//     time: 40,
+//     space: 30,
+//     testCases: 30,
+//   },
+//   organizerId: "adminDaddy",
+// };
 
-const mockTournamentBracketsData: TournamentProps = {
-    "rounds": [
-      {
-        "id": "uuid-1",
-        "seqId": 1,
-        "name": "Round of 16",
-        "startDate": "",
-        "endDate": "",
-        "status": "completed",
-        "brackets": [
-          {
-            "id": "uuid-1-1",
-            "seqId": 1,
-            "status": "completed",
-            "playerOne": {
-              "id": "Alice",
-              "image": "",
-              "score": 45
-            },
-            "playerTwo": {
-              "id": "Bob",
-              "image": "",
-              "score": 30
-            },
-            "winner": "Alice"
-          },
-          {
-            "id": "uuid-1-2",
-            "seqId": 2,
-            "status": "completed",
-            "playerOne": {
-              "id": "Charlie",
-              "image": "",
-              "score": 50
-            },
-            "playerTwo": {
-              "id": "Diana",
-              "image": "",
-              "score": 40
-            },
-            "winner": "Charlie"
-          },
-          {
-            "id": "uuid-1-3",
-            "seqId": 3,
-            "status": "completed",
-            "playerOne": {
-              "id": "Eve",
-              "image": "",
-              "score": 60
-            },
-            "playerTwo": {
-              "id": "Frank",
-              "image": "",
-              "score": 55
-            },
-            "winner": "Eve"
-          },
-          {
-            "id": "uuid-1-4",
-            "seqId": 4,
-            "status": "completed",
-            "playerOne": {
-              "id": "Grace",
-              "image": "",
-              "score": 35
-            },
-            "playerTwo": {
-              "id": "Hank",
-              "image": "",
-              "score": 45
-            },
-            "winner": "Hank"
-          },
-          {
-            "id": "uuid-1-5",
-            "seqId": 5,
-            "status": "completed",
-            "playerOne": {
-              "id": "Ivy",
-              "image": "",
-              "score": 65
-            },
-            "playerTwo": {
-              "id": "Jack",
-              "image": "",
-              "score": 70
-            },
-            "winner": "Jack"
-          },
-          {
-            "id": "uuid-1-6",
-            "seqId": 6,
-            "status": "completed",
-            "playerOne": {
-              "id": "Karen",
-              "image": "",
-              "score": 55
-            },
-            "playerTwo": {
-              "id": "Leo",
-              "image": "",
-              "score": 65
-            },
-            "winner": "Leo"
-          },
-          {
-            "id": "uuid-1-7",
-            "seqId": 7,
-            "status": "completed",
-            "playerOne": {
-              "id": "Mona",
-              "image": "",
-              "score": 75
-            },
-            "playerTwo": {
-              "id": "Nina",
-              "image": "",
-              "score": 60
-            },
-            "winner": "Mona"
-          },
-          {
-            "id": "uuid-1-8",
-            "seqId": 8,
-            "status": "completed",
-            "playerOne": {
-              "id": "Oscar",
-              "image": "",
-              "score": 80
-            },
-            "playerTwo": {
-              "id": "Paul",
-              "image": "",
-              "score": 50
-            },
-            "winner": "Oscar"
-          }
-        ]
-      },
-      {
-        "id": "uuid-2",
-        "seqId": 2,
-        "name": "Quarter Finals",
-        "startDate": "",
-        "endDate": "",
-        "status": "ongoing",
-        "brackets": [
-          {
-            "id": "uuid-2-1",
-            "seqId": 1,
-            "status": "completed",
-            "playerOne": {
-              "id": "Alice",
-              "image": "",
-              "score": 45
-            },
-            "playerTwo": {
-              "id": "Bob",
-              "image": "",
-              "score": 30
-            },
-            "winner": "Alice"
-          },
-          {
-            "id": "uuid-2-2",
-            "seqId": 2,
-            "status": "ongoing",
-            "playerOne": {
-              "id": "Charlie",
-              "image": "",
-              "score": 50
-            },
-            "playerTwo": {
-              "id": "Diana",
-              "image": "",
-              "score": 40
-            },
-            "winner": ""
-          },
-          {
-            "id": "uuid-2-3",
-            "seqId": 3,
-            "status": "ongoing",
-            "playerOne": {
-              "id": "Eve",
-              "image": "",
-              "score": 60
-            },
-            "playerTwo": {
-              "id": "Frank",
-              "image": "",
-              "score": 55
-            },
-            "winner": ""
-          },
-          {
-            "id": "uuid-2-4",
-            "seqId": 4,
-            "status": "ongoing",
-            "playerOne": {
-              "id": "Grace",
-              "image": "",
-              "score": 35
-            },
-            "playerTwo": {
-              "id": "Hank",
-              "image": "",
-              "score": 45
-            },
-            "winner": ""
-          }
-        ]
-      },
-      {
-        "id": "uuid-3",
-        "seqId": 3,
-        "name": "Semi Finals",
-        "startDate": "",
-        "endDate": "",
-        "status": "pending",
-        "brackets": [
-          {
-            "id": "uuid-3-1",
-            "seqId": 1,
-            "status": "pending",
-            "playerOne": {
-              "id": "Alice",
-              "image": "",
-              "score": 0
-            },
-            "winner": ""
-          },
-          {
-            "id": "uuid-3-2",
-            "seqId": 2,
-            "status": "pending",
-            "winner": ""
-          }
-        ]
-      },
-      {
-        "id": "uuid-4",
-        "seqId": 4,
-        "name": "Grand Final",
-        "startDate": "",
-        "endDate": "",
-        "status": "pending",
-        "brackets": [
-          {
-            "id": "uuid-4-1",
-            "seqId": 1,
-            "status": "pending",
-            "winner": ""
-          }
-        ]
-      }
-    ]  
-};
+// const mockTournamentBracketsData: TournamentProps = {
+//     "rounds": [
+//       {
+//         "id": "uuid-1",
+//         "seqId": 1,
+//         "name": "Round of 16",
+//         "startDate": "",
+//         "endDate": "",
+//         "status": "completed",
+//         "brackets": [
+//           {
+//             "id": "uuid-1-1",
+//             "seqId": 1,
+//             "status": "completed",
+//             "playerOne": {
+//               "id": "Alice",
+//               "image": "",
+//               "score": 45
+//             },
+//             "playerTwo": {
+//               "id": "Bob",
+//               "image": "",
+//               "score": 30
+//             },
+//             "winner": "Alice"
+//           },
+//           {
+//             "id": "uuid-1-2",
+//             "seqId": 2,
+//             "status": "completed",
+//             "playerOne": {
+//               "id": "Charlie",
+//               "image": "",
+//               "score": 50
+//             },
+//             "playerTwo": {
+//               "id": "Diana",
+//               "image": "",
+//               "score": 40
+//             },
+//             "winner": "Charlie"
+//           },
+//           {
+//             "id": "uuid-1-3",
+//             "seqId": 3,
+//             "status": "completed",
+//             "playerOne": {
+//               "id": "Eve",
+//               "image": "",
+//               "score": 60
+//             },
+//             "playerTwo": {
+//               "id": "Frank",
+//               "image": "",
+//               "score": 55
+//             },
+//             "winner": "Eve"
+//           },
+//           {
+//             "id": "uuid-1-4",
+//             "seqId": 4,
+//             "status": "completed",
+//             "playerOne": {
+//               "id": "Grace",
+//               "image": "",
+//               "score": 35
+//             },
+//             "playerTwo": {
+//               "id": "Hank",
+//               "image": "",
+//               "score": 45
+//             },
+//             "winner": "Hank"
+//           },
+//           {
+//             "id": "uuid-1-5",
+//             "seqId": 5,
+//             "status": "completed",
+//             "playerOne": {
+//               "id": "Ivy",
+//               "image": "",
+//               "score": 65
+//             },
+//             "playerTwo": {
+//               "id": "Jack",
+//               "image": "",
+//               "score": 70
+//             },
+//             "winner": "Jack"
+//           },
+//           {
+//             "id": "uuid-1-6",
+//             "seqId": 6,
+//             "status": "completed",
+//             "playerOne": {
+//               "id": "Karen",
+//               "image": "",
+//               "score": 55
+//             },
+//             "playerTwo": {
+//               "id": "Leo",
+//               "image": "",
+//               "score": 65
+//             },
+//             "winner": "Leo"
+//           },
+//           {
+//             "id": "uuid-1-7",
+//             "seqId": 7,
+//             "status": "completed",
+//             "playerOne": {
+//               "id": "Mona",
+//               "image": "",
+//               "score": 75
+//             },
+//             "playerTwo": {
+//               "id": "Nina",
+//               "image": "",
+//               "score": 60
+//             },
+//             "winner": "Mona"
+//           },
+//           {
+//             "id": "uuid-1-8",
+//             "seqId": 8,
+//             "status": "completed",
+//             "playerOne": {
+//               "id": "Oscar",
+//               "image": "",
+//               "score": 80
+//             },
+//             "playerTwo": {
+//               "id": "Paul",
+//               "image": "",
+//               "score": 50
+//             },
+//             "winner": "Oscar"
+//           }
+//         ]
+//       },
+//       {
+//         "id": "uuid-2",
+//         "seqId": 2,
+//         "name": "Quarter Finals",
+//         "startDate": "",
+//         "endDate": "",
+//         "status": "ongoing",
+//         "brackets": [
+//           {
+//             "id": "uuid-2-1",
+//             "seqId": 1,
+//             "status": "completed",
+//             "playerOne": {
+//               "id": "Alice",
+//               "image": "",
+//               "score": 45
+//             },
+//             "playerTwo": {
+//               "id": "Bob",
+//               "image": "",
+//               "score": 30
+//             },
+//             "winner": "Alice"
+//           },
+//           {
+//             "id": "uuid-2-2",
+//             "seqId": 2,
+//             "status": "ongoing",
+//             "playerOne": {
+//               "id": "Charlie",
+//               "image": "",
+//               "score": 50
+//             },
+//             "playerTwo": {
+//               "id": "Diana",
+//               "image": "",
+//               "score": 40
+//             },
+//             "winner": ""
+//           },
+//           {
+//             "id": "uuid-2-3",
+//             "seqId": 3,
+//             "status": "ongoing",
+//             "playerOne": {
+//               "id": "Eve",
+//               "image": "",
+//               "score": 60
+//             },
+//             "playerTwo": {
+//               "id": "Frank",
+//               "image": "",
+//               "score": 55
+//             },
+//             "winner": ""
+//           },
+//           {
+//             "id": "uuid-2-4",
+//             "seqId": 4,
+//             "status": "ongoing",
+//             "playerOne": {
+//               "id": "Grace",
+//               "image": "",
+//               "score": 35
+//             },
+//             "playerTwo": {
+//               "id": "Hank",
+//               "image": "",
+//               "score": 45
+//             },
+//             "winner": ""
+//           }
+//         ]
+//       },
+//       {
+//         "id": "uuid-3",
+//         "seqId": 3,
+//         "name": "Semi Finals",
+//         "startDate": "",
+//         "endDate": "",
+//         "status": "pending",
+//         "brackets": [
+//           {
+//             "id": "uuid-3-1",
+//             "seqId": 1,
+//             "status": "pending",
+//             "playerOne": {
+//               "id": "Alice",
+//               "image": "",
+//               "score": 0
+//             },
+//             "winner": ""
+//           },
+//           {
+//             "id": "uuid-3-2",
+//             "seqId": 2,
+//             "status": "pending",
+//             "winner": ""
+//           }
+//         ]
+//       },
+//       {
+//         "id": "uuid-4",
+//         "seqId": 4,
+//         "name": "Grand Final",
+//         "startDate": "",
+//         "endDate": "",
+//         "status": "pending",
+//         "brackets": [
+//           {
+//             "id": "uuid-4-1",
+//             "seqId": 1,
+//             "status": "pending",
+//             "winner": ""
+//           }
+//         ]
+//       }
+//     ]  
+// };
 
 const mockParticipantsData: ParticipantCardListProp = {
   participants: [
@@ -294,21 +294,21 @@ const mockParticipantsData: ParticipantCardListProp = {
   ],
 };
 
-export const fetchTournamentOverviewData = async (id: string | undefined) => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  if (id == "1") {
-    return mockTournamentData;
-  }
-  return null;
-};
+// export const fetchTournamentOverviewData = async (id: string | undefined) => {
+//   await new Promise((resolve) => setTimeout(resolve, 500));
+//   if (id == "1") {
+//     return mockTournamentData;
+//   }
+//   return null;
+// };
 
-export const fetchTournamentBracketsData = async (id: string | undefined) => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  if (id == "1") {
-    return mockTournamentBracketsData;
-  }
-  return null;
-};
+// export const fetchTournamentBracketsData = async (id: string | undefined) => {
+//   await new Promise((resolve) => setTimeout(resolve, 500));
+//   if (id == "1") {
+//     return mockTournamentBracketsData;
+//   }
+//   return null;
+// };
 
 export const fetchTournamentParticipantsData = async (id: string | undefined) => {
   await new Promise((resolve) => setTimeout(resolve, 500));
@@ -454,44 +454,44 @@ export const fetchOpponentsData = async () => {
 };
 
 
-export const updateBracketScore = async (
-  roundId: number,
-  bracketId: string,
-  playerOneScore: number,
-  playerTwoScore: number
-) => {
+// export const updateBracketScore = async (
+//   roundId: number,
+//   bracketId: string,
+//   playerOneScore: number,
+//   playerTwoScore: number
+// ) => {
 
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-
-  const round = mockTournamentBracketsData.rounds.find((round) => round.id === roundId);
-  if (!round) return { success: false, message: "Round not found" };
-
-  const bracket = round.brackets.find((bracket) => bracket.id === bracketId);
-  if (!bracket) return { success: false, message: "Bracket not found" };
-
-  if (bracket.playerOne) bracket.playerOne.score = playerOneScore;
-  if (bracket.playerTwo) bracket.playerTwo.score = playerTwoScore;
-
-  return { success: true, message: "Bracket score updated successfully" };
-};
-
-export const endBracket = async (
-  roundId: number,
-  bracketId: string,
-  winner: string
-) => {
-
-  await new Promise((resolve) => setTimeout(resolve, 500));
+//   await new Promise((resolve) => setTimeout(resolve, 500));
 
 
-  const round = mockTournamentBracketsData.rounds.find((round) => round.id === roundId);
-  if (!round) return { success: false, message: "Round not found" };
+//   const round = mockTournamentBracketsData.rounds.find((round) => round.id === roundId);
+//   if (!round) return { success: false, message: "Round not found" };
 
-  const bracket = round.brackets.find((bracket) => bracket.id === bracketId);
-  if (!bracket) return { success: false, message: "Bracket not found" };
+//   const bracket = round.brackets.find((bracket) => bracket.id === bracketId);
+//   if (!bracket) return { success: false, message: "Bracket not found" };
 
-  bracket.status = "completed";
+//   if (bracket.playerOne) bracket.playerOne.score = playerOneScore;
+//   if (bracket.playerTwo) bracket.playerTwo.score = playerTwoScore;
 
-  return { success: true, message: "Bracket ended successfully" };
-};
+//   return { success: true, message: "Bracket score updated successfully" };
+// };
+
+// export const endBracket = async (
+//   roundId: number,
+//   bracketId: string,
+//   winner: string
+// ) => {
+
+//   await new Promise((resolve) => setTimeout(resolve, 500));
+
+
+//   const round = mockTournamentBracketsData.rounds.find((round) => round.id === roundId);
+//   if (!round) return { success: false, message: "Round not found" };
+
+//   const bracket = round.brackets.find((bracket) => bracket.id === bracketId);
+//   if (!bracket) return { success: false, message: "Bracket not found" };
+
+//   bracket.status = "completed";
+
+//   return { success: true, message: "Bracket ended successfully" };
+// };
