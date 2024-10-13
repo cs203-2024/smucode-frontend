@@ -22,242 +22,263 @@ const mockTournamentData: TournamentOverviewProps = {
 };
 
 const mockTournamentBracketsData: TournamentProps = {
-  rounds: [
-    {
-      id: 1,
-      name: "Round of 16",
-      brackets: [
-        {
-          id: 1,
-          status: "completed",
-          playerOne: {
-            name: "Alice",
-            id: "player1",
-            image: "",
-            score: 45,
+    "rounds": [
+      {
+        "id": "uuid-1",
+        "seqId": 1,
+        "name": "Round of 16",
+        "startDate": "",
+        "endDate": "",
+        "status": "completed",
+        "brackets": [
+          {
+            "id": "uuid-1-1",
+            "seqId": 1,
+            "status": "completed",
+            "playerOne": {
+              "id": "Alice",
+              "image": "",
+              "score": 45
+            },
+            "playerTwo": {
+              "id": "Bob",
+              "image": "",
+              "score": 30
+            },
+            "winner": "Alice"
           },
-          playerTwo: {
-            name: "Bob",
-            id: "player2",
-            image: "",
-            score: 30,
+          {
+            "id": "uuid-1-2",
+            "seqId": 2,
+            "status": "completed",
+            "playerOne": {
+              "id": "Charlie",
+              "image": "",
+              "score": 50
+            },
+            "playerTwo": {
+              "id": "Diana",
+              "image": "",
+              "score": 40
+            },
+            "winner": "Charlie"
           },
-        },
-        {
-          id: 2,
-          status: "completed",
-          playerOne: {
-            name: "Charlie",
-            id: "player3",
-            image: "",
-            score: 50,
+          {
+            "id": "uuid-1-3",
+            "seqId": 3,
+            "status": "completed",
+            "playerOne": {
+              "id": "Eve",
+              "image": "",
+              "score": 60
+            },
+            "playerTwo": {
+              "id": "Frank",
+              "image": "",
+              "score": 55
+            },
+            "winner": "Eve"
           },
-          playerTwo: {
-            name: "Diana",
-            id: "player4",
-            image: "",
-            score: 40,
+          {
+            "id": "uuid-1-4",
+            "seqId": 4,
+            "status": "completed",
+            "playerOne": {
+              "id": "Grace",
+              "image": "",
+              "score": 35
+            },
+            "playerTwo": {
+              "id": "Hank",
+              "image": "",
+              "score": 45
+            },
+            "winner": "Hank"
           },
-        },
-        {
-          id: 3,
-          status: "completed",
-          playerOne: {
-            name: "Eve",
-            id: "player5",
-            image: "",
-            score: 60,
+          {
+            "id": "uuid-1-5",
+            "seqId": 5,
+            "status": "completed",
+            "playerOne": {
+              "id": "Ivy",
+              "image": "",
+              "score": 65
+            },
+            "playerTwo": {
+              "id": "Jack",
+              "image": "",
+              "score": 70
+            },
+            "winner": "Jack"
           },
-          playerTwo: {
-            name: "Frank",
-            id: "player6",
-            image: "",
-            score: 55,
+          {
+            "id": "uuid-1-6",
+            "seqId": 6,
+            "status": "completed",
+            "playerOne": {
+              "id": "Karen",
+              "image": "",
+              "score": 55
+            },
+            "playerTwo": {
+              "id": "Leo",
+              "image": "",
+              "score": 65
+            },
+            "winner": "Leo"
           },
-        },
-        {
-          id: 4,
-          status: "completed",
-          playerOne: {
-            name: "Grace",
-            id: "player7",
-            image: "",
-            score: 35,
+          {
+            "id": "uuid-1-7",
+            "seqId": 7,
+            "status": "completed",
+            "playerOne": {
+              "id": "Mona",
+              "image": "",
+              "score": 75
+            },
+            "playerTwo": {
+              "id": "Nina",
+              "image": "",
+              "score": 60
+            },
+            "winner": "Mona"
           },
-          playerTwo: {
-            name: "Hank",
-            id: "player8",
-            image: "",
-            score: 45,
+          {
+            "id": "uuid-1-8",
+            "seqId": 8,
+            "status": "completed",
+            "playerOne": {
+              "id": "Oscar",
+              "image": "",
+              "score": 80
+            },
+            "playerTwo": {
+              "id": "Paul",
+              "image": "",
+              "score": 50
+            },
+            "winner": "Oscar"
+          }
+        ]
+      },
+      {
+        "id": "uuid-2",
+        "seqId": 2,
+        "name": "Quarter Finals",
+        "startDate": "",
+        "endDate": "",
+        "status": "ongoing",
+        "brackets": [
+          {
+            "id": "uuid-2-1",
+            "seqId": 1,
+            "status": "completed",
+            "playerOne": {
+              "id": "Alice",
+              "image": "",
+              "score": 45
+            },
+            "playerTwo": {
+              "id": "Bob",
+              "image": "",
+              "score": 30
+            },
+            "winner": "Alice"
           },
-        },
-        {
-          id: 5,
-          status: "completed",
-          playerOne: {
-            name: "Ivy",
-            id: "player9",
-            image: "",
-            score: 65,
+          {
+            "id": "uuid-2-2",
+            "seqId": 2,
+            "status": "ongoing",
+            "playerOne": {
+              "id": "Charlie",
+              "image": "",
+              "score": 50
+            },
+            "playerTwo": {
+              "id": "Diana",
+              "image": "",
+              "score": 40
+            },
+            "winner": ""
           },
-          playerTwo: {
-            name: "Jack",
-            id: "player10",
-            image: "",
-            score: 70,
+          {
+            "id": "uuid-2-3",
+            "seqId": 3,
+            "status": "ongoing",
+            "playerOne": {
+              "id": "Eve",
+              "image": "",
+              "score": 60
+            },
+            "playerTwo": {
+              "id": "Frank",
+              "image": "",
+              "score": 55
+            },
+            "winner": ""
           },
-        },
-        {
-          id: 6,
-          status: "completed",
-          playerOne: {
-            name: "Karen",
-            id: "player11",
-            image: "",
-            score: 55,
+          {
+            "id": "uuid-2-4",
+            "seqId": 4,
+            "status": "ongoing",
+            "playerOne": {
+              "id": "Grace",
+              "image": "",
+              "score": 35
+            },
+            "playerTwo": {
+              "id": "Hank",
+              "image": "",
+              "score": 45
+            },
+            "winner": ""
+          }
+        ]
+      },
+      {
+        "id": "uuid-3",
+        "seqId": 3,
+        "name": "Semi Finals",
+        "startDate": "",
+        "endDate": "",
+        "status": "pending",
+        "brackets": [
+          {
+            "id": "uuid-3-1",
+            "seqId": 1,
+            "status": "pending",
+            "playerOne": {
+              "id": "Alice",
+              "image": "",
+              "score": 0
+            },
+            "winner": ""
           },
-          playerTwo: {
-            name: "Leo",
-            id: "player12",
-            image: "",
-            score: 65,
-          },
-        },
-        {
-          id: 7,
-          status: "completed",
-          playerOne: {
-            name: "Mona",
-            id: "player13",
-            image: "",
-            score: 75,
-          },
-          playerTwo: {
-            name: "Nina",
-            id: "player14",
-            image: "",
-            score: 60,
-          },
-        },
-        {
-          id: 8,
-          status: "completed",
-          playerOne: {
-            name: "Oscar",
-            id: "player15",
-            image: "",
-            score: 80,
-          },
-          playerTwo: {
-            name: "Paul",
-            id: "player16",
-            image: "",
-            score: 50,
-          },
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Quarter Finals",
-      brackets: [
-        {
-          id: 1,
-          status: "completed",
-          playerOne: {
-            name: "Alice",
-            id: "player1",
-            image: "",
-            score: 45,
-          },
-          playerTwo: {
-            name: "Bob",
-            id: "player2",
-            image: "",
-            score: 30,
-          },
-        },
-        {
-          id: 2,
-          status: "ongoing",
-          playerOne: {
-            name: "Charlie",
-            id: "player3",
-            image: "",
-            score: 50,
-          },
-          playerTwo: {
-            name: "Diana",
-            id: "player4",
-            image: "",
-            score: 40,
-          },
-        },
-        {
-          id: 3,
-          status: "ongoing",
-          playerOne: {
-            name: "Eve",
-            id: "player5",
-            image: "",
-            score: 60,
-          },
-          playerTwo: {
-            name: "Frank",
-            id: "player6",
-            image: "",
-            score: 55,
-          },
-        },
-        {
-          id: 4,
-          status: "ongoing",
-          playerOne: {
-            name: "Grace",
-            id: "player7",
-            image: "",
-            score: 35,
-          },
-          playerTwo: {
-            name: "Hank",
-            id: "player8",
-            image: "",
-            score: 45,
-          },
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: "Semi Finals",
-      brackets: [
-        {
-          id: 1,
-          status: "pending",
-          playerOne: {
-            name: "Alice",
-            id: "player1",
-            image: "",
-            score: 0,
-          },
-        },
-        {
-          id: 2,
-          status: "pending",
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: "Grand Final",
-      brackets: [
-        {
-          id: 1,
-          status: "pending",
-        },
-      ],
-    },
-  ],
+          {
+            "id": "uuid-3-2",
+            "seqId": 2,
+            "status": "pending",
+            "winner": ""
+          }
+        ]
+      },
+      {
+        "id": "uuid-4",
+        "seqId": 4,
+        "name": "Grand Final",
+        "startDate": "",
+        "endDate": "",
+        "status": "pending",
+        "brackets": [
+          {
+            "id": "uuid-4-1",
+            "seqId": 1,
+            "status": "pending",
+            "winner": ""
+          }
+        ]
+      }
+    ]  
 };
 
 const mockParticipantsData: ParticipantCardListProp = {
@@ -435,7 +456,7 @@ export const fetchOpponentsData = async () => {
 
 export const updateBracketScore = async (
   roundId: number,
-  bracketId: number,
+  bracketId: string,
   playerOneScore: number,
   playerTwoScore: number
 ) => {
@@ -457,7 +478,8 @@ export const updateBracketScore = async (
 
 export const endBracket = async (
   roundId: number,
-  bracketId: number,
+  bracketId: string,
+  winner: string
 ) => {
 
   await new Promise((resolve) => setTimeout(resolve, 500));
