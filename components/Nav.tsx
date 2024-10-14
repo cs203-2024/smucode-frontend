@@ -18,7 +18,7 @@ const Nav = () => {
 
     return (
         <nav className="fixed top-0 flex z-50 justify-between h-[60px] items-center w-full bg-white shadow-md p-4">
-            <Link href="/" className="flex gap-2 items-center">
+            <Link href="/dashboard" className="flex gap-2 items-center">
                 <Image src="/assets/images/logo.png" width={30} height={30} className="object-contain" alt="logo" />
                 <p className="logo_text">SMUCode</p>
             </Link>
