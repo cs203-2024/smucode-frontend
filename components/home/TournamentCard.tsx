@@ -22,7 +22,14 @@ import { capitalise, getFormattedDateFromString, getPercentage, getTimeUntil, up
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
-export default function TournamentCard(data: TournamentCardInfo) {
+interface TournamentCardProps {
+    data: TournamentCardInfo;
+    fetchData: () => Promise<void>; // fetchData is a function that returns a Promise<void>
+};
+
+export default function TournamentCard(
+    {data,fetchData}: TournamentCardProps
+) {
     return (
         <Card>
             <CardHeader>
@@ -89,7 +96,7 @@ export default function TournamentCard(data: TournamentCardInfo) {
                     </Badge>
                 </div>
                 <div className='flex items-center gap-2 justify-between py-2'>
-                    <Progress value={data.signUpPercentage} className={cn(
+                    <Progress value={getPercentage(data.numberOfSignups, data.capacity)} className={cn(
                         'h-[8px]',
                         data.status != "COMPLETED" ? "":"bg-gray-300"
                     )} />

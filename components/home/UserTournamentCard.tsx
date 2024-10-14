@@ -127,7 +127,7 @@ export default function UserTournamentCard({data,fetchData}: UserTournamentCardP
                     </Badge>
                 </div>
                 <div className='flex items-center gap-2 justify-between py-2'>
-                    <Progress value={data.signUpPercentage} className={cn(
+                    <Progress value={getPercentage(data.numberOfSignups, data.capacity)} className={cn(
                         'h-[8px]',
                         data.status != "COMPLETED" ? "":"bg-gray-300"
                     )} />

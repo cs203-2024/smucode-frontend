@@ -19,7 +19,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import TournamentCard from './TournamentCard';
 import UserTournamentCard from './UserTournamentCard';
 import { TournamentCardInfo, UserTournamentCardInfo } from '../types';
-import { tournamentCardData, userTournamentCardData } from './testdata';
+import { tournamentCardData, tournamentCardData2, userTournamentCardData, userTournamentCardData2 } from './testdata';
 import { useUserContext } from '@/context/UserContext';
 import { getAllTournamentsCreatedByAdmin, getAllTournamentsForUser } from '@/services/tournamentAPI';
 
@@ -90,16 +90,16 @@ export default function TournamentCardWrapper() {
                         <TabsContent value="upcoming" className='w-full'>
                                 <ScrollArea className='max-w-9/12 whitespace-nowrap'>
                                     <div className='flex justify-start items-center gap-3 pb-4'>
-                                        {/* {user?.role === "ROLE_ADMIN" ? tournamentCardData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
-                                            <TournamentCard key={data.id} {...data as TournamentCardInfo} />
-                                        )):userTournamentCardData.filter((item) => item.status === "upcoming").map((data) => (
-                                            <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
-                                        ))} */}
+                                        {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
+                                            <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                        )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
+                                            <UserTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
+                                        ))}
 
                                         {/* Uncomment below when real data is present */}
 
                                         {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
-                                            <TournamentCard key={data.id} {...data as TournamentCardInfo} />
+                                            <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
                                         )):userData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
                                             <UserTournamentCard key={data.id} data={data} fetchData={() => fetchData(username)}  />
                                         ))}
@@ -111,16 +111,16 @@ export default function TournamentCardWrapper() {
                             <TabsContent value="ongoing" className='w-full'>
                                 <ScrollArea className='max-w-9/12 whitespace-nowrap'>
                                     <div className='flex justify-start items-center gap-3 pb-4'>
-                                        {/* {user?.role === "ROLE_ADMIN" ? tournamentCardData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
-                                            <TournamentCard key={data.id} {...data as TournamentCardInfo} />
-                                        )):userTournamentCardData.filter((item) => item.status === "ongoing").map((data) => (
-                                            <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
-                                        ))} */}
+                                        {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
+                                            <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                        )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
+                                            <UserTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
+                                        ))}
 
                                         {/* Uncomment below when real data is present */}
 
                                         {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
-                                            <TournamentCard key={data.id} {...data as TournamentCardInfo} />
+                                            <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
                                         )):userData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
                                             <UserTournamentCard key={data.id} data={data} fetchData={() => fetchData(username)} />
                                         ))}
@@ -140,16 +140,16 @@ export default function TournamentCardWrapper() {
                             <TabsContent value="completed" className='w-full'>
                                 <ScrollArea className='max-w-9/12 whitespace-nowrap'>
                                     <div className='flex justify-start items-center gap-3 pb-4'>
-                                        {/* {user?.role === "ROLE_ADMIN" ? tournamentCardData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
-                                            <TournamentCard key={data.id} {...data as TournamentCardInfo} />
-                                        )):userTournamentCardData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
-                                            <UserTournamentCard key={data.id} {...data as UserTournamentCardInfo} />
-                                        ))} */}
+                                        {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
+                                            <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                        )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
+                                            <UserTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
+                                        ))}
 
                                         {/* Uncomment below when real data is present */}
                                         
                                         {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
-                                            <TournamentCard key={data.id} {...data as TournamentCardInfo} />
+                                            <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
                                         )):userData.filter((item) => item.status === "completed").map((data) => (
                                             <UserTournamentCard key={data.id} data={data} fetchData={() => fetchData(username)}  />
                                         ))}
