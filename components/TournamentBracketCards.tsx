@@ -11,7 +11,7 @@ import { updateBracketScore, endBracket, endRound } from '@/services/tournamentA
 import { toast } from "sonner";
 import { useTournamentContext } from '@/context/TournamentContext';
 import { useUserContext } from '@/context/UserContext';
-
+import { getFormattedDateFromString } from '@/lib/utils';
 
 const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; status: string }> = ({ player, isWinner, status }) => {
   if (!player) return <div className="flex items-center justify-between bg-transparent p-1.5 h-10 border-gray-400 rounded-full"></div>;
@@ -253,8 +253,8 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
           </Button>
         )}
       </div>
-      <p className="text-sm text-gray-700">Start Date: {startDate}</p>
-      <p className="text-sm text-gray-700 mb-4">End Date: {endDate}</p>
+      <p className="text-sm text-gray-700">Start Date: {getFormattedDateFromString(startDate)}</p>
+      <p className="text-sm text-gray-700 mb-4">End Date: {getFormattedDateFromString(endDate)}</p>
       <div className="overflow-x-auto mr-[100px]">
         <div className="inline-grid grid-cols-4 gap-x-5 gap-y-8 pb-4 min-w-[1050px] mr-[130px]">
           {filteredBrackets.map((bracket) => (
