@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: "localhost:9000/api", //TODO: change to API gateway; hardcoded for now
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL, //TODO: change to API gateway; hardcoded for now
   headers: {
     "Content-Type": "application/json",
   },
