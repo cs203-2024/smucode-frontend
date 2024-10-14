@@ -508,7 +508,7 @@ export const tournamentCardData2 = [
     },
     {
         id: 2,
-        icon: "sports.png",
+        icon: "smu-logo.png",
         name: "SMU Soccer Showdown",
         capacity: 128,
         format: "double-elimination",
@@ -529,7 +529,7 @@ export const tournamentCardData2 = [
     },
     {
         id: 3,
-        icon: "chess.png",
+        icon: "smu-logo.png",
         name: "SMU Chess Grand Masters",
         capacity: 32,
         format: "round-robin",
@@ -550,7 +550,7 @@ export const tournamentCardData2 = [
     },
     {
         id: 4,
-        icon: "badminton.png",
+        icon: "smu-logo.png",
         name: "SMU Badminton Open",
         capacity: 64,
         format: "single-elimination",
@@ -571,7 +571,7 @@ export const tournamentCardData2 = [
     },
     {
         id: 5,
-        icon: "tennis.png",
+        icon: "smu-logo.png",
         name: "SMU Tennis League",
         capacity: 32,
         format: "round-robin",
@@ -592,7 +592,7 @@ export const tournamentCardData2 = [
     },
     {
         id: 6,
-        icon: "basketball.png",
+        icon: "smu-logo.png",
         name: "SMU Basketball Dunk Fest",
         capacity: 128,
         format: "single-elimination",
@@ -613,7 +613,7 @@ export const tournamentCardData2 = [
     },
     {
         id: 7,
-        icon: "gaming.png",
+        icon: "smu-logo.png",
         name: "SMU Esports Tournament",
         capacity: 64,
         format: "double-elimination",
@@ -634,7 +634,7 @@ export const tournamentCardData2 = [
     },
     {
         id: 8,
-        icon: "golf.png",
+        icon: "smu-logo.png",
         name: "SMU Golf Open",
         capacity: 64,
         format: "single-elimination",
@@ -778,7 +778,7 @@ export const userTournamentCardData2 = [
     },
     {
         id: 6,
-        icon: "basketball.png",
+        icon: "smu-logo.png",
         name: "SMU Basketball Dunk Fest",
         capacity: 128,
         format: "single-elimination",
@@ -802,7 +802,7 @@ export const userTournamentCardData2 = [
     },
     {
         id: 7,
-        icon: "gaming.png",
+        icon: "smu-logo.png",
         name: "SMU Esports Tournament",
         capacity: 64,
         format: "double-elimination",
@@ -826,7 +826,7 @@ export const userTournamentCardData2 = [
     },
     {
         id: 8,
-        icon: "golf.png",
+        icon: "smu-logo.png",
         name: "SMU Golf Open",
         capacity: 64,
         format: "single-elimination",
@@ -850,7 +850,7 @@ export const userTournamentCardData2 = [
     },
     {
         id: 9,
-        icon: "volleyball.png",
+        icon: "smu-logo.png",
         name: "SMU Volleyball Championships",
         capacity: 48,
         format: "round-robin",
