@@ -61,6 +61,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     try {
       setUser(null);
       localStorage.removeItem("user");
+      Cookies.remove('authToken');
     } catch (error) {
       console.error('Logout failed', error);
     }

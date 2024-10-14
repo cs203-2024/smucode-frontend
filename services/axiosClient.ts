@@ -1,12 +1,33 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const axiosClient = axios.create({
-  baseURL: process.env.https://example.com/api, //TODO: change to API gateway; hardcoded for now
-  headers: {
-    "Content-Type": "application/json",
-  },
+  baseURL: process.env.https://example.com/api,
+    headers: {
+        'Authorization': `Bearer ${'authToken'}`,
+        "Content-Type": "application/json",
+    },
   withCredentials: true,
 });
+
+// Request interceptor to attached JWT to auth header
+axiosClient.interceptors.request.use(
+    function (config) {
+        const token = Cookies.get('authToken'); // Get the 'authToken' cookie
+
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        config.withCredentials = true;
+
+        return config;
+    },
+    function (error) {
+        return Promise.reject(error);
+    }
+);
+
 
 // Response interceptor for handling errors globally
 axiosClient.interceptors.response.use(
