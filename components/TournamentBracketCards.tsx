@@ -20,12 +20,12 @@ const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; 
       <div className="flex items-center space-x-2">
         <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
           {player.image ? (
-            <img src={player.image} alt={player.id} className="w-full h-full rounded-full object-cover" />
+            <img src={player.image} alt={player.username} className="w-full h-full rounded-full object-cover" />
           ) : (
-            <span className="text-sm">{player.id.charAt(0)}</span>
+            <span className="text-sm">{player.username.charAt(0)}</span>
           )}
         </div>
-        <p className={`${status !== "completed" ? "font-medium text-black-500" : ""} font-medium`}>{player.id}</p>
+        <p className={`${status !== "completed" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
       </div>
       <div className={`${status !== "completed" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
         <span className="font-semibold">{player.score}</span>
@@ -42,12 +42,12 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
       <div className="flex items-center space-x-2">
         <div className="bg-gray-300 text-gray-600 w-8 h-8 rounded-full flex items-center justify-center">
           {player.image ? (
-            <img src={player.image} alt={player.id} className="w-full h-full rounded-full object-cover" />
+            <img src={player.image} alt={player.username} className="w-full h-full rounded-full object-cover" />
           ) : (
-            <span className="text-sm">{player.id.charAt(0)}</span>
+            <span className="text-sm">{player.username.charAt(0)}</span>
           )}
         </div>
-        <p className="font-medium">{player.id}</p>
+        <p className="font-medium">{player.username}</p>
       </div>
       <Input
         type="number"
@@ -59,40 +59,40 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
   );
 };
 
-const TournamentBracket: React.FC<BracketProps> = ({ id, status, playerOne, playerTwo }) => {
+const TournamentBracket: React.FC<BracketProps> = ({ id, status, player1, player2 }) => {
   const tournamentContext = useTournamentContext();
   const { user } = useUserContext();
   const tournamentOrganizerId = tournamentContext.organizerId;
   const [isHovered, setIsHovered] = useState(false);
-  const [editedPlayerOne, setEditedPlayerOne] = useState(playerOne);
-  const [editedPlayerTwo, setEditedPlayerTwo] = useState(playerTwo);
+  const [editedplayer1, setEditedplayer1] = useState(player1);
+  const [editedplayer2, setEditedplayer2] = useState(player2);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isEnding, setIsEnding] = useState(false);
   const [isEditable, setIsEditable] = useState(status === "ongoing" && tournamentOrganizerId === user?.username);
   const [bracketStatus, setBracketStatus] = useState(status);
-  const getWinner = (playerOne: PlayerInfo | undefined, playerTwo: PlayerInfo | undefined) => {
-    if (playerOne && playerTwo && bracketStatus === "completed") {
-      if (playerOne.score === 0 && playerTwo.score === 0) return "";
-      return playerOne.score > playerTwo.score ? playerOne.id : playerTwo.id;
+  const getWinner = (player1: PlayerInfo | undefined, player2: PlayerInfo | undefined) => {
+    if (player1 && player2 && bracketStatus === "completed") {
+      if (player1.score === 0 && player2.score === 0) return "";
+      return player1.score > player2.score ? player1.username : player2.username;
     }
     return undefined;
   };
   
-  const [isWinner, setIsWinner] = useState(getWinner(playerOne, playerTwo)); 
+  const [isWinner, setIsWinner] = useState(getWinner(player1, player2)); 
   
   useEffect(() => {
     if (bracketStatus === "completed") {
-      setIsWinner(getWinner(playerOne, playerTwo));
+      setIsWinner(getWinner(player1, player2));
     }
   }, [bracketStatus]);
 
   const handleUpdate = async () => {
-    if (editedPlayerOne && editedPlayerTwo && !isUpdating) {
+    if (editedplayer1 && editedplayer2 && !isUpdating) {
       setIsUpdating(true);
       try {
-        await updateBracketScore(id, editedPlayerOne, editedPlayerTwo);
+        await updateBracketScore(id, editedplayer1, editedplayer2);
         toast.success("Bracket score updated successfully!");
         setIsDialogOpen(false);
       } catch (error) {
@@ -107,10 +107,10 @@ const TournamentBracket: React.FC<BracketProps> = ({ id, status, playerOne, play
   };
   
   const handleEnd = async () => {
-    if (playerOne && playerTwo && !isEnding) {
+    if (player1 && player2 && !isEnding) {
       setIsEnding(true);
       try {
-        await endBracket(id, getWinner(playerOne, playerTwo));
+        await endBracket(id, getWinner(player1, player2));
         toast.success("Bracket ended!");
         setBracketStatus("completed");
         setIsEditable(false);
@@ -135,8 +135,8 @@ const TournamentBracket: React.FC<BracketProps> = ({ id, status, playerOne, play
           onMouseLeave={() => isEditable && setIsHovered(false)}
         >
           <div className={`space-y-1 ${isHovered ? 'blur-sm' : ''} transition-all duration-200`}>
-            <PlayerCard player={playerOne} isWinner={isWinner === playerOne?.id} status={bracketStatus} />
-            <PlayerCard player={playerTwo} isWinner={isWinner === playerTwo?.id} status={bracketStatus} />
+            <PlayerCard player={player1} isWinner={isWinner === player1?.username} status={bracketStatus} />
+            <PlayerCard player={player2} isWinner={isWinner === player2?.username} status={bracketStatus} />
           </div>
           {isHovered && (
             <div className="absolute inset-0 flex items-center justify-center">
@@ -160,8 +160,8 @@ const TournamentBracket: React.FC<BracketProps> = ({ id, status, playerOne, play
               </DialogTitle>
             </DialogHeader>
           <div className="space-y-2 py-4">
-            <EditPlayerCard player={editedPlayerOne} onChange={(score) => setEditedPlayerOne(prev => prev ? {...prev, score} : undefined)} />
-            <EditPlayerCard player={editedPlayerTwo} onChange={(score) => setEditedPlayerTwo(prev => prev ? {...prev, score} : undefined)} />
+            <EditPlayerCard player={editedplayer1} onChange={(score) => setEditedplayer1(prev => prev ? {...prev, score} : undefined)} />
+            <EditPlayerCard player={editedplayer2} onChange={(score) => setEditedplayer2(prev => prev ? {...prev, score} : undefined)} />
           </div>
           <DialogFooter>
               <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
@@ -201,8 +201,8 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
   const [roundStatus, setRoundStatus] = useState(status);
   const filteredBrackets = brackets.filter(
     (bracket) =>
-      bracket.playerOne?.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      bracket.playerTwo?.id.toLowerCase().includes(searchQuery.toLowerCase())
+      bracket.player1?.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      bracket.player2?.username.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleEndRound = async () => {
@@ -264,8 +264,8 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
                 id={bracket.id}
                 seqId={bracket.seqId}
                 status={bracket.status}
-                playerOne={bracket.playerOne}
-                playerTwo={bracket.playerTwo}
+                player1={bracket.player1}
+                player2={bracket.player2}
               />
             </div>
           ))}
@@ -296,8 +296,8 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
   const filteredRounds = rounds.filter((round) => {
     return round.brackets.some(
       (bracket) =>
-        bracket.playerOne?.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        bracket.playerTwo?.id.toLowerCase().includes(searchQuery.toLowerCase())
+        bracket.player1?.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        bracket.player2?.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }).reverse();
 

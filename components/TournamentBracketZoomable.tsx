@@ -4,19 +4,19 @@ import { Crosshair, ZoomIn, ZoomOut } from 'lucide-react';
 import { BracketProps, PlayerInfo, RoundProps, TournamentProps } from './types';
 import { getFormattedDateFromString } from '@/lib/utils';
 
-const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) => {
+const TournamentBracket = ({ id, status, player1, player2 }: BracketProps) => {
 
-  const getWinner = (playerOne: PlayerInfo | undefined, playerTwo: PlayerInfo | undefined) => {
-    if (playerOne && playerTwo && status === "completed") {
-      if (playerOne.score === 0 && playerTwo.score === 0) {
+  const getWinner = (player1: PlayerInfo | undefined, player2: PlayerInfo | undefined) => {
+    if (player1 && player2 && status === "completed") {
+      if (player1.score === 0 && player2.score === 0) {
         return ""; 
       }
-      return playerOne.score > playerTwo.score ? playerOne.id : playerTwo.id;
+      return player1.score > player2.score ? player1.username : player2.username;
     }
     return undefined;
   };
 
-  const isWinner = getWinner(playerOne, playerTwo);
+  const isWinner = getWinner(player1, player2);
 
   const PlayerCard = ({ player, isWinner }: { player: PlayerInfo | undefined, isWinner: boolean }) => {
     if (!player) {
@@ -30,12 +30,12 @@ const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) =
         <div className="flex items-center space-x-2">
           <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
             {player.image ? (
-              <img src={player.image} alt={player.id} className="w-full h-full rounded-full object-cover" />
+              <img src={player.image} alt={player.username} className="w-full h-full rounded-full object-cover" />
             ) : (
-              <span className="text-sm">{player.id.charAt(0)}</span>
+              <span className="text-sm">{player.username.charAt(0)}</span>
             )}
           </div>
-          <p className={`${status !== "completed" ? "font-medium text-black-500" : ""} font-medium`}>{player.id}</p>
+          <p className={`${status !== "completed" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
         </div>
         <div className={`${status !== "completed" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
           <span className="font-semibold">{player.score}</span>
@@ -47,8 +47,8 @@ const TournamentBracket = ({ id, status, playerOne, playerTwo }: BracketProps) =
   return (
     <div className="p-4 w-64 min-w-64">
       <div className="space-y-1">
-        <PlayerCard player={playerOne} isWinner={isWinner === playerOne?.id} />
-        <PlayerCard player={playerTwo} isWinner={isWinner === playerTwo?.id} />
+        <PlayerCard player={player1} isWinner={isWinner === player1?.username} />
+        <PlayerCard player={player2} isWinner={isWinner === player2?.username} />
       </div>
     </div>
   );
@@ -88,8 +88,8 @@ const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDate, 
               id={bracket.id}
               seqId={bracket.seqId}
               status={bracket.status}
-              playerOne={bracket.playerOne}
-              playerTwo={bracket.playerTwo}
+              player1={bracket.player1}
+              player2={bracket.player2}
             />
           </div>
         ))}

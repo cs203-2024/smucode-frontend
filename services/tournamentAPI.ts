@@ -130,18 +130,18 @@ export const fetchTournamentParticipantsData = async (id: string):Promise<Partic
 
 export const updateBracketScore = async (
     id: string,
-    playerOne: PlayerInfo,
-    playerTwo: PlayerInfo
+    player1: PlayerInfo,
+    player2: PlayerInfo
   ): Promise<string> => {
     try {
       const payload = {
-        playerOne: {
-          id: playerOne.id,
-          score: playerOne.score
+        player1: {
+          id: player1.username,
+          score: player1.score
         },
-        playerTwo: {
-          id: playerTwo.id,
-          score: playerTwo.score
+        player2: {
+          id: player2.username,
+          score: player2.score
         }
       };
 
