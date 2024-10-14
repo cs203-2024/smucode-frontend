@@ -18,7 +18,7 @@ import { MdMemory } from "react-icons/md";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { RiNumbersFill } from "react-icons/ri";
 import { TournamentCardInfo } from '../types';
-import { capitalise, getFormattedDate, getPercentage, getTimeDifference, upperCaseToCapitalised } from '@/lib/utils';
+import { capitalise, getFormattedDateFromString, getPercentage, getTimeUntil, upperCaseToCapitalised } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
@@ -30,7 +30,7 @@ export default function TournamentCard(data: TournamentCardInfo) {
                     <div className='flex w-auto justify-start items-center gap-4'>
                         <Avatar className='w-8 h-8 bg-gray-100'>
                             <AvatarImage src={data.icon ? data.icon:"smu-logo.png"} />
-                            <AvatarFallback>{data.name.substring(0, 3)}</AvatarFallback>
+                            <AvatarFallback>{data.name ? data.name.substring(0, 3):"IMG"}</AvatarFallback>
                         </Avatar>
                         <CardTitle className={cn(
                             data.status != "COMPLETED" ? "text-black":"text-gray-500"
@@ -48,7 +48,7 @@ export default function TournamentCard(data: TournamentCardInfo) {
                         'pt-2',
                         data.status != "COMPLETED" ? "":"text-gray-400"
                     )}>
-                        Registration ends <span className='font-semibold'>{getFormattedDate(new Date(data.signupEndDate))} ({getTimeDifference(new Date(), new Date(data.signupEndDate))})</span>
+                        Registration ends <span className='font-semibold'>{getFormattedDateFromString(data.signupEndDate)} ({getTimeUntil(data.signupEndDate)})</span>
                     </CardDescription>
                 ):(
                     <CardDescription className={cn(
@@ -57,7 +57,7 @@ export default function TournamentCard(data: TournamentCardInfo) {
                     )}>
                         {data.currentRound}  (<span className={cn(
                             data.status === "ACTIVE" ? "inline-block text-red-500":"inline-block"
-                        )}>{getTimeDifference(new Date(), data.currentRoundEndDate)}</span>)
+                        )}>{getTimeUntil(data.currentRoundEndDate)}</span>)
                     </CardDescription>
                 )}
             </CardHeader>
@@ -101,7 +101,7 @@ export default function TournamentCard(data: TournamentCardInfo) {
             </CardContent>
             <CardFooter className='flex justify-between items-center'>
                 <CardDescription className='py-2'>
-                    {getFormattedDate(new Date(data.startDate))} - {getFormattedDate(new Date(data.endDate))}
+                    {getFormattedDateFromString(data.startDate)} - {getFormattedDateFromString(data.endDate)}
                 </CardDescription>
                 <Link href={`tournaments/${data.id}/overview`}>
                     <Button className='font-semibold'>Manage</Button>

@@ -30,7 +30,7 @@ import { MdAccessTimeFilled } from "react-icons/md";
 import { RiNumbersFill } from "react-icons/ri";
 import { FaCircleCheck } from "react-icons/fa6";
 import { UserTournamentCardInfo } from '../types';
-import { capitalise, getFormattedDate, getPercentage, getPlacingString, getTimeDifference, upperCaseToCapitalised } from '@/lib/utils';
+import { capitalise, getFormattedDateFromString, getPercentage, getPlacingString, getTimeUntil, upperCaseToCapitalised } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useToast } from "@/hooks/use-toast";
@@ -79,7 +79,7 @@ export default function UserTournamentCard({data,fetchData}: UserTournamentCardP
                         'pt-2',
                         data.status != "COMPLETED" ? "":"text-gray-400"
                     )}>
-                        Registration ends <span className='font-semibold'>{getFormattedDate(new Date(data.signupEndDate))} ({getTimeDifference(new Date(), new Date(data.signupEndDate))})</span>
+                        Registration ends <span className='font-semibold'>{getFormattedDateFromString(data.signupEndDate)} ({getTimeUntil(data.signupEndDate)})</span>
                     </CardDescription>
                 ):(
                     <CardDescription className={cn(
@@ -90,10 +90,10 @@ export default function UserTournamentCard({data,fetchData}: UserTournamentCardP
                             <>
                                 {data.currentRound}  (<span className={cn(
                                     data.status === "ACTIVE" ? "inline-block text-red-500":"inline-block"
-                                )}>{getTimeDifference(new Date(), data.currentRoundEndDate)}</span>)
+                                )}>{getTimeUntil(data.currentRoundEndDate)}</span>)
                             </>
                         ):(
-                            <span>Tournament Commencing on {getFormattedDate(data.startDate)}</span>
+                            <span>Tournament Commencing on {getFormattedDateFromString(data.startDate)}</span>
                         )}
                     </CardDescription>
                 )}
@@ -139,7 +139,7 @@ export default function UserTournamentCard({data,fetchData}: UserTournamentCardP
             </CardContent>
             <CardFooter className='flex justify-between items-center'>
                 <CardDescription className='py-2'>
-                    {getFormattedDate(new Date(data.startDate))} - {getFormattedDate(new Date(data.endDate))}
+                    {getFormattedDateFromString(data.startDate)} - {getFormattedDateFromString(data.endDate)}
                 </CardDescription>
                 <div className='flex justify-end items-center gap-2'>
                     {data.signupsOpen ? (

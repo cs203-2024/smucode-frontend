@@ -66,10 +66,10 @@ export type TournamentCardInfo = {
     capacity: number;
     format: string;
     band: string;
-    startDate: Date;
-    endDate: Date;
-    signupStartDate: Date;
-    signupEndDate: Date;
+    startDate: string;
+    endDate: string;
+    signupStartDate: string;
+    signupEndDate: string;
     status: string;
     signUpPercentage: number; // numberOfSignups/capcity, computed from backend
     numberOfSignups: number; // derived from signup entity computed from backend
@@ -77,7 +77,7 @@ export type TournamentCardInfo = {
     memWeight: number;
     testCaseWeight: number;
     currentRound: string; // sname of current round
-    currentRoundEndDate: Date; //datetime of when current round ends
+    currentRoundEndDate: string; //datetime of when current round ends
     signupsOpen: boolean; // derived from backend attributes
 };
 
@@ -148,10 +148,10 @@ export type UserTournamentCardInfo = {
     capacity: number;
     format: string;
     band: string;
-    startDate: Date;
-    endDate: Date;
-    signupStartDate: Date;
-    signupEndDate: Date;
+    startDate: string;
+    endDate: string;
+    signupStartDate: string;
+    signupEndDate: string;
     status: string;
     signUpPercentage: number;
     numberOfSignups: number;
@@ -159,7 +159,7 @@ export type UserTournamentCardInfo = {
     memWeight: number;
     testCaseWeight: number;
     currentRound: string; // sname of current round
-    currentRoundEndDate: Date; //datetime of when current round ends
+    currentRoundEndDate: string; //datetime of when current round ends
     signedUp: boolean; // true if user signed up for tournament
     participated: boolean; // true if user is actual participant in tournament
     signupsOpen: boolean; // derived from backend attributes
