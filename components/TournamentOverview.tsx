@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from 'next/image';
 import { useTournamentContext } from "@/context/TournamentContext";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getFormattedDate } from '@/lib/utils';
+import { getFormattedDateFromString } from '@/lib/utils';
 
 const TournamentOverview: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -54,8 +54,8 @@ const TournamentOverview: React.FC = () => {
     band,
     startDate,
     endDate,
-    signUpStartDate,
-    signUpEndDate,
+    signupStartDate,
+    signupEndDate,
     status,
     signUpStatus,
     numberOfSignups,
@@ -101,8 +101,8 @@ const TournamentOverview: React.FC = () => {
               )}
             </div>
             <h3 className="font-semibold text-lg mb-2 text-blue-600 dark:text-blue-400">Tournament Period</h3>
-            <p className="text-gray-600 dark:text-gray-300"><span className="font-medium">Start:</span> {getFormattedDate(startDate)}</p>
-            <p className="text-gray-600 dark:text-gray-300"><span className="font-medium">End:</span> {getFormattedDate(endDate)}</p>
+            <p className="text-gray-600 dark:text-gray-300"><span className="font-medium">Start:</span> {getFormattedDateFromString(startDate)}</p>
+            <p className="text-gray-600 dark:text-gray-300"><span className="font-medium">End:</span> {getFormattedDateFromString(endDate)}</p>
           </div>
 
           {/* Sign Up Period */}
@@ -115,8 +115,8 @@ const TournamentOverview: React.FC = () => {
             </div>
           )}
             <h3 className="font-semibold text-lg mb-2 text-blue-600 dark:text-blue-400">Sign Up Period</h3>
-            <p className="text-gray-600 dark:text-gray-300"><span className="font-medium">Start:</span> {getFormattedDate(signUpStartDate)}</p>
-            <p className="text-gray-600 dark:text-gray-300"><span className="font-medium">Close:</span> {getFormattedDate(signUpEndDate)}</p>
+            <p className="text-gray-600 dark:text-gray-300"><span className="font-medium">Start:</span> {getFormattedDateFromString(signupStartDate)}</p>
+            <p className="text-gray-600 dark:text-gray-300"><span className="font-medium">Close:</span> {getFormattedDateFromString(signupEndDate)}</p>
           </div>
         </div>
 
@@ -149,10 +149,11 @@ const TournamentOverview: React.FC = () => {
         </div>
 
         {/* Score Criteria Section */}
+        { scoreCriteria && (
         <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
           <h3 className="font-semibold text-lg mb-2 text-blue-600 dark:text-blue-400">Score Criteria</h3>
           <div className="grid grid-cols-3 gap-4">
-          {scoreCriteria && Object.entries(scoreCriteria).map(([criterion, value]) => (
+          {Object.entries(scoreCriteria).map(([criterion, value]) => (
             value !== undefined && (
               <div key={criterion} className="text-center">
                 <div className="text-3xl font-bold text-gray-700 dark:text-gray-300">{value}</div>
@@ -162,6 +163,7 @@ const TournamentOverview: React.FC = () => {
            ))}
           </div>
         </div>
+        )}
       </div>
     </div>
   );
