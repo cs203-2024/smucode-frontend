@@ -17,6 +17,19 @@ export function getFormattedDate(input: Date) {
   });
 }
 
+export function getFormattedDateFromString(input: string) {
+  const date = new Date(input);
+
+  if (isNaN(date.getTime())) {
+    throw new Error("Invalid date format");
+  }
+
+  return date.toLocaleString("en-GB", {
+    dateStyle: "short",
+    timeStyle: "short"
+  });
+}
+
 export function getTimeDifference(date1: Date, date2: Date): string {
     if (date1 == null || date2 == null) return "Tournament has not commenced";
     // Get the time difference in milliseconds

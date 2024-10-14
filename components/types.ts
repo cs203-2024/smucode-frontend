@@ -89,16 +89,16 @@ export interface TournamentOverviewProps {
     description: string;
     format: string;
     band?: string;
-    startDate: Date; 
-    endDate: Date;
-    signUpStartDate: Date;
-    signUpEndDate: Date;
+    startDate: string; 
+    endDate: string;
+    signupStartDate: string;
+    signupEndDate: string;
     status: 'UPCOMING' | 'ONGOING' | 'COMPLETED';
     signUpStatus?: 'OPEN' | 'CLOSED';
     organiser: string;
     numberOfSignups: number;
     currentRound?: string;
-    currentRoundEndDate?: Date;
+    currentRoundEndDate?: string;
     participantsCount?: number;
     scoreCriteria?: {
       time: number;
