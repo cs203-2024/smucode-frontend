@@ -313,7 +313,7 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
       />
     </div>
 
-    {filteredRounds.length === 0 ? (
+    {filteredRounds.length === 0 && searchQuery ? (
       <div className="ml-8 mt-1 pb-[80vh] text-sm text-gray-600">
         <p>No results found.</p>
       </div>
