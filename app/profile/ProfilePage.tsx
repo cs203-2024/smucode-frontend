@@ -99,7 +99,7 @@ const ProfilePage: React.FC = () => {
                   <CardTitle>Recent Opponents</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <RecentOpponents />
+                  {/*<RecentOpponents />*/}
                 </CardContent>
               </Card>
               <Card className="col-span-2">
