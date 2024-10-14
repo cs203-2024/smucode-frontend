@@ -1,8 +1,8 @@
 name: Build image and push to ECR
 
 on: # workflow trigger on manual, PR & push to dev
-  push:
-    branches: [dev, prod]
+#  push:
+#    branches: [dev, prod]
   workflow_dispatch:
 
 permissions:
