@@ -253,8 +253,8 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
           </Button>
         )}
       </div>
-      <p className="text-sm text-gray-700">Start Date: {getFormattedDateFromString(startDate)}</p>
-      <p className="text-sm text-gray-700 mb-4">End Date: {getFormattedDateFromString(endDate)}</p>
+      <p className="text-sm text-gray-700">Start Date: {startDate ? getFormattedDateFromString(startDate) : "TBD"}</p>
+      <p className="text-sm text-gray-700 mb-4">End Date: {endDate ? getFormattedDateFromString(endDate) : "TBD"}</p>
       <div className="overflow-x-auto mr-[100px]">
         <div className="inline-grid grid-cols-4 gap-x-5 gap-y-8 pb-4 min-w-[1050px] mr-[130px]">
           {filteredBrackets.map((bracket) => (
