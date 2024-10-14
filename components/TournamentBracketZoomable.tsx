@@ -78,8 +78,8 @@ const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDate, 
   return (
     <div className={`p-6 h-full w-[20vw] min-w-80 flex flex-col`}>
       <h2 className="font-bold mb-4 min-w-70 text-2xl">{name}</h2>
-      <p className="text-gray-700">Start Date: {getFormattedDateFromString(startDate)}</p>
-      <p className="text-gray-700 mb-4">End Date: {getFormattedDateFromString(endDate)}</p>
+      <p className="text-gray-700">Start Date: {startDate ? getFormattedDateFromString(startDate) : "TBD"}</p>
+      <p className="text-gray-700 mb-4">End Date: {startDate ? getFormattedDateFromString(endDate) : "TBD"}</p>
       <div className={`${spacingClass} h-fit justify-center flex flex-col flex-grow overflow-hidden`}>
         {brackets.map((bracket) => (
           <div key={bracket.id} className="flex items-center">
