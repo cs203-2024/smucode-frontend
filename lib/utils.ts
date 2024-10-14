@@ -9,19 +9,11 @@ export function capitalise(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-export function getFormattedDate(input: Date) {
-  return input.toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric"
-  });
-}
-
 export function getFormattedDateFromString(input: string) {
   const date = new Date(input);
 
   if (isNaN(date.getTime())) {
-    throw new Error("Invalid date format");
+    return "Invalid date format";
   }
 
   return date.toLocaleString("en-GB", {
@@ -30,13 +22,20 @@ export function getFormattedDateFromString(input: string) {
   });
 }
 
-export function getTimeDifference(date1: Date, date2: Date): string {
-    if (date1 == null || date2 == null) return "Tournament has not commenced";
-    // Get the time difference in milliseconds
-    if (date2.getTime() - date1.getTime() < 0) {
-      return "Tournament Completed";
+export function getTimeUntil(date1: string): string {
+    if (!date1) return "Invalid date";
+    
+    const futureDate = new Date(date1);
+    const dateNow = new Date();
+    if (isNaN(futureDate.getTime())) {
+      return "Invalid date format";
     }
-    const diffMs = Math.abs(date2.getTime() - date1.getTime());
+  
+    // Get the time difference in milliseconds
+    if (futureDate.getTime() - dateNow.getTime() < 0) {
+      return "Completed";
+    }
+    const diffMs = Math.abs(futureDate.getTime() - dateNow.getTime());
 
     // Convert milliseconds to minutes, hours, and days
     const diffMinutes = Math.floor(diffMs / (1000 * 60));

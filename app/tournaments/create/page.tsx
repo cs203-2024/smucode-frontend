@@ -102,7 +102,9 @@ const formSchema = z.object({
     testCaseWeight: z.number({required_error: "This field is required."}).refine((value) => value <= 100 && value >= 0, {
         message: "Test case ratio weight must be between 0% and 100%."
     }),
-    owner: z.string(),
+    organiser: z.string().min(0, {
+        message: "Organiser name must be at least 0 characters."
+    }),
     icon: z.string() //z.instanceof(File, {message: "Please select a valid file."}).optional(),
 })
 .superRefine((data, ctx) => {
@@ -142,7 +144,7 @@ const formSchema = z.object({
 export default function CreateTournament() {
 
     const {user, logout} = useUserContext();
-    const validUsername = user ? user.username:""
+    //const validUsername = user ? user.username:"";
 
     const [waitingForAxios, setWaitingForAxios] = useState(false);
 
@@ -176,7 +178,7 @@ export default function CreateTournament() {
             timeWeight: 0,
             memWeight: 0,
             testCaseWeight: 0,
-            owner: validUsername,
+            organiser: "admin",
             icon: ""//new File([], "nullIcon.png", { type: "image/png" })
         },
     })

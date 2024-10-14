@@ -2,6 +2,7 @@
 
 import {createContext, useState, ReactNode, useContext, useEffect} from 'react';
 import { User, UserContextType } from '@/components/types';
+import Cookies from 'js-cookie';
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
@@ -31,18 +32,18 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     // setUser(dummyAdminUser);
   // }, []);
   useEffect(() => {
-    const dummyAdminUser: User = {
-      username: "adminDaddy",
-      email: "admin@example.com",
-      profileImageUrl: null,
-      role: "ROLE_ADMIN", // Role is "admin"
-      mu: 25,
-      sigma: 8.333,
-      skillIndex: 0,
-    };
+    // const dummyAdminUser: User = {
+    //   username: "adminDaddy",
+    //   email: "admin@example.com",
+    //   profileImageUrl: null,
+    //   role: "ROLE_ADMIN", // Role is "admin"
+    //   mu: 25,
+    //   sigma: 8.333,
+    //   skillIndex: 0,
+    // };
 
-    // Set the dummy user with the admin role
-    setUser(dummyAdminUser);
+    // // Set the dummy user with the admin role
+    // setUser(dummyAdminUser);
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));

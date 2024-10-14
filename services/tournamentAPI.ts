@@ -17,7 +17,7 @@ interface Tournament {
     timeWeight: number;
     memWeight: number;
     testCaseWeight: number;
-    owner: string;
+    organiser: string;
     icon?: string;//File | undefined;
 }
 
@@ -39,6 +39,7 @@ interface SignUpResponse {
 
 export const createTournament = async (tournamentData: Tournament):Promise<Tournament> => {
     try {
+        console.log(tournamentData);
         const response = await axiosClient.post<Tournament>(`/tournaments/create`, tournamentData);
         return response.data;
     } catch (error) {
