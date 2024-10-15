@@ -1,5 +1,5 @@
 export type PlayerInfo = {
-    id: string;
+    username: string;
     image: string;
     score: number;
 };
@@ -8,8 +8,8 @@ export type BracketProps = {
     id: string;
     seqId: number;
     status: string;
-    playerOne?: PlayerInfo;
-    playerTwo?: PlayerInfo;
+    player1?: PlayerInfo;
+    player2?: PlayerInfo;
     winner?: string;
 };
 
