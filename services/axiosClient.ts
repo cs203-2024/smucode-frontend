@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const axiosClient = axios.create({
-  baseURL: process.env.https://example.com/api,
+  baseURL: process.env.API_BASE_URL,
     headers: {
         'Authorization': `Bearer ${'authToken'}`,
         "Content-Type": "application/json",
