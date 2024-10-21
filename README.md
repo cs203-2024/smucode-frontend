@@ -41,7 +41,7 @@ SMUCode is a web application for managing coding tournaments and competitions. T
 3. Set up environment variables:
    Create a `.env.local` file in the root directory and add the following:
    ```
-   NEXT_PUBLIC_API_BASE_URL=your_api_base_url_here
+   https://example.com/api=your_api_base_url_here
    ```
 
 4. Run the development server:
