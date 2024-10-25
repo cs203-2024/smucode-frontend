@@ -64,7 +64,9 @@ export default function UserDashboardTournamentCard({data,fetchData}: UserDashbo
                 <div className={cn(
                     "text-sm font-semibold",
                     data.status != "COMPLETED" ? "text-black":"text-gray-500"
-                )}>{data.name}</div>
+                )}>
+                    <Link href={`tournaments/${data.id}/overview`}>{data.name}</Link>
+                </div>
                 
                 {data.signupsOpen ? (
                     <CardDescription className={cn(
