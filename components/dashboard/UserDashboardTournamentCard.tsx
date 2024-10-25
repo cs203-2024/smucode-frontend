@@ -114,126 +114,80 @@ export default function UserDashboardTournamentCard({data,fetchData}: UserDashbo
                     {getFormattedDateFromString(data.startDate)} - {getFormattedDateFromString(data.endDate)}
                 </CardDescription>
             </div>
-            <Link href={`tournaments/${data.id}/overview`} className='col-span-1 w-full flex justify-end items-center px-4'>
-                <Button className='font-semibold'>View</Button>
-            </Link>
+            {data.status === "UPCOMING" && data.signupsOpen ? (
+                <div className='col-span-1 w-full flex justify-end items-center'>
+                    <AlertDialogDemo fetchData={fetchData} tournamentId={data.id} username={username} />
+                </div>
+            ):(
+                <Link href={`tournaments/${data.id}/overview`} className='col-span-1 w-full flex justify-end items-center px-4'>
+                    <Button className='font-semibold'>View</Button>
+                </Link>
+            )}
         </Card>
     )
 }
 
-// interface AlertDialogDemoProps {
-//     registered: boolean;
-//     fetchData: () => Promise<void>; // fetchData function returning a Promise
-//     //setRegistered: Dispatch<SetStateAction<boolean>>; // State setter for 'registered'
-//     tournamentId: number;
-//     username: string;
-// }
+interface AlertDialogDemoProps {
+    fetchData: () => Promise<void>; // fetchData function returning a Promise
+    //setRegistered: Dispatch<SetStateAction<boolean>>; // State setter for 'registered'
+    tournamentId: number;
+    username: string;
+}
 
-// function AlertDialogDemo({
-//     registered,
-//     fetchData,
-//     //setRegistered,
-//     tournamentId,
-//     username,
-// }: AlertDialogDemoProps) {
-//     const signUpData = {
-//         username: username,
-//         tournamentId: tournamentId
-//     } as TournamentSignUpInfo;
+function AlertDialogDemo({
+    fetchData,
+    tournamentId,
+    username,
+}: AlertDialogDemoProps) {
+    const signUpData = {
+        username: username,
+        tournamentId: tournamentId
+    } as TournamentSignUpInfo;
 
-//     const { toast } = useToast();
+    const { toast } = useToast();
 
-//     async function confirmSignUp() {
-//         try {
-//             console.log("signing up...");
-//             const response = await signUpForTournament(signUpData);
-//             toast({
-//                 title: "Registration Successful!",
-//                 description: "You have successfully registered for this tournament. You will be notified should your application to participate be accepted",
-//             });
-//             fetchData();
-//             //setRegistered(true);
-//         } catch (error) {
-//             toast({
-//                 title: "Unsuccessful Registration",
-//                 description: "Uh-oh, we encountered a problem while signing you up. Please try again.",
-//                 variant: "destructive",  
-//             });
-//         }
-//     }
+    async function removeSignUp() {
+        try {
+            console.log("removing signup...")
+            const response = await removeSignUpForTournament(signUpData);
+            toast({
+                title: "Successfully Removed Registration!",
+                description: "You have successfully removed your registration from this tournament.",
+            });
+            fetchData();
+            //setRegistered(false);
+        } catch (error) {
+            toast({
+                title: "Error Removing Registration",
+                description: "Looks like you were unable to leave this tournament. Please try again.",
+                variant: "destructive",  
+            });
+        }
+    }
 
-//     async function removeSignUp() {
-//         try {
-//             console.log("removing signup...")
-//             const response = await removeSignUpForTournament(signUpData);
-//             toast({
-//                 title: "Successfully Removed Registration!",
-//                 description: "You have successfully removed your registration from this tournament.",
-//             });
-//             fetchData();
-//             //setRegistered(false);
-//         } catch (error) {
-//             toast({
-//                 title: "Error Removing Registration",
-//                 description: "Looks like you were unable to leave this tournament. Please try again.",
-//                 variant: "destructive",  
-//             });
-//         }
-//     }
-
-//     if (registered) {
-//         return (
-//             <AlertDialog>
-//                 <AlertDialogTrigger asChild>
-                
-//                     <Button variant="ghost" className='flex justify-center items-center gap-2'>
-//                         Registered 
-//                         <FaCircleCheck className='text-sm' />
-//                     </Button>
-                
-//                 </AlertDialogTrigger>
-//                 <AlertDialogContent>
-//                 <AlertDialogHeader>
-//                     <AlertDialogTitle>Leave Tournament</AlertDialogTitle>
-//                     <AlertDialogDescription>
-//                     This action cannot be undone. 
-//                     Your registration will be removed from the tournament system and you may not be able to participate in the tournament again.
-//                     </AlertDialogDescription>
-//                 </AlertDialogHeader>
-//                 <AlertDialogFooter>
-//                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-//                     <AlertDialogAction onClick={removeSignUp}>Leave</AlertDialogAction>
-//                 </AlertDialogFooter>
-//                 </AlertDialogContent>
-//             </AlertDialog>
-//         )
-//     }
-//     return (
-//         <AlertDialog>
-//             <AlertDialogTrigger asChild>
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
             
-//                 <Button variant="outline" className='flex justify-center items-center gap-2'>
-//                     Sign Up 
-//                 </Button>
-
-//             </AlertDialogTrigger>
-//             <AlertDialogContent>
-//             <AlertDialogHeader>
-//                 <AlertDialogTitle>Confirm Tournament Registration</AlertDialogTitle>
-//                 <AlertDialogDescription>
-//                 This action will confirm your registration for this tournament. 
-//                 If you are accepted to participate in the tournament, you will be notified before the commencement of the first round.
-//                 <br/>
-//                 <br/>
-//                 Please ensure that you will be available for the entire duration of the tournament. 
-//                 Otherwise, you may choose to leave this tournament at any time before the registration deadline.
-//                 </AlertDialogDescription>
-//             </AlertDialogHeader>
-//             <AlertDialogFooter>
-//                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-//                 <AlertDialogAction onClick={confirmSignUp}>Confirm</AlertDialogAction>
-//             </AlertDialogFooter>
-//             </AlertDialogContent>
-//         </AlertDialog>
-//     )
-// }
+                <Button variant="outline" className='flex justify-center items-center gap-2 mr-4 text-red-500 hover:text-red-500 font-semibold'>
+                    Leave 
+                    {/* <FaCircleCheck className='text-sm text-green-500' /> */}
+                </Button>
+            
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+            <AlertDialogHeader>
+                <AlertDialogTitle>Leave Tournament</AlertDialogTitle>
+                <AlertDialogDescription>
+                This action cannot be undone. 
+                Your registration will be removed from the tournament system and you may not be able to participate in the tournament again.
+                </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={removeSignUp}>Leave</AlertDialogAction>
+            </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    )
+}
