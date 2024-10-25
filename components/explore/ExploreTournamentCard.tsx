@@ -42,10 +42,13 @@ import { TournamentSignUpInfo } from '../types';
 
 interface ExploreTournamentCardProps {
     data: UserTournamentCardInfo;
-    //fetchData: () => Promise<void>; // fetchData is a function that returns a Promise<void>
+    fetchData: () => Promise<void>; // fetchData is a function that returns a Promise<void>
 };
 
-export default function ExploreTournamentCard({data}: ExploreTournamentCardProps) {
+export default function ExploreTournamentCard({data, fetchData}: ExploreTournamentCardProps) {
+    const { user, logout } = useUserContext();
+    const username = user ? user.username:"";
+
     return (
         <Card className='w-[30%] h-[400px]'>
             <CardHeader>
@@ -134,19 +137,7 @@ export default function ExploreTournamentCard({data}: ExploreTournamentCardProps
                     {getFormattedDateFromString(data.startDate)} - {getFormattedDateFromString(data.endDate)}
                 </CardDescription>
                 <div className='flex justify-end items-center gap-2'>
-                    {/* {data.signupsOpen ? (
-                        <AlertDialogDemo fetchData={fetchData} registered={data.signedUp} tournamentId={data.id} username={username} />
-                    ):(
-                        data.participated ? (
-                            data.status != "COMPLETED" ? (
-                                <div className='flex justify-center items-center text-green-600 font-semibold text-sm px-2 gap-2'>In Progress</div>
-                            ):(
-                                <div className='text-gray-400 font-semibold text-sm px-2'>{getPlacingString(data.placing)}</div>
-                            )
-                        ):(
-                            <div className='flex justify-center items-center text-gray-500 font-semibold text-sm px-2 gap-2'>Closed</div>
-                        )
-                    )} */}
+                    <AlertDialogDemo fetchData={fetchData} tournamentId={data.id} username={username} />
                     <Link href={`tournaments/${data.id}/overview`}>
                         <Button className='font-semibold'>View</Button>
                     </Link>
@@ -156,3 +147,68 @@ export default function ExploreTournamentCard({data}: ExploreTournamentCardProps
     )
 }
 
+interface AlertDialogDemoProps {
+    fetchData: () => Promise<void>; // fetchData function returning a Promise
+    tournamentId: number;
+    username: string;
+}
+
+function AlertDialogDemo({
+    fetchData,
+    tournamentId,
+    username,
+}: AlertDialogDemoProps) {
+    const signUpData = {
+        username: username,
+        tournamentId: tournamentId
+    } as TournamentSignUpInfo;
+
+    const { toast } = useToast();
+
+    async function confirmSignUp() {
+        try {
+            console.log("signing up...");
+            const response = await signUpForTournament(signUpData);
+            toast({
+                title: "Registration Successful!",
+                description: "You have successfully registered for this tournament. You will be notified should your application to participate be accepted",
+            });
+            fetchData();
+        } catch (error) {
+            toast({
+                title: "Unsuccessful Registration",
+                description: "Uh-oh, we encountered a problem while signing you up. Please try again.",
+                variant: "destructive",  
+            });
+        }
+    }
+
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+            
+                <Button variant="outline" className='flex justify-center items-center gap-2'>
+                    Sign Up 
+                </Button>
+
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+            <AlertDialogHeader>
+                <AlertDialogTitle>Confirm Tournament Registration</AlertDialogTitle>
+                <AlertDialogDescription>
+                This action will confirm your registration for this tournament. 
+                If you are accepted to participate in the tournament, you will be notified before the commencement of the first round.
+                <br/>
+                <br/>
+                Please ensure that you will be available for the entire duration of the tournament. 
+                Otherwise, you may choose to leave this tournament at any time before the registration deadline.
+                </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={confirmSignUp}>Confirm</AlertDialogAction>
+            </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    )
+}

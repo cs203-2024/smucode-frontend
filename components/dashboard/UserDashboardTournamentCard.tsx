@@ -56,7 +56,10 @@ export default function UserDashboardTournamentCard({data,fetchData}: UserDashbo
 
     return (
         <Card className='flex w-full grid grid-cols-11 gap-3 h-20 w-full items-center mb-3'>
-            <Image src={data.icon ? `/${data.icon}`:"/smu-logo.png"} className='col-span-2 w-full h-16 object-contain bg-gray-100 ml-2 rounded-md' alt={data.name} width={1000} height={1000} />
+            <Image src={data.icon ? `/${data.icon}`:"/smu-logo.png"} className={cn(
+                'col-span-2 w-full h-16 object-contain bg-gray-100 ml-2 rounded-md',
+                data.status === "COMPLETED" ? "opacity-60":""
+            )} alt={data.name} width={1000} height={1000} />
             <div className='col-span-4 p-4 w-full'>
                 <div className={cn(
                     "text-sm font-semibold",
@@ -129,7 +132,6 @@ export default function UserDashboardTournamentCard({data,fetchData}: UserDashbo
 
 interface AlertDialogDemoProps {
     fetchData: () => Promise<void>; // fetchData function returning a Promise
-    //setRegistered: Dispatch<SetStateAction<boolean>>; // State setter for 'registered'
     tournamentId: number;
     username: string;
 }
@@ -155,7 +157,6 @@ function AlertDialogDemo({
                 description: "You have successfully removed your registration from this tournament.",
             });
             fetchData();
-            //setRegistered(false);
         } catch (error) {
             toast({
                 title: "Error Removing Registration",
