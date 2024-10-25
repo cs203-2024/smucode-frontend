@@ -31,7 +31,7 @@ export default function NotificationCard() {
                 </CardHeader>
                 <CardContent className='w-full'>                
                     
-                    <ScrollArea className='h-[50vh] pr-3'>
+                    <ScrollArea className='h-[55vh] pr-3'>
                         {user?.role === "ROLE_ADMIN" ?
                         notificationData.map((data) => (
                             <Link key={data.id} href={`tournaments/${data.id}/overview`}>
