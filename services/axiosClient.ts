@@ -2,9 +2,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const axiosClient = axios.create({
-  baseURL: process.env.API_BASE_URL,
+  baseURL: "http://localhost:9000/api",
+  //   baseURL: "http://localhost:8000/api",
     headers: {
-        'Authorization': `Bearer ${'authToken'}`,
+        // 'Authorization': `Bearer ${'authToken'}`,
         "Content-Type": "application/json",
     },
   withCredentials: true,
