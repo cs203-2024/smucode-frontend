@@ -55,7 +55,7 @@ export default function ExploreTournamentCard({data, fetchData}: ExploreTourname
                 <Image src={data.icon ? `/${data.icon}`:""} 
                     className={'w-full h-full object-contain bg-gray-100 opacity-80 brightness-[65%] hover:brightness-50 transition duration-200'} alt={data.name} width={1000} height={1000} 
                 />
-                <div className='z-10 absolute top-4 left-4 h-full flex flex-col justify-between items-start pb-6'>
+                <div className='z-10 absolute top-4 left-4 h-full flex flex-col justify-between items-start pb-6 pr-4'>
                     <div>
                         <div className='text-white drop-shadow-lg pb-2'>{capitalise(data.format)}</div>
                         <div className='font-semibold text-4xl text-white drop-shadow-2xl'>{data.name}</div>
