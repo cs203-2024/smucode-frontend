@@ -42,7 +42,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
           username: userDetails.username,
           email: userDetails.email,
           profileImageUrl: userDetails.profileImageUrl,
-          role: userDetails.role,
+          role: response.userDTO.role,
           mu: userDetails.mu,
           sigma: userDetails.sigma,
           skillIndex: userDetails.skillIndex,
