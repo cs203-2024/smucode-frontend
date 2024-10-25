@@ -189,10 +189,15 @@ export default function CreateTournament() {
         setWaitingForAxios(true);
         const startDateWithTime = new Date(values.startDate);
         startDateWithTime.setHours(startHour, startMin, 0, 0);
+        startDateWithTime.setTime(startDateWithTime.getTime() + 8 * 60 * 60 * 1000);
+
         const endDateWithTime = new Date(values.endDate);
         endDateWithTime.setHours(endHour, endMin, 0, 0);
+        endDateWithTime.setTime(endDateWithTime.getTime() + 8 * 60 * 60 * 1000);
+
         const signUpDateWithTime = new Date(values.startDate);
         signUpDateWithTime.setHours(signUpHour, signUpMin, 0, 0);
+        signUpDateWithTime.setTime(signUpDateWithTime.getTime() + 8 * 60 * 60 * 1000);
         const statusCaps = values.status.toUpperCase();
         const bandCaps = values.band.toUpperCase();
 
