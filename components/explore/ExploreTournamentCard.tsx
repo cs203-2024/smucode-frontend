@@ -50,8 +50,8 @@ export default function ExploreTournamentCard({data, fetchData}: ExploreTourname
     const username = user ? user.username:"";
 
     return (
-        <Card className='w-[30%] h-[50vh] p-0 overflow-hidden'>
-            <div className='w-full h-4/6 relative'>
+        <Card className='w-[30%] h-[52vh] p-0 overflow-hidden'>
+            <div className='w-full h-[60%] relative'>
                 <Image src={data.icon ? `/${data.icon}`:""} 
                     className={'w-full h-full object-contain bg-gray-100 opacity-80 brightness-[65%] hover:brightness-50 transition duration-200'} alt={data.name} width={1000} height={1000} 
                 />
@@ -82,7 +82,11 @@ export default function ExploreTournamentCard({data, fetchData}: ExploreTourname
                     </div>
                 </div>
             </div>
-            <CardContent className='mb-0 py-2'>                
+            <CardContent className='mb-0 py-2'>    
+                <div className='flex justify-start items-center py-2 gap-2'>
+                    Period: 
+                    <div className='rounded-full font-semibold'>{getFormattedDateFromString(data.startDate)} to {getFormattedDateFromString(data.endDate)}</div>
+                </div>            
                 <div className='flex items-center gap-2 justify-between py-2'>
                     <Progress value={getPercentage(data.numberOfSignups, data.capacity)} className={cn(
                         'h-[8px] w-[60%]',
@@ -96,7 +100,7 @@ export default function ExploreTournamentCard({data, fetchData}: ExploreTourname
             </CardContent>
             <CardFooter className='flex justify-between items-center mt-0 py-0'>
                 <CardDescription className='py-2'>
-                    {getFormattedDateFromString(data.startDate)} - {getFormattedDateFromString(data.endDate)}
+                    Register by <span className='font-semibold'>{getFormattedDateFromString(data.signupEndDate)}</span>
                 </CardDescription>
                 <div className='flex justify-end items-center gap-2'>
                     <AlertDialogDemo fetchData={fetchData} tournamentId={data.id} username={username} />

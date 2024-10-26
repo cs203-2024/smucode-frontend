@@ -62,7 +62,7 @@ export default function UserDashboardTournamentCard({data,fetchData}: UserDashbo
             )} alt={data.name} width={1000} height={1000} />
             <div className='col-span-4 p-4 w-full'>
                 <div className={cn(
-                    "text-sm font-semibold",
+                    "text-sm font-semibold hover:opacity-75 transition duration-150",
                     data.status != "COMPLETED" ? "text-black":"text-gray-500"
                 )}>
                     <Link href={`tournaments/${data.id}/overview`}>{data.name}</Link>

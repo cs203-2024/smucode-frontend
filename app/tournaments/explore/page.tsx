@@ -35,9 +35,9 @@ export default function ExplorePage() {
 
     return (
         <main className="w-full px-8 pt-4 mt-[60px] mb-8">
-            <div className="pb-6 w-full">
-                <div className="font-bold text-2xl text-center p-2">Explore Tournaments</div>
-                <div className="text-sm text-center">Find the latest tournaments happening around you</div>
+            <div className="pb-8 w-full">
+                <div className="font-bold text-2xl text-center p-3">Explore Tournaments</div>
+                <div className="text-md text-center text-gray-600">Find the latest tournaments happening around you</div>
             </div>
             <ScrollArea>
                 <div className="flex flex-wrap justify-center items-start gap-4">

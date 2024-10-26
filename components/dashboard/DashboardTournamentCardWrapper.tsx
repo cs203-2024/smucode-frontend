@@ -107,11 +107,11 @@ export default function DashboardTournamentCardWrapper() {
 
                                         {/* Uncomment below when real data is present */}
 
-                                        {/* {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
+                                        {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
                                             <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
                                         )):userData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
-                                            <UserTournamentCard key={data.id} data={data} fetchData={() => fetchData(username)}  />
-                                        ))} */}
+                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
+                                        ))}
                                     </div>
                                 </ScrollArea>
                             </TabsContent>
@@ -127,11 +127,11 @@ export default function DashboardTournamentCardWrapper() {
 
                                         {/* Uncomment below when real data is present */}
 
-                                        {/* {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
+                                        {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
                                             <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
-                                        )):userData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
-                                            <UserTournamentCard key={data.id} data={data} fetchData={() => fetchData(username)}  />
-                                        ))} */}
+                                        )):userData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
+                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
+                                        ))}
                                     </div>
                                 </ScrollArea>
                             </TabsContent>
@@ -147,11 +147,11 @@ export default function DashboardTournamentCardWrapper() {
 
                                         {/* Uncomment below when real data is present */}
 
-                                        {/* {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
+                                        {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
                                             <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
-                                        )):userData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
-                                            <UserTournamentCard key={data.id} data={data} fetchData={() => fetchData(username)}  />
-                                        ))} */}
+                                        )):userData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
+                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
+                                        ))}
                                     </div>
                                 </ScrollArea>
                             </TabsContent>

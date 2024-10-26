@@ -438,7 +438,7 @@ export const userNotificationData = [
         "id": 1,
         "category": "alert",
         "message": "Round Ending Soon",
-        "description": "Your have an unCOMPLETED round in this tournament. Please attempt the round before it ends. Failure to do so will result in a walkover for your opponent",
+        "description": "Your have an uncompleted round in this tournament. Please attempt the round before it ends. Failure to do so will result in a walkover for your opponent",
         "datetime": new Date(),
         "tournament": {
             "id": 1,
