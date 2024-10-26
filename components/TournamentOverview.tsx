@@ -1,53 +1,112 @@
 "use client";
 
-import { useState } from 'react';
-import { Badge } from "@/components/ui/badge";
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useTournamentContext } from "@/context/TournamentContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getFormattedDateFromString } from '@/lib/utils';
+import { Badge } from "@/components/ui/badge"
+import { Calendar, LoaderCircle } from 'lucide-react';
+import { useUserContext } from '@/context/UserContext';
+import { toast } from 'sonner';
+import { removeSignUpForTournament, signUpForTournament } from '@/services/tournamentAPI';
+import { TournamentSignUpInfo } from './types';
+import { Button } from './ui/button';
+import { Dialog, DialogContent, DialogOverlay, DialogTitle } from '@radix-ui/react-dialog';
 
 const TournamentOverview: React.FC = () => {
+  const { user } = useUserContext();
   const [error, setError] = useState<string | null>(null);
   const { loadingTournamentContext, overviewData } = useTournamentContext();
+  const [isSigningUp, setIsSigningUp] = useState(false);
+  const [isRemovingSignUp, setIsRemovingSignUp] = useState(false);
+  const [signedUp, setSignedUp] = useState(false);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
+  const [canSignUp, setCanSignUp] = useState(false);
 
+  useEffect(() => {
+    if(user){
+      // User can only sign up when tournament has not started and when they have not sign up yet
+      setCanSignUp(overviewData?.status === "UPCOMING" && user?.role === "ROLE_USER" && !signedUp);
+    }
+  }, [overviewData?.status, user]);
+  
+  const handleTournamentSignUp = async () => {
+    
+    if (canSignUp && !isSigningUp) {
+      setIsSigningUp(true);
+      try {
+        const signUpData = {
+          username: user?.username,
+          tournamentId: id
+        } as unknown as TournamentSignUpInfo;
+        
+        await signUpForTournament(signUpData);
+        toast.success("Signed up successfully!");
+        setSignedUp(true);
+      } catch (error) {
+        console.error("Failed to sign up:", error);
+        toast.error("Failed to sign up. Please try again.");
+      } finally {
+        setIsSigningUp(false);
+      }
+    }
+  };
+
+  const handleTournamentRemoveSignUp = async () => {
+    
+    if (signedUp && !isRemovingSignUp) {
+      setIsRemovingSignUp(true);
+      try {
+        const signUpData = {
+          username: user?.username,
+          tournamentId: id
+        } as unknown as TournamentSignUpInfo;
+        
+        await removeSignUpForTournament(signUpData);
+        toast.success("Successfully Removed Registration!"); 
+        setSignedUp(false);
+        
+      } catch (error) {
+        console.error("Failed to remove registration:", error);
+        toast.error("Failed to remove registration. Please try again.");
+      } finally {
+        setIsRemovingSignUp(false);
+      }
+    }
+  };
+  // Loading State
   if (loadingTournamentContext) {
     return (
-      <div className="w-full space-y-6">
-        <h2 className="text-2xl font-bold text-black ml-[12px] mt-[2px]">Tournament Overview</h2>
-        <Skeleton className="h-[85px] rounded-lg mx-6" />
-        <div className="p-6 space-y-6 h-[65vh] overflow-y-scroll">
-          <div className="grid md:grid-cols-2 gap-6">
-            <Skeleton className="h-64 w-full rounded-lg" /> 
-            <Skeleton className="p-4 rounded-lg shadow"/>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            <Skeleton className="h-[110px] p-4 rounded-lg shadow"/>
-            <Skeleton className="h-[110px] p-4 rounded-lg shadow"/>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            <Skeleton className="h-20 p-4 rounded-lg shadow"/>
-            <Skeleton className="h-20 p-4 rounded-lg shadow"/>
-          </div>
-          <Skeleton className="h-12 p-4 rounded-lg shadow"/>
-          <Skeleton className="h-12 p-4 rounded-lg shadow"/>
+      <div className="w-full">
+        <Skeleton className="mt-10 mx-[calc(18%)] h-[260px]" />
+        <div className='grid text-sm grid-cols-[minmax(auto,70%)_minmax(auto,30%)] w-[calc(60%)] mx-[calc(20%)] mt-14 gap-x-[6em] gap-y-[3em]'>
+        <Skeleton className='w-full rounded-lg h-[300px]'/>
+        <div className='w-[80%] mx-auto'>
+        <Skeleton className="rounded-lg h-[300px]"/>
         </div>
-      </div>
+        </div>
+      </div> 
     );
   }
 
+  // Error State
   if (error) {
     return <div className="text-center p-4 text-red-500 mt-10">{error}</div>;
   }
 
+  // No Data State
   if (!overviewData) {
     return <div className="text-center p-4 mt-10">No tournament data available</div>;
   }
 
+  // Destructure Overview Data
   const {
     id,
     icon,
     name,
+    organiser,
     capacity,
     description,
     format,
@@ -57,115 +116,140 @@ const TournamentOverview: React.FC = () => {
     signupStartDate,
     signupEndDate,
     status,
-    signUpStatus,
     numberOfSignups,
     currentRound,
     scoreCriteria,
   } = overviewData;
 
   return (
-    <div className="w-full space-y-6">
-      <h2 className="text-2xl font-bold text-black ml-[12px] mt-[2px]">Tournament Overview</h2>
-      <div className="bg-blue-600 text-white p-6 rounded-lg mx-6">
-        <h1 className="text-3xl font-bold text-center">{name}</h1>
-      </div>
-
-      <div className="p-6 space-y-6 h-[65vh] overflow-y-scroll">
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="relative bg-white rounded-lg shadow h-64">
-            <Image
-              src={icon || '/assets/images/tournament_default.png'}
-              alt="Tournament Image"
-              fill
-              className="object-contain rounded-lg"
-            />
-          </div>
-
-          {/* Description beside the image */}
-          <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
-            <h3 className="font-semibold text-lg mb-2 text-blue-600 dark:text-blue-400">Description</h3>
-            <p className="text-gray-600 dark:text-gray-300">{description || 'No description available.'}</p>
-          </div>
+    <div className="w-full overflow-y-auto">
+      {/* Header Section */}
+      <div className="bg-white h-[260px] text-sm shadow-sm p-6 rounded-lg flex justify-between mt-10 mx-[calc(18%)]">
+        <div>
+        <div className="flex items-center gap-3 mt-2">
+          <h1 className="text-2xl font-bold">{name}</h1>
+          <Badge className={`${status === 'ONGOING' ? "bg-green-500" : status === 'UPCOMING' ? "bg-yellow-500" : "bg-red-500"}`}>
+            {status}
+          </Badge>
         </div>
-
-        {/* Period Information */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Tournament Period */}
-          <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow relative">
-            <div className="absolute top-2 m-2 right-2 flex space-x-2">
-              <Badge className={`text-sm px-2 py-1 ${status === 'ONGOING' ? 'bg-green-500' : status === 'UPCOMING' ? 'bg-yellow-500' : 'bg-red-500'}`}>
-                {status}
-              </Badge>
-              {currentRound && (
-                <Badge className="text-sm px-2 py-1 bg-blue-500">{currentRound}</Badge>
-              )}
-            </div>
-            <h3 className="font-semibold text-lg mb-2 text-blue-600 dark:text-blue-400">Tournament Period</h3>
-            <p className="text-gray-600 dark:text-gray-300"><span className="font-medium">Start:</span> {getFormattedDateFromString(startDate)}</p>
-            <p className="text-gray-600 dark:text-gray-300"><span className="font-medium">End:</span> {getFormattedDateFromString(endDate)}</p>
-          </div>
-
-          {/* Sign Up Period */}
-          <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow relative">
-          {signUpStatus && (
-            <div className="absolute top-2 right-2">
-              <Badge className={`text-sm m-2 px-2 py-1 ${signUpStatus === 'OPEN' ? 'bg-green-500' : 'bg-red-500'}`}>
-                {signUpStatus}
-              </Badge>
-            </div>
-          )}
-            <h3 className="font-semibold text-lg mb-2 text-blue-600 dark:text-blue-400">Sign Up Period</h3>
-            <p className="text-gray-600 dark:text-gray-300"><span className="font-medium">Start:</span> {getFormattedDateFromString(signupStartDate)}</p>
-            <p className="text-gray-600 dark:text-gray-300"><span className="font-medium">Close:</span> {getFormattedDateFromString(signupEndDate)}</p>
-          </div>
-        </div>
-
-        {/* Format and Band Section */}
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
-            <h3 className="font-semibold text-lg mb-2 text-blue-600 dark:text-blue-400">Format</h3>
-            <p className="text-gray-600 dark:text-gray-300">{format || 'No format specified.'}</p>
-          </div>
-          <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
-            <h3 className="font-semibold text-lg mb-2 text-blue-600 dark:text-blue-400">Band</h3>
-            <p className="text-gray-600 dark:text-gray-300">{band || 'No band specified.'}</p>
-          </div>
-        </div>
-
-        {/* Participants Section */}
-        <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
-          <h3 className="font-semibold text-lg mb-2 text-blue-600 dark:text-blue-400">Sign Ups</h3>
-          <div className="flex items-center">
-            <div className="flex-grow bg-gray-200 dark:bg-gray-600 rounded-full h-4">
-              <div
-                className="bg-blue-500 h-4 rounded-full"
-                style={{ width: `${(numberOfSignups / capacity) * 100}%` }}
-              ></div>
-            </div>
-            <p className="ml-4 font-medium text-gray-700 dark:text-gray-300">
-              {numberOfSignups} / {capacity}
+          <p className="text-gray-600 mt-8">
+            Organized by {organiser}
+          </p>
+          <div className="flex items-center gap-1">
+          <Calendar size={14} className='mt-2.5'></Calendar>
+            <p className="text-gray-600 mt-2">
+              {getFormattedDateFromString(startDate)} - {getFormattedDateFromString(endDate)}
             </p>
           </div>
-        </div>
+          { signedUp &&
+            <Button variant="outline" className="logo_gradient text-white font-semibold w-[100px] mt-8" onClick={() => setIsRemoveDialogOpen(true)}>
+              Registered
+            </Button>
+          }
+          { canSignUp &&
+            <Button variant="outline" className="logo_gradient text-white font-semibold w-[110px] mt-8" onClick={() => setIsConfirmDialogOpen(true)}>
+              Sign Up
+            </Button>
+          }
+          
 
-        {/* Score Criteria Section */}
-        { scoreCriteria && (
-        <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
-          <h3 className="font-semibold text-lg mb-2 text-blue-600 dark:text-blue-400">Score Criteria</h3>
-          <div className="grid grid-cols-3 gap-4">
-          {Object.entries(scoreCriteria).map(([criterion, value]) => (
-            value !== undefined && (
-              <div key={criterion} className="text-center">
-                <div className="text-3xl font-bold text-gray-700 dark:text-gray-300">{value}</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400 capitalize">{criterion}</div>
-              </div>
-            )
-           ))}
+        </div>
+        <Image
+          src={icon || '/assets/images/tournament_default.png'}
+          alt="Tournament Image"
+          width={300}
+          height={300}
+          className="object-cover rounded-lg"
+        />
+      </div>
+  
+      <div className='mx-[calc(20%)] text-xl font-semibold mt-8 mb-6'>
+        <p>Tournament Details</p>
+      </div>
+      <div className='grid text-sm grid-cols-[minmax(auto,70%)_minmax(auto,30%)] w-[calc(60%)] mx-[calc(20%)] gap-x-[6em] gap-y-[3em]'>
+        <div className='w-full bg-transparent border-t-2'>
+        <div className="space-y-2 mt-10">
+            <p className="text-gray-700 mb-6">{description || 'No description available.'}</p>
+            <p><b>Format:</b> {format}</p>
+            <p><b>Band:</b> {band}</p>
+            <p><b>Sign ups:</b> {numberOfSignups}/{capacity}</p>
+            <p><b>Capacity:</b> {capacity}</p>
+            <p><b>Current Round:</b> {currentRound || 'Not started'}</p>
+            <div>
+              <h3 className="font-semibold mb-1">Score Criteria:</h3>
+              {scoreCriteria ? (
+                <ul className="list-disc list-inside space-y-2">
+                  {Object.entries(scoreCriteria).map(([criteria, points], index) => (
+                    <li key={index}>
+                      <b>{criteria.charAt(0).toUpperCase() + criteria.slice(1)}</b>: {points}%
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Not specified</p>
+              )}
+            </div>
           </div>
         </div>
-        )}
+        <div className='w-[80%] mx-auto rounded-lg'>
+        <div className="bg-white shadow p-6 rounded-lg h-[300px] text-md">
+          <h2 className="text-md font-semibold mb-4">Tournament Timeline</h2>
+          <div className="space-y-2 text-sm">
+            <div>
+              <p><u>Sign-up period</u></p>
+              <p>{getFormattedDateFromString(signupStartDate)} - {getFormattedDateFromString(signupEndDate)}</p>
+            </div>
+            <br></br>
+            <div>
+              <p><u>Tournament period</u></p>
+              <p>{getFormattedDateFromString(startDate)} - {getFormattedDateFromString(endDate)}</p>
+            </div>
+          </div>
+        </div>
+        </div> 
       </div>
+
+
+      <Dialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
+        <DialogOverlay className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <DialogContent className="bg-white p-6 rounded-md shadow-md w-[400px] text-sm">
+            <DialogTitle className="font-medium text-md">Confirm Tournament Registration</DialogTitle>
+                <br/>
+                This action will confirm your registration for this tournament. 
+                If you are accepted to participate in the tournament, you will be notified before the commencement of the first round.
+                <br/>
+                <br/>
+                Please ensure that you will be available for the entire duration of the tournament. 
+                Otherwise, you may choose to leave this tournament at any time before the registration deadline.
+            <div className="flex justify-end space-x-2 mt-4">
+              <Button variant="outline" onClick={() => setIsConfirmDialogOpen(false)}>Cancel</Button>
+              <Button className="w-[110px]" onClick={handleTournamentSignUp}>
+                    {isSigningUp?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Confirm")}
+                </Button>
+            </div>
+          </DialogContent>
+        </DialogOverlay>
+      </Dialog>
+      <Dialog open={isRemoveDialogOpen} onOpenChange={setIsRemoveDialogOpen}>
+        <DialogOverlay className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <DialogContent className="bg-white p-6 rounded-md shadow-md w-[400px] text-sm">
+            <DialogTitle className="font-medium text-md">Leave Tournament</DialogTitle>
+                <br/>
+                This action cannot be undone. 
+                Your registration will be removed from the tournament system and you may not be able to participate in the tournament again.
+                <br/>
+            <div className="flex justify-end space-x-2 mt-4">
+              <Button variant="outline" onClick={() => setIsRemoveDialogOpen(false)}>Cancel</Button>
+              <Button className="w-[110px]" onClick={handleTournamentRemoveSignUp}>
+                    {isRemovingSignUp?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Leave")}
+                </Button>
+            </div>
+          </DialogContent>
+        </DialogOverlay>
+      </Dialog>
     </div>
+
+    
   );
 };
 

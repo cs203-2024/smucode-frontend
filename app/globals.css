@@ -94,8 +94,11 @@
   @apply bg-gradient-to-br from-[#22FB9E] to-[#30A6FD];
 }
 
+.logo_text_gradient {
+  @apply bg-gradient-to-br from-[#22FB9E] to-[#30A6FD] bg-clip-text text-transparent;
+}
 /* Nav Component */
 .logo_text {
-  @apply font-poppins font-semibold text-lg text-black tracking-wide;
+  @apply font-poppins font-semibold text-lg tracking-wide;
 }
 
