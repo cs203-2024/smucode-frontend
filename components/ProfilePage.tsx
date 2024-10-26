@@ -10,30 +10,71 @@ import {
 import { RecentOpponents } from "@/app/profile/RecentOpponents";
 import { Button } from "@/components/ui/new-york/button";
 import { useUserContext } from "@/context/UserContext";
-import { getCardData } from "./cardData";
+import { getCardData } from "../app/profile/cardData";
 import { User } from "@/components/types";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import Link from "next/link";
 
-const ProfilePage: React.FC = () => {
-  const { user } = useUserContext();
-  console.log("User from context:", user);
-  // if (loading) {
-  //   return <div className="text-center p-4 mt-10">Loading user data...</div>;
-  // }
+interface ProfilePageProps {
+  username: string;
+}
 
-  // if (error) {
-  //   return <div className="text-center p-4 text-red-500 mt-10">{error}</div>;
-  // }
+const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // if (!user) {
-  //   return <div className="text-center p-4 mt-10">No user data available</div>;
-  // }
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`/api/users/${username}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const data: User = await response.json();
+        setUser(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (user) {
-    const cardData = getCardData(user);
+    fetchUserData();
+  }, [username]);
 
-    const userDetails = [{ label: "Email", value: user?.email }];
+  if (loading) {
+    return <div className="text-center p-4 mt-10">Loading user data...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center p-4 text-red-500 mt-10">{error}</div>;
+  }
+
+  if (!user) {
+    return <div className="text-center p-4 mt-10">No user data available</div>;
+  }
+
+  const cardData = getCardData(user);
+  const userDetails = [{ label: "Email", value: user?.email }];
+  // const { user } = useUserContext();
+  // console.log("User from context:", user);
+  // // if (loading) {
+  // //   return <div className="text-center p-4 mt-10">Loading user data...</div>;
+  // // }
+
+  // // if (error) {
+  // //   return <div className="text-center p-4 text-red-500 mt-10">{error}</div>;
+  // // }
+
+  // // if (!user) {
+  // //   return <div className="text-center p-4 mt-10">No user data available</div>;
+  // // }
+
+  // if (user) {
+  //   const cardData = getCardData(user);
+
+  //   const userDetails = [{ label: "Email", value: user?.email }];
 
     return (
       <Tooltip.Provider>
