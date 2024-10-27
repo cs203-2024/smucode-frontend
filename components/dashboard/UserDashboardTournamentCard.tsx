@@ -1,18 +1,12 @@
 "use client"
 
-import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
+import React, {useState} from 'react';
 import {
     Card,
-    CardContent,
     CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -28,17 +22,14 @@ import Image from 'next/image';
 import { MdMemory } from "react-icons/md";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { RiNumbersFill } from "react-icons/ri";
-import { FaCircleCheck } from "react-icons/fa6";
 import { UserTournamentCardInfo } from '../types';
-import { capitalise, getFormattedDateFromString, getPercentage, getPlacingString, getTimeUntil, upperCaseToCapitalised } from '@/lib/utils';
+import { getFormattedDateFromString, getPlacingString, getTimeUntil } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
 import { useUserContext } from '@/context/UserContext';
 
-import { signUpForTournament, removeSignUpForTournament } from '@/services/tournamentAPI';
-import { TournamentSignUpInfo } from '../types';
+import { removeSignUpForTournament } from '@/services/tournamentAPI';
 
 interface UserDashboardTournamentCardProps {
     data: UserTournamentCardInfo;
@@ -46,13 +37,8 @@ interface UserDashboardTournamentCardProps {
 };
 
 export default function UserDashboardTournamentCard({data,fetchData}: UserDashboardTournamentCardProps) {
-    const {user, logout} = useUserContext();
+    const {user} = useUserContext();
     const username = user ? user.username:"";
-    //const [registered, setRegistered] = useState(data.signedUp);
-
-    // useEffect(() => {
-    //     setRegistered(data.signedUp);
-    // }, [user, registered]);
 
     return (
         <Card className='flex w-full grid grid-cols-11 gap-3 h-20 w-full items-center mb-3'>
@@ -141,12 +127,7 @@ interface AlertDialogDemoProps {
 function AlertDialogDemo({
     fetchData,
     tournamentId,
-    username,
 }: AlertDialogDemoProps) {
-    const signUpData = {
-        username: username,
-        tournamentId: tournamentId
-    } as TournamentSignUpInfo;
 
     const { toast } = useToast();
 

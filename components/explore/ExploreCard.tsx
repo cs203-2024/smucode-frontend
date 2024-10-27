@@ -24,21 +24,17 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
-import Image from 'next/image';
 import { MdMemory } from "react-icons/md";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { RiNumbersFill } from "react-icons/ri";
-import { FaCircleCheck } from "react-icons/fa6";
 import { UserTournamentCardInfo } from '../types';
-import { capitalise, getFormattedDateFromString, getPercentage, getPlacingString, getTimeUntil, upperCaseToCapitalised } from '@/lib/utils';
+import { capitalise, getFormattedDateFromString, getPercentage, getTimeUntil, upperCaseToCapitalised } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
 import { useUserContext } from '@/context/UserContext';
 
-import { signUpForTournament, removeSignUpForTournament } from '@/services/tournamentAPI';
-import { TournamentSignUpInfo } from '../types';
+import { signUpForTournament } from '@/services/tournamentAPI';
 
 interface ExploreTournamentCardProps {
     data: UserTournamentCardInfo;
@@ -46,7 +42,7 @@ interface ExploreTournamentCardProps {
 };
 
 export default function ExploreTournamentCard({data, fetchData}: ExploreTournamentCardProps) {
-    const { user, logout } = useUserContext();
+    const { user } = useUserContext();
     const username = user ? user.username:"";
 
     return (
@@ -158,10 +154,6 @@ function AlertDialogDemo({
     tournamentId,
     username,
 }: AlertDialogDemoProps) {
-    const signUpData = {
-        username: username,
-        tournamentId: tournamentId
-    } as TournamentSignUpInfo;
 
     const { toast } = useToast();
 

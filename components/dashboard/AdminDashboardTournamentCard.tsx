@@ -46,13 +46,8 @@ interface AdminDashboardTournamentCardProps {
 };
 
 export default function AdminDashboardTournamentCard({data,fetchData}: AdminDashboardTournamentCardProps) {
-    const {user, logout} = useUserContext();
+    const {user} = useUserContext();
     const username = user ? user.username:"";
-    //const [registered, setRegistered] = useState(data.signedUp);
-
-    // useEffect(() => {
-    //     setRegistered(data.signedUp);
-    // }, [user, registered]);
 
     return (
         <Card className='flex w-full grid grid-cols-12 gap-3 h-20 w-full items-center mb-3'>

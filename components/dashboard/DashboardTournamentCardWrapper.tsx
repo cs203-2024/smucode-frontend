@@ -32,9 +32,6 @@ export default function DashboardTournamentCardWrapper() {
     const [adminData, setAdminData] = useState<TournamentCardInfo[]>([]); // Use state for adminData
     const [userData, setUserData] = useState<UserTournamentCardInfo[]>([]);
 
-    // let adminData: TournamentCardInfo[] = [];
-    // let userData: UserTournamentCardInfo[] = [];
-
     async function getDataForAdmin(username: string) {
         try {
             const response = await getAllTournamentsCreatedByAdmin(username);
@@ -75,12 +72,6 @@ export default function DashboardTournamentCardWrapper() {
     return (
         <div>
             <Card className='w-full'>
-                {/* <CardHeader>
-                    <CardTitle>My Tournaments</CardTitle>
-                    <CardDescription>
-                        {user?.role === "ROLE_ADMIN" ? "Manage all tournaments created by me":"View all available and participated tournaments"}
-                    </CardDescription>
-                </CardHeader> */}
                 <CardContent>
                     <Tabs defaultValue="ongoing" className="w-full">
                         <div className='flex justify-between items-end pt-3'>
