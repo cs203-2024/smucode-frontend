@@ -3,31 +3,12 @@ import Cookies from "js-cookie";
 import router from "next/router";
 
 const axiosClient = axios.create({
-  baseURL: "http://localhost:8000/api",
-  //   baseURL: "http://localhost:8000/api",
+  baseURL: process.env.API_BASE_URL,
     headers: {
         "Content-Type": "application/json",
     },
   withCredentials: true,
 });
-
-// Request interceptor to attached JWT to auth header
-axiosClient.interceptors.request.use(
-    function (config) {
-        const accessToken = Cookies.get('accessToken'); // Get the 'authToken' cookie
-
-        if (accessToken) {
-            config.headers['Authorization'] = `Bearer ${accessToken}`;
-        }
-
-        config.withCredentials = true;
-
-        return config;
-    },
-    function (error) {
-        return Promise.reject(error);
-    }
-);
 
 
 // Response interceptor for handling errors globally
