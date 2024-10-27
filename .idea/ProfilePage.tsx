@@ -14,43 +14,33 @@ import { getCardData } from "../app/profile/cardData";
 import { User } from "@/components/types";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { fetchUserData } from "./mockApi";
 
 interface ProfilePageProps {
   username: string;
 }
 
 const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
-  const { user } = useUserContext();
-  console.log("User from context:", user);
-
-  // const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // const fetchUserData = async () => {
-    const fetchUser = async () => {
+    const fetchUserData = async () => {
       try {
-        // const response = await fetch(`/api/users/${username}`);
-        // if (!response.ok) {
-        //   throw new Error("Failed to fetch user data");
-        // }
-        // const data: User = await response.json();
-        const data = await fetchUserData("1"); // Use ID "1" as a placeholder
-        if (!data) {
+        const response = await fetch(`/api/users/${username}`);
+        if (!response.ok) {
           throw new Error("Failed to fetch user data");
         }
-        // setUser(data);
+        const data: User = await response.json();
+        setUser(data);
       } catch (err) {
-        setError((err as Error).message);
+        setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUser();
+    fetchUserData();
   }, [username]);
 
   if (loading) {
@@ -81,10 +71,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
   // //   return <div className="text-center p-4 mt-10">No user data available</div>;
   // // }
 
-  if (user) {
-    //   const cardData = getCardData(user);
+  // if (user) {
+  //   const cardData = getCardData(user);
 
-    //   const userDetails = [{ label: "Email", value: user?.email }];
+  //   const userDetails = [{ label: "Email", value: user?.email }];
 
     return (
       <Tooltip.Provider>
@@ -105,11 +95,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
                     placeholder="blur"
                     blurDataURL="data:image/png;base64,iVBORw0KGg...AA"
                   />
-                  {user?.username === username && ( // Conditional rendering
-                    <Button className="bg-blue-500 text-white hover:bg-blue-600 px-8 py-2 mt-4">
-                      Edit Profile
-                    </Button>
-                  )}
+                  <Button className="bg-blue-500 text-white hover:bg-blue-600 px-8 py-2 mt-4">
+                    Edit Profile
+                  </Button>
                 </div>
                 <div className="w-2/3 pl-6">
                   <div className="border-b pb-4 mb-4">
@@ -151,7 +139,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
                 <CardHeader>
                   <CardTitle>Recent Opponents</CardTitle>
                 </CardHeader>
-                <CardContent>{/*<RecentOpponents />*/}</CardContent>
+                <CardContent>
+                  {/*<RecentOpponents />*/}
+                </CardContent>
               </Card>
               <Card className="col-span-2">
                 <CardHeader>
@@ -164,7 +154,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
         </div>
       </Tooltip.Provider>
     );
-  } else {
+  }
+  else {
     return (
       <main className="flex flex-col justify-center items-center mt-[60px] w-full min-h-full p-60">
         <div className="text-lg p-4">401 | You need to login dude.</div>
@@ -172,7 +163,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
           <Button>Login</Button>
         </Link>
       </main>
-    );
+    )
   }
 };
 
