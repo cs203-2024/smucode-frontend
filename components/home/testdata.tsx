@@ -51,7 +51,7 @@ export const notificationData = [
 
 export const tournamentCardData = [
     {
-        "id": 1,
+        "id": "1",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -70,7 +70,7 @@ export const tournamentCardData = [
         "currentRoundEndDate": new Date("2024-12-17T03:24:00"),
     },
     {
-        "id": 2,
+        "id": "2",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "double-elimination",
@@ -89,7 +89,7 @@ export const tournamentCardData = [
         "currentRoundEndDate": new Date("2024-10-17T03:24:00"),
     },
     {
-        "id": 3,
+        "id": "3",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -108,7 +108,7 @@ export const tournamentCardData = [
         "currentRoundEndDate": new Date("2023-12-17T03:24:00"),
     },
     {
-        "id": 4,
+        "id": "4",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -127,7 +127,7 @@ export const tournamentCardData = [
         "currentRoundEndDate": new Date("2024-11-17T03:24:00"),
     },
     {
-        "id": 5,
+        "id": "5",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -146,7 +146,7 @@ export const tournamentCardData = [
         "currentRoundEndDate": new Date("2024-06-17T03:24:00"),
     },
     {
-        "id": 6,
+        "id": "6",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -165,7 +165,7 @@ export const tournamentCardData = [
         "currentRoundEndDate": new Date("2024-12-07T03:24:00"),
     },
     {
-        "id": 7,
+        "id": "7",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -184,7 +184,7 @@ export const tournamentCardData = [
         "currentRoundEndDate": new Date("2024-12-07T03:24:00"),
     },
     {
-        "id": 8,
+        "id": "8",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -203,7 +203,7 @@ export const tournamentCardData = [
         "currentRoundEndDate": new Date("2024-12-07T03:24:00"),
     },
     {
-        "id": 9,
+        "id": "9",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -225,7 +225,7 @@ export const tournamentCardData = [
 
 export const userTournamentCardData = [
     {
-        "id": 1,
+        "id": "1",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -248,7 +248,7 @@ export const userTournamentCardData = [
         "placing": -1,
     },
     {
-        "id": 2,
+        "id": "2",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "double-elimination",
@@ -271,7 +271,7 @@ export const userTournamentCardData = [
         "placing": -1,
     },
     {
-        "id": 3,
+        "id": "3",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -294,7 +294,7 @@ export const userTournamentCardData = [
         "placing": 6,
     },
     {
-        "id": 4,
+        "id": "4",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -317,7 +317,7 @@ export const userTournamentCardData = [
         "placing": -1,
     },
     {
-        "id": 5,
+        "id": "5",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -340,7 +340,7 @@ export const userTournamentCardData = [
         "placing": 23,
     },
     {
-        "id": 6,
+        "id": "6",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -363,7 +363,7 @@ export const userTournamentCardData = [
         "placing": -1,
     },
     {
-        "id": 7,
+        "id": "7",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -386,7 +386,7 @@ export const userTournamentCardData = [
         "placing": -1,
     },
     {
-        "id": 8,
+        "id": "8",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -409,7 +409,7 @@ export const userTournamentCardData = [
         "placing": -1,
     },
     {
-        "id": 9,
+        "id": "9",
         "icon": "smu-logo.png",
         "name": "SMU Gardening Championships",
         "format": "single-elimination",
@@ -486,7 +486,7 @@ export const userNotificationData = [
 
 export const tournamentCardData2 = [
     {
-        id: 1,
+        id: "1",
         icon: "smu-logo.png",
         name: "Summer Coding Challenge 2024",
         capacity: 32,
@@ -507,7 +507,7 @@ export const tournamentCardData2 = [
         signupsOpen: false
     },
     {
-        id: 2,
+        id: "2",
         icon: "smu-logo.png",
         name: "SMU Soccer Showdown",
         capacity: 128,
@@ -528,7 +528,7 @@ export const tournamentCardData2 = [
         signupsOpen: false
     },
     {
-        id: 3,
+        id: "3",
         icon: "smu-logo.png",
         name: "SMU Chess Grand Masters",
         capacity: 32,
@@ -549,7 +549,7 @@ export const tournamentCardData2 = [
         signupsOpen: true
     },
     {
-        id: 4,
+        id: "4",
         icon: "smu-logo.png",
         name: "SMU Badminton Open",
         capacity: 64,
@@ -570,7 +570,7 @@ export const tournamentCardData2 = [
         signupsOpen: true
     },
     {
-        id: 5,
+        id: "5",
         icon: "smu-logo.png",
         name: "SMU Tennis League",
         capacity: 32,
@@ -591,7 +591,7 @@ export const tournamentCardData2 = [
         signupsOpen: false
     },
     {
-        id: 6,
+        id: "6",
         icon: "smu-logo.png",
         name: "SMU Basketball Dunk Fest",
         capacity: 128,
@@ -612,7 +612,7 @@ export const tournamentCardData2 = [
         signupsOpen: false
     },
     {
-        id: 7,
+        id: "7",
         icon: "smu-logo.png",
         name: "SMU Esports Tournament",
         capacity: 64,
@@ -633,7 +633,7 @@ export const tournamentCardData2 = [
         signupsOpen: false
     },
     {
-        id: 8,
+        id: "8",
         icon: "smu-logo.png",
         name: "SMU Golf Open",
         capacity: 64,

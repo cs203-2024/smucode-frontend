@@ -23,6 +23,7 @@ import { useUserContext } from '@/context/UserContext';
 import { getAllTournamentsCreatedByAdmin, getAllTournamentsForUser } from '@/services/tournamentAPI';
 import UserDashboardTournamentCard from './UserDashboardTournamentCard';
 import UserTournamentCard from '../home/UserTournamentCard';
+import AdminDashboardTournamentCard from './AdminDashboardTournamentCard';
 
 export default function DashboardTournamentCardWrapper() {
     const { user, logout } = useUserContext();
@@ -100,7 +101,7 @@ export default function DashboardTournamentCardWrapper() {
                                 <ScrollArea className='h-[55vh] w-full whitespace-nowrap pr-3'>
                                     <div className='pb-4'>
                                         {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
-                                            <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
                                         )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
                                         ))}
@@ -108,7 +109,7 @@ export default function DashboardTournamentCardWrapper() {
                                         {/* Uncomment below when real data is present */}
 
                                         {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
-                                            <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
                                         )):userData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
                                         ))}
@@ -120,7 +121,7 @@ export default function DashboardTournamentCardWrapper() {
                                 <ScrollArea className='h-[55vh] w-full pr-3'>
                                     <div className='pb-4'>
                                         {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
-                                            <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
                                         )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
                                         ))}
@@ -128,7 +129,7 @@ export default function DashboardTournamentCardWrapper() {
                                         {/* Uncomment below when real data is present */}
 
                                         {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
-                                            <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
                                         )):userData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
                                         ))}
@@ -140,7 +141,7 @@ export default function DashboardTournamentCardWrapper() {
                                 <ScrollArea className='h-[55vh] whitespace-nowrap pr-3'>
                                     <div className='pb-4'>
                                         {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
-                                            <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
                                         )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
                                         ))}
@@ -148,7 +149,7 @@ export default function DashboardTournamentCardWrapper() {
                                         {/* Uncomment below when real data is present */}
 
                                         {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
-                                            <TournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
                                         )):userData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
                                         ))}

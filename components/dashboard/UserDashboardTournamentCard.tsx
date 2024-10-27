@@ -87,7 +87,7 @@ export default function UserDashboardTournamentCard({data,fetchData}: UserDashbo
                             {data.status === "ONGOING" ? (
                                 <span className='pl-1'>({getTimeUntil(data.currentRoundEndDate)})</span>
                             ):(
-                                <span>No</span>
+                                <span className='pl-1 font-semibold'>(No ongoing round)</span>
                             )}
                         </CardDescription>
                     )
