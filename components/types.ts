@@ -174,7 +174,7 @@ export type TournamentSignUpInfo = {
 }
 
 export type UserDashboardTournamentCardInfo = {
-  id: number;
+  id: string;
   icon: string;
   name: string;
   capacity: number;

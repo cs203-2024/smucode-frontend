@@ -149,7 +149,7 @@ export default function ExploreTournamentCard({data, fetchData}: ExploreTourname
 
 interface AlertDialogDemoProps {
     fetchData: () => Promise<void>; // fetchData function returning a Promise
-    tournamentId: number;
+    tournamentId: string;
     username: string;
 }
 

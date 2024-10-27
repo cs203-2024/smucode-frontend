@@ -134,7 +134,7 @@ export default function UserDashboardTournamentCard({data,fetchData}: UserDashbo
 
 interface AlertDialogDemoProps {
     fetchData: () => Promise<void>; // fetchData function returning a Promise
-    tournamentId: number;
+    tournamentId: string;
     username: string;
 }
 

@@ -657,7 +657,7 @@ export const tournamentCardData2 = [
 
 export const userTournamentCardData2 = [
     {
-        id: 1,
+        id: "1",
         icon: "smu-logo.png",
         name: "Summer Coding Challenge 2024",
         capacity: 32,
@@ -681,7 +681,7 @@ export const userTournamentCardData2 = [
         placing: -1,
     },
     {
-        id: 2,
+        id: "2",
         icon: "smu-logo.png",
         name: "SMU Soccer Showdown",
         capacity: 128,
@@ -705,7 +705,7 @@ export const userTournamentCardData2 = [
         placing: 1, // Finished first place
     },
     {
-        id: 3,
+        id: "3",
         icon: "smu-logo.png",
         name: "SMU Chess Grand Masters",
         capacity: 32,
@@ -729,7 +729,7 @@ export const userTournamentCardData2 = [
         placing: -1,
     },
     {
-        id: 4,
+        id: "4",
         icon: "smu-logo.png",
         name: "SMU Badminton Open",
         capacity: 64,
@@ -753,7 +753,7 @@ export const userTournamentCardData2 = [
         placing: -1,
     },
     {
-        id: 5,
+        id: "5",
         icon: "smu-logo.png",
         name: "SMU Tennis League",
         capacity: 32,
@@ -777,7 +777,7 @@ export const userTournamentCardData2 = [
         placing: -1,
     },
     {
-        id: 6,
+        id: "6",
         icon: "smu-logo.png",
         name: "SMU Basketball Dunk Fest",
         capacity: 128,
@@ -801,7 +801,7 @@ export const userTournamentCardData2 = [
         placing: 5,
     },
     {
-        id: 7,
+        id: "7",
         icon: "smu-logo.png",
         name: "SMU Esports Tournament",
         capacity: 64,
@@ -825,7 +825,7 @@ export const userTournamentCardData2 = [
         placing: -1,
     },
     {
-        id: 8,
+        id: "8",
         icon: "smu-logo.png",
         name: "SMU Golf Open",
         capacity: 64,
@@ -849,7 +849,7 @@ export const userTournamentCardData2 = [
         placing: 1,
     },
     {
-        id: 9,
+        id: "9",
         icon: "smu-logo.png",
         name: "SMU Volleyball Championships",
         capacity: 48,
