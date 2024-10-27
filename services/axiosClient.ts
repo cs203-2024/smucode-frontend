@@ -1,11 +1,11 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import Router from "next/router";
 
 const axiosClient = axios.create({
   baseURL: "http://localhost:9000/api",
   //   baseURL: "http://localhost:8000/api",
     headers: {
-        // 'Authorization': `Bearer ${'authToken'}`,
         "Content-Type": "application/json",
     },
   withCredentials: true,
@@ -14,10 +14,10 @@ const axiosClient = axios.create({
 // Request interceptor to attached JWT to auth header
 axiosClient.interceptors.request.use(
     function (config) {
-        const token = Cookies.get('authToken'); // Get the 'authToken' cookie
+        const accessToken = Cookies.get('accessToken'); // Get the 'authToken' cookie
 
-        if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
+        if (accessToken) {
+            config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
         config.withCredentials = true;
@@ -33,16 +33,31 @@ axiosClient.interceptors.request.use(
 // Response interceptor for handling errors globally
 axiosClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response) {
-      if (error.response.status === 401) {
-        console.error("Unauthorized access.");
-        // router.push(/login);
-      } else if (error.response.status === 500) {
-        console.error("Server error, please try again later.");
+  async (error) => {
+    const request = error.config;
+    
+    if (error.response?.status === 401) {
+      if (!request._retry) {
+        request._retry = true;
+        
+        try {
+          await axiosClient.post('/auth/refresh');
+          
+          return axiosClient(request);
+        } catch (refreshError) {
+          Cookies.remove('accessToken'); // Clean up if needed
+          Router.push("/login");
+          
+          return Promise.reject(refreshError);
+        }
+      } else {
+        // Handle case where retry already failed
+        Router.push("/login");
       }
+    } else if (error.response?.status === 500) {
+      console.error("Something went wrong on our end, try again");
     } else {
-      console.error("Network error:", error.message);
+      console.error("Network error");
     }
     return Promise.reject(error);
   },

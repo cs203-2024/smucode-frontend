@@ -69,3 +69,25 @@ export const logout = async (): Promise<string> => {
     throw error;
   }
 };
+
+export const deleteAccount = async (): Promise<string> => {
+  try {
+    const response = await axiosClient.delete<string>("/auth/delete-account");
+
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    throw error;
+  }
+};
+
+export const changePassword = async (): Promise<string> => {
+  try {
+    const response = await axiosClient.put<string>("/auth/change-password");
+
+    return response.data;
+  } catch (error) {
+    console.error("Error changing password:", error);
+    throw error;
+  }
+};
