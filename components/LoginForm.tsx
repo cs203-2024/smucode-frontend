@@ -1,7 +1,8 @@
 "use client";
 import * as React from "react";
 import { useUserContext } from '@/context/UserContext';
-import { login } from '@/services/userAPI';
+import { login } from '@/services/authAPI';
+import { getUserProfile } from '@/services/userAPI';
 import { User } from '@/components/types';
 import { useRouter } from 'next/navigation';
 import { cn } from "@/lib/utils";
@@ -36,14 +37,15 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
       console.log('Response from login:', response);
 
       if (response && response.userDTO) {
+        const userDetails = await getUserProfile(response.userDTO.username);
         const user: User = {
-          username: response.userDTO.username,
-          email: response.userDTO.email,
-          profileImageUrl: response.userDTO.profileImageUrl,
+          username: userDetails.username,
+          email: userDetails.email,
+          profileImageUrl: userDetails.profileImageUrl,
           role: response.userDTO.role,
-          mu: response.userDTO.mu,
-          sigma: response.userDTO.sigma,
-          skillIndex: response.userDTO.skillIndex,
+          mu: userDetails.mu,
+          sigma: userDetails.sigma,
+          skillIndex: userDetails.skillIndex,
         };
         console.log('Mapped user object:', user);
         setUser(user);
