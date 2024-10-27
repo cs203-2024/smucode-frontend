@@ -3,7 +3,8 @@ import Cookies from "js-cookie";
 import Router from "next/router";
 
 const axiosClient = axios.create({
-  baseURL: process.env.API_BASE_URL,
+  baseURL: "http://localhost:9000/api",
+  //   baseURL: "http://localhost:8000/api",
     headers: {
         "Content-Type": "application/json",
     },
