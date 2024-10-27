@@ -48,7 +48,7 @@ export const createTournament = async (tournamentData: Tournament):Promise<Tourn
     }
 }
 
-export const signUpForTournament = async (tournamentId: number):Promise<SignUpResponse> => {
+export const signUpForTournament = async (tournamentId: string):Promise<SignUpResponse> => {
     try {
         const response = await axiosClient.post<SignUpResponse>(`/tournaments/${tournamentId}/signup`); 
         return response.data;
@@ -58,7 +58,7 @@ export const signUpForTournament = async (tournamentId: number):Promise<SignUpRe
     }
 }
 
-export const removeSignUpForTournament = async (tournamentId: number):Promise<SignUpResponse> => {
+export const removeSignUpForTournament = async (tournamentId: string):Promise<SignUpResponse> => {
     try {
         const response = await axiosClient.delete<SignUpResponse>(`/tournaments/${tournamentId}/signup`); 
         //console.log(`changed ${data.tournamentId}, ${data.username}`);
