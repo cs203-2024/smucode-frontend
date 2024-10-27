@@ -24,19 +24,17 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
-import Image from 'next/image';
 import { MdMemory } from "react-icons/md";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { RiNumbersFill } from "react-icons/ri";
 import { UserTournamentCardInfo } from '../types';
-import { capitalise, getFormattedDateFromString, getPercentage } from '@/lib/utils';
+import { capitalise, getFormattedDateFromString, getPercentage, getTimeUntil, upperCaseToCapitalised } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useToast } from "@/hooks/use-toast";
 import { useUserContext } from '@/context/UserContext';
 
 import { signUpForTournament } from '@/services/tournamentAPI';
-import { TournamentSignUpInfo } from '../types';
 
 interface ExploreTournamentCardProps {
     data: UserTournamentCardInfo;
@@ -48,57 +46,91 @@ export default function ExploreTournamentCard({data, fetchData}: ExploreTourname
     const username = user ? user.username:"";
 
     return (
-        <Card className='w-[30%] h-[52vh] p-0 overflow-hidden'>
-            <div className='w-full h-[60%] relative'>
-                <Image src={data.icon ? `/${data.icon}`:""} 
-                    className={'w-full h-full object-contain bg-gray-100 opacity-80 brightness-[65%] hover:brightness-50 transition duration-200'} alt={data.name} width={1000} height={1000} 
-                />
-                <div className='z-10 absolute top-4 left-4 h-full flex flex-col justify-between items-start pb-6 pr-4'>
-                    <div>
-                        <div className='text-white drop-shadow-lg pb-2'>{capitalise(data.format)}</div>
-                        <div className='font-semibold text-4xl text-white drop-shadow-2xl'>{data.name}</div>
+        <Card className='w-[30%] h-[400px]'>
+            <CardHeader>
+                <div className='w-full flex justify-between items-center gap-10'>
+                    <div className='flex w-auto justify-start items-center gap-4'>
+                        <Avatar className='w-8 h-8 bg-gray-100'>
+                            <AvatarImage src={data.icon ? data.icon:"smu-logo.png"} />
+                            <AvatarFallback>{data.name.substring(0, 3)}</AvatarFallback>
+                        </Avatar>
+                        <CardTitle className={cn(
+                            data.status != "COMPLETED" ? "text-black":"text-gray-500"
+                        )}>{data.name}</CardTitle>
                     </div>
-                    <div className='flex items-center justify-start gap-2 py-2'>
-                        <Badge className={cn(
-                            'py-1 bg-timeWeight',
-                            data.status != "COMPLETED" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
-                        )}>
-                            <MdAccessTimeFilled className='pr-1 text-lg' />Time - {data.timeWeight}%
-                        </Badge>
-                        <Badge className={cn(
-                            'py-1 bg-memWeight',
-                            data.status != "COMPLETED" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
-                        )}>
-                            <MdMemory className='pr-1 text-lg' />Memory - {data.memWeight}%
-                        </Badge>
-                        <Badge className={cn(
-                            'py-1 bg-testCaseWeight',
-                            data.status != "COMPLETED" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
-                        )}>
-                            <RiNumbersFill className='pr-1 text-lg' />Test Cases - {data.testCaseWeight}%
-                        </Badge>
-                    </div>
+                    <Badge className={cn(
+                        'rounded-full',
+                        data.status === "ONGOING" ? "bg-ongoing hover:bg-ongoing":"",
+                        data.status === "UPCOMING" ? "bg-yellow-500 hover:bg-yellow-500":"",
+                        data.status === "COMPLETED" ? "bg-gray-100 hover:bg-gray-100 text-gray-400":""
+                    )}>{upperCaseToCapitalised(data.status)}</Badge>
                 </div>
-            </div>
-            <CardContent className='mb-0 py-2'>    
-                <div className='flex justify-start items-center py-2 gap-2'>
-                    Period: 
-                    <div className='rounded-full font-semibold'>{getFormattedDateFromString(data.startDate)} to {getFormattedDateFromString(data.endDate)}</div>
-                </div>            
+                {data.signupsOpen ? (
+                    <CardDescription className={cn(
+                        'pt-2',
+                        data.status != "COMPLETED" ? "":"text-gray-400"
+                    )}>
+                        Registration ends <span className='font-semibold'>{getFormattedDateFromString(data.signupEndDate)} ({getTimeUntil(data.signupEndDate)})</span>
+                    </CardDescription>
+                ):(
+                    <CardDescription className={cn(
+                        'pt-2',
+                        data.status != "COMPLETED" ? "":"text-gray-400"
+                    )}>
+                        {data.currentRound ? (
+                            <>
+                                {data.currentRound}  (<span className={cn(
+                                    data.status === "ACTIVE" ? "inline-block text-red-500":"inline-block"
+                                )}>{getTimeUntil(data.currentRoundEndDate)}</span>)
+                            </>
+                        ):(
+                            <span>Tournament Commencing on {getFormattedDateFromString(data.startDate)}</span>
+                        )}
+                    </CardDescription>
+                )}
+            </CardHeader>
+            <CardContent className="space-y-1">
+                <div className={cn(
+                    'text-sm font-medium pb-1',
+                    data.status != "COMPLETED" ? "":"text-gray-400"
+                )}>
+                    {capitalise(data.format)} 
+                    {/* • {capitalise(data.band)} Band */}
+                </div>
+                <div className='flex items-center justify-start gap-2 py-2'>
+                    <Badge className={cn(
+                        'py-1 bg-timeWeight',
+                        data.status != "COMPLETED" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
+                    )}>
+                        <MdAccessTimeFilled className='pr-1 text-lg' />Time - {data.timeWeight}%
+                    </Badge>
+                    <Badge className={cn(
+                        'py-1 bg-memWeight',
+                        data.status != "COMPLETED" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
+                    )}>
+                        <MdMemory className='pr-1 text-lg' />Memory - {data.memWeight}%
+                    </Badge>
+                    <Badge className={cn(
+                        'py-1 bg-testCaseWeight',
+                        data.status != "COMPLETED" ? "":"bg-gray-200 text-gray-400 hover:bg-gray-200"
+                    )}>
+                        <RiNumbersFill className='pr-1 text-lg' />Test Cases - {data.testCaseWeight}%
+                    </Badge>
+                </div>
                 <div className='flex items-center gap-2 justify-between py-2'>
                     <Progress value={getPercentage(data.numberOfSignups, data.capacity)} className={cn(
-                        'h-[8px] w-[60%]',
+                        'h-[8px]',
                         data.status != "COMPLETED" ? "":"bg-gray-300"
                     )} />
                     <div className={cn(
                         'text-sm font-medium text-right',
                         data.status != "COMPLETED" ? "":"text-gray-400"
-                    )}>{data.numberOfSignups}/{data.capacity} participants</div>
+                    )}>{data.numberOfSignups}/{data.capacity} participants ({getPercentage(data.numberOfSignups, data.capacity)}%)</div>
                 </div>
             </CardContent>
-            <CardFooter className='flex justify-between items-center mt-0 py-0'>
+            <CardFooter className='flex justify-between items-center'>
                 <CardDescription className='py-2'>
-                    Register by <span className='font-semibold'>{getFormattedDateFromString(data.signupEndDate)}</span>
+                    {getFormattedDateFromString(data.startDate)} - {getFormattedDateFromString(data.endDate)}
                 </CardDescription>
                 <div className='flex justify-end items-center gap-2'>
                     <AlertDialogDemo fetchData={fetchData} tournamentId={data.id} username={username} />

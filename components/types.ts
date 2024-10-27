@@ -1,3 +1,5 @@
+import UserDashboardTournamentCard from "./dashboard/UserDashboardTournamentCard";
+
 export type PlayerInfo = {
     username: string;
     image: string;
@@ -169,4 +171,27 @@ export type UserTournamentCardInfo = {
 export type TournamentSignUpInfo = {
     username: string;
     tournamentId: string;
+}
+
+export type UserDashboardTournamentCardInfo = {
+  id: string;
+  icon: string;
+  name: string;
+  capacity: number;
+  format: string;
+  band: string;
+  startDate: string;
+  endDate: string;
+  signupStartDate: string;
+  signupEndDate: string;
+  status: string;
+  timeWeight: number;
+  memWeight: number;
+  testCaseWeight: number;
+  currentRound: string; // sname of current round
+  currentRoundEndDate: string; //datetime of when current round ends
+  signedUp: boolean; // true if user signed up for tournament
+  participated: boolean; // true if user is actual participant in tournament
+  signupsOpen: boolean; // derived from backend attributes
+  placing: number; // -1 if tournament incomplete, actual placing number otherwise (1 - number of players)
 }

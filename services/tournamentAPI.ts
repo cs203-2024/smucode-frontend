@@ -187,3 +187,15 @@ export const endRound = async (
      throw error;
     }
 };
+
+export const getAllAvailableTournamentsForExplore = async ():Promise<UserTournamentCardInfo[]> => {
+    try {
+        // const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?username=admin`);
+        const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments/explore`); 
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error("Error retrieving tournaments created by admin:", error);
+        throw error;
+    } 
+}
