@@ -153,7 +153,7 @@ function AlertDialogDemo({
     async function removeSignUp() {
         try {
             console.log("removing signup...")
-            const response = await removeSignUpForTournament(signUpData);
+            const response = await removeSignUpForTournament(tournamentId);
             toast({
                 title: "Successfully Removed Registration!",
                 description: "You have successfully removed your registration from this tournament.",

@@ -134,7 +134,7 @@ function AlertDialogDemo({
     async function confirmSignUp() {
         try {
             console.log("signing up...");
-            const response = await signUpForTournament(signUpData);
+            const response = await signUpForTournament(tournamentId);
             toast({
                 title: "Registration Successful!",
                 description: "You have successfully registered for this tournament. You will be notified should your application to participate be accepted",

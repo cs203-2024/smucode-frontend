@@ -18,13 +18,13 @@ export default function Home() {
         <main className="flex-col flex min-h-full flex gap-3 items-start justify-center py-8 px-20 mt-[60px]">
           <div className="w-full flex justify-between items-center space-between mb-6">
             <div className="text-2xl font-bold text-left">Dashboard</div>
-            {/* {user.role === "ROLE_ADMIN" ? (
+            {user?.role === "ROLE_ADMIN" ? (
               <Link href={`/tournaments/create`}>
                 <Button>Create Tournament</Button>
               </Link>
             ):(
               <div></div>
-            )} */}
+            )}
           </div>
           
           <div className="w-full grid grid-cols-11 gap-4">

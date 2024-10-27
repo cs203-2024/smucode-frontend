@@ -41,6 +41,9 @@ export default function ExplorePage() {
             </div>
             <ScrollArea>
                 <div className="flex flex-wrap justify-center items-start gap-4">
+                    {exploreData.map((data) => (
+                        <ExploreTournamentCard data={data} fetchData={fetchExploreData} />
+                    ))}
                     {userTournamentCardData2.map((data) => (
                         <ExploreTournamentCard data={data} fetchData={fetchExploreData} />
                     ))}
