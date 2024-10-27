@@ -62,7 +62,7 @@ export interface UserContextType {
 }
 
 export type TournamentCardInfo = {
-    id: number;
+    id: string;
     icon: string;
     name: string;
     capacity: number;
@@ -144,7 +144,7 @@ export interface TournamentOverviewProps {
   };
 
 export type UserTournamentCardInfo = {
-    id: number;
+    id: string;
     icon: string;
     name: string;
     capacity: number;
@@ -170,7 +170,7 @@ export type UserTournamentCardInfo = {
 
 export type TournamentSignUpInfo = {
     username: string;
-    tournamentId: number;
+    tournamentId: string;
 }
 
 export type UserDashboardTournamentCardInfo = {

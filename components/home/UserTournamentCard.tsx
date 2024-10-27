@@ -168,7 +168,7 @@ interface AlertDialogDemoProps {
     registered: boolean;
     fetchData: () => Promise<void>; // fetchData function returning a Promise
     //setRegistered: Dispatch<SetStateAction<boolean>>; // State setter for 'registered'
-    tournamentId: number;
+    tournamentId: string;
     username: string;
 }
 

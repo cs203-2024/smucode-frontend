@@ -42,7 +42,7 @@ const TournamentOverview: React.FC = () => {
           tournamentId: id
         } as unknown as TournamentSignUpInfo;
         
-        await signUpForTournament(signUpData);
+        await signUpForTournament(id);
         toast.success("Signed up successfully!");
         setSignedUp(true);
       } catch (error) {
@@ -64,7 +64,7 @@ const TournamentOverview: React.FC = () => {
           tournamentId: id
         } as unknown as TournamentSignUpInfo;
         
-        await removeSignUpForTournament(signUpData);
+        await removeSignUpForTournament(id);
         toast.success("Successfully Removed Registration!"); 
         setSignedUp(false);
         
