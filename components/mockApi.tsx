@@ -1,25 +1,30 @@
 import { TournamentProps, TournamentOverviewProps, ParticipantCardListProp } from "./types";
 
-// const mockTournamentData: TournamentOverviewProps = {
-//   id: "1",
-//   name: "Summer Coding Challenge 2024",
-//   imageUrl: "",
-//   startDateTime: "2024-08-15 09:00 AM",
-//   endDateTime: "2024-08-20 06:00 PM",
-//   signUpStartDateTime: "2024-07-01 12:00 PM",
-//   signUpCloseDateTime: "2024-08-10 11:59 PM",
-//   signUpStatus: "Open",
-//   tournamentStatus: "Upcoming",
-//   currentRound: "Not Started",
-//   participantsCount: 30,
-//   maxParticipants: 32,
-//   scoreCriteria: {
-//     time: 40,
-//     space: 30,
-//     testCases: 30,
-//   },
-//   organizerId: "adminDaddy",
-// };
+const mockTournamentData: TournamentOverviewProps = {
+  id: "1",
+  icon: "", 
+  name: "Coding Challenge 2024",
+  capacity: 32, 
+  description: "Test", 
+  format: "Single-Elimination", 
+  band: "Upper",
+  startDate: "2024-08-15T09:00:00",  
+  endDate: "2024-08-20T18:00:00",
+  signupStartDate: "2024-07-01T12:00:00", 
+  signupEndDate: "2024-08-10T23:59:00", 
+  status: "UPCOMING", 
+  signUpStatus: "OPEN",
+  organiser: "adminDaddy", 
+  numberOfSignups: 30, 
+  currentRound: "",
+  currentRoundEndDate: "", 
+  participantsCount: 30,
+  scoreCriteria: {
+    time: 40,
+    space: 30,
+    testCases: 30
+  }
+};
 
 // const mockTournamentBracketsData: TournamentProps = {
 //     "rounds": [
@@ -294,13 +299,13 @@ const mockParticipantsData: ParticipantCardListProp = {
   ],
 };
 
-// export const fetchTournamentOverviewData = async (id: string | undefined) => {
-//   await new Promise((resolve) => setTimeout(resolve, 500));
-//   if (id == "1") {
-//     return mockTournamentData;
-//   }
-//   return null;
-// };
+export const fetchTournamentOverviewData = async (id: string | undefined) => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  if (id == "1") {
+    return mockTournamentData;
+  }
+  return null;
+};
 
 // export const fetchTournamentBracketsData = async (id: string | undefined) => {
 //   await new Promise((resolve) => setTimeout(resolve, 500));

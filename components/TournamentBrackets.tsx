@@ -85,7 +85,7 @@ const TournamentBrackets: React.FC = () => {
   if (!tournamentData) {
     return <div className="text-center p-4 mt-10">No tournament brackets data available</div>;
   }
-
+  
   return (
     <div>
       <div className="flex items-center mb-4 space-x-5"> 

@@ -4,7 +4,7 @@ import {
   LayoutDashboard,
   Braces,
   Users,
-  Settings,
+  Swords,
 } from "lucide-react";
 import SidebarItem from "./item";
 
@@ -37,9 +37,9 @@ const items: ISidebarItem[] = [
     icon: Users,
   },
   {
-    name: "Settings",
-    path: "settings",
-    icon: Settings,
+    name: "Brawl",
+    path: "brawl",
+    icon: Swords,
     // items: [
     //   {
     //     name: "General",

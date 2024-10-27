@@ -70,7 +70,7 @@ const TournamentBracket: React.FC<BracketProps> = ({ id, status, player1, player
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isEnding, setIsEnding] = useState(false);
-  const [isEditable, setIsEditable] = useState(status === "ongoing" && tournamentOrganizerId === user?.username);
+  const [isEditable, setIsEditable] = useState(false);
   const [bracketStatus, setBracketStatus] = useState(status);
   const getWinner = (player1: PlayerInfo | undefined, player2: PlayerInfo | undefined) => {
     if (player1 && player2 && bracketStatus === "completed") {
@@ -87,6 +87,13 @@ const TournamentBracket: React.FC<BracketProps> = ({ id, status, player1, player
       setIsWinner(getWinner(player1, player2));
     }
   }, [bracketStatus]);
+
+  useEffect(() => {
+    if(user){
+      setIsEditable(status === "ongoing" && tournamentOrganizerId === user?.username);
+    }
+  }, [user]);
+
 
   const handleUpdate = async () => {
     if (editedplayer1 && editedplayer2 && !isUpdating) {
@@ -130,7 +137,7 @@ const TournamentBracket: React.FC<BracketProps> = ({ id, status, player1, player
     <Dialog open={isDialogOpen} onOpenChange={(isOpen) => {isEditable && setIsDialogOpen(isOpen)}}>
       <DialogTrigger asChild>
         <div 
-          className="relative group py-2 px-1 cursor-pointer"
+          className={`relative group py-2 px-1 ${isEditable ? 'cursor-pointer' : ''}`}
           onMouseEnter={() => isEditable && setIsHovered(true)}
           onMouseLeave={() => isEditable && setIsHovered(false)}
         >
@@ -293,6 +300,10 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
 const TournamentBracketCard = ({ rounds }: TournamentProps) => {
   const [searchQuery, setSearchQuery] = useState('');
 
+  if (!rounds) {
+    return <div className="text-center p-4 mt-10">No tournament brackets data available</div>;
+  }
+  
   const filteredRounds = rounds.filter((round) => {
     return round.brackets.some(
       (bracket) =>
