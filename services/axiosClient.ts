@@ -1,9 +1,9 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import Router from "next/router";
+import router from "next/router";
 
 const axiosClient = axios.create({
-  baseURL: "http://localhost:9000/api",
+  baseURL: "http://localhost:8000/api",
   //   baseURL: "http://localhost:8000/api",
     headers: {
         "Content-Type": "application/json",
@@ -45,14 +45,13 @@ axiosClient.interceptors.response.use(
           
           return axiosClient(request);
         } catch (refreshError) {
-          Cookies.remove('accessToken'); // Clean up if needed
-          Router.push("/login");
+          router.push("/login");
           
           return Promise.reject(refreshError);
         }
       } else {
         // Handle case where retry already failed
-        Router.push("/login");
+        router.push("/login");
       }
     } else if (error.response?.status === 500) {
       console.error("Something went wrong on our end, try again");
