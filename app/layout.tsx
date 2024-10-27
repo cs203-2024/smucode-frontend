@@ -27,7 +27,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           <main className="">
             <Nav />
             {children}
-            <Toaster />
+            <Toaster richColors closeButton theme="light"/>
           </main>
           <Toaster2 />
         </UserProvider>

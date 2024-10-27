@@ -122,6 +122,10 @@ const TournamentWrapper = ({ rounds } : TournamentProps) => {
 
 const TournamentBracketZoomable = ({ rounds } : TournamentProps) => {
 
+  if (!rounds) {
+    return <div className="text-center p-4 mt-10">No tournament brackets data available</div>;
+  }
+
   return (
     <TransformWrapper
       initialScale={0.7}

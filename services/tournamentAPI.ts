@@ -48,9 +48,9 @@ export const createTournament = async (tournamentData: Tournament):Promise<Tourn
     }
 }
 
-export const signUpForTournament = async (data: TournamentSignUpInfo):Promise<SignUpResponse> => {
+export const signUpForTournament = async (tournamentId: number):Promise<SignUpResponse> => {
     try {
-        const response = await axiosClient.post<SignUpResponse>(`/tournaments/${data.tournamentId}/signup?user=${data.username}`); 
+        const response = await axiosClient.post<SignUpResponse>(`/tournaments/${tournamentId}/signup`); 
         return response.data;
     } catch (error) {
         console.error("Error signing up for tournament:", error);
@@ -58,10 +58,10 @@ export const signUpForTournament = async (data: TournamentSignUpInfo):Promise<Si
     }
 }
 
-export const removeSignUpForTournament = async (data: TournamentSignUpInfo):Promise<SignUpResponse> => {
+export const removeSignUpForTournament = async (tournamentId: number):Promise<SignUpResponse> => {
     try {
-        const response = await axiosClient.delete<SignUpResponse>(`/tournaments/${data.tournamentId}/signup?user=${data.username}`); 
-        console.log(`changed ${data.tournamentId}, ${data.username}`);
+        const response = await axiosClient.delete<SignUpResponse>(`/tournaments/${tournamentId}/signup`); 
+        //console.log(`changed ${data.tournamentId}, ${data.username}`);
         return response.data;
     } catch (error) {
         console.error("Error signing up for tournament:", error);
