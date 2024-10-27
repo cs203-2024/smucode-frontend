@@ -172,7 +172,7 @@ const TournamentBracket: React.FC<BracketProps> = ({ id, status, player1, player
           </div>
           <DialogFooter>
               <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-              <Button className="w-[100px]" onClick={handleUpdate}>
+              <Button className="w-[100px]" onClick={handleUpdate} disabled={isUpdating}>
                 {isUpdating?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Update")}
               </Button>
           </DialogFooter>
@@ -186,7 +186,7 @@ const TournamentBracket: React.FC<BracketProps> = ({ id, status, player1, player
          <p className="text-sm">Bracket scores will be finalized</p>
          <div className="flex justify-end space-x-2 mt-4">
            <Button variant="outline" onClick={() => setIsConfirmDialogOpen(false)}>Cancel</Button>
-           <Button className="w-[150px]" onClick={handleEnd}>
+           <Button className="w-[150px]" onClick={handleEnd} disabled={isEnding}>
                 {isEnding?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Yes, end bracket")}
             </Button>
          </div>
@@ -286,7 +286,7 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
          <p className="text-sm">Are you sure you want to end this round?</p>
          <div className="flex justify-end space-x-2 mt-4">
            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-           <Button className="w-[150px]" onClick={handleEndRound}>
+           <Button className="w-[150px]" onClick={handleEndRound} disabled={isEndingRound}>
                 {isEndingRound?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Yes, end round")}
             </Button>
          </div>

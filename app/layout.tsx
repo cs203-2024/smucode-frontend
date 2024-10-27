@@ -4,6 +4,7 @@ import { UserProvider } from '@/context/UserContext';
 import { ReactNode } from 'react';
 import { Toaster } from "@/components/ui/sonner"
 import { Toaster as Toaster2 } from "@/components/ui/toaster";
+import { Poppins } from 'next/font/google'
 
 // Metadata
 export const metadata = {
@@ -11,6 +12,12 @@ export const metadata = {
     description: ""
 };
 
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'], 
+  display: 'swap',
+})
 
 type RootLayoutProps = {
     children: ReactNode;
@@ -24,7 +31,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           <div className="">
             <div className="" />
           </div>
-          <main className="">
+          <main className={poppins.className}>
             <Nav />
             {children}
             <Toaster richColors closeButton theme="light"/>

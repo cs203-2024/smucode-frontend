@@ -10,7 +10,6 @@ import { Calendar, LoaderCircle } from 'lucide-react';
 import { useUserContext } from '@/context/UserContext';
 import { toast } from 'sonner';
 import { removeSignUpForTournament, signUpForTournament } from '@/services/tournamentAPI';
-import { TournamentSignUpInfo } from './types';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogOverlay, DialogTitle } from '@radix-ui/react-dialog';
 
@@ -37,11 +36,7 @@ const TournamentOverview: React.FC = () => {
     if (canSignUp && !isSigningUp) {
       setIsSigningUp(true);
       try {
-        const signUpData = {
-          username: user?.username,
-          tournamentId: id
-        } as unknown as TournamentSignUpInfo;
-        
+
         await signUpForTournament(id);
         toast.success("Signed up successfully!");
         setSignedUp(true);
@@ -59,11 +54,7 @@ const TournamentOverview: React.FC = () => {
     if (signedUp && !isRemovingSignUp) {
       setIsRemovingSignUp(true);
       try {
-        const signUpData = {
-          username: user?.username,
-          tournamentId: id
-        } as unknown as TournamentSignUpInfo;
-        
+
         await removeSignUpForTournament(id);
         toast.success("Successfully Removed Registration!"); 
         setSignedUp(false);
@@ -223,9 +214,9 @@ const TournamentOverview: React.FC = () => {
                 Otherwise, you may choose to leave this tournament at any time before the registration deadline.
             <div className="flex justify-end space-x-2 mt-4">
               <Button variant="outline" onClick={() => setIsConfirmDialogOpen(false)}>Cancel</Button>
-              <Button className="w-[110px]" onClick={handleTournamentSignUp}>
+              <Button className="w-[110px]" onClick={handleTournamentSignUp} disabled={isSigningUp}>
                     {isSigningUp?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Confirm")}
-                </Button>
+              </Button>
             </div>
           </DialogContent>
         </DialogOverlay>
@@ -240,9 +231,9 @@ const TournamentOverview: React.FC = () => {
                 <br/>
             <div className="flex justify-end space-x-2 mt-4">
               <Button variant="outline" onClick={() => setIsRemoveDialogOpen(false)}>Cancel</Button>
-              <Button className="w-[110px]" onClick={handleTournamentRemoveSignUp}>
+              <Button className="w-[110px]" onClick={handleTournamentRemoveSignUp} disabled={isRemovingSignUp}>
                     {isRemovingSignUp?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Leave")}
-                </Button>
+              </Button>
             </div>
           </DialogContent>
         </DialogOverlay>
