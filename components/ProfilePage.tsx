@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   Card,
@@ -9,26 +10,49 @@ import {
 } from "@/components/ui/new-york/card";
 import { RecentOpponents } from "@/app/profile/RecentOpponents";
 import { Button } from "@/components/ui/new-york/button";
-import { useUserContext } from "@/context/UserContext";
 import { getCardData } from "../app/profile/cardData";
 import { User } from "@/components/types";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import Link from "next/link";
+import { getUserProfile } from "@/services/userAPI"; // Import the API function
+import { useUserContext } from "@/context/UserContext"; // Import the useUserContext hook
 
 interface ProfilePageProps {
   username: string;
 }
 
 const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
-  const { user } = useUserContext();
-  console.log("User from context:", user);
+  const { user: loggedInUser } = useUserContext(); // Get the logged-in user from context
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!user) {
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const data = await getUserProfile(username);
+        console.log("User data:", data);
+        setUser(data);
+      } catch (err) {
+        setError("Failed to fetch user data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [username]);
+
+  if (loading) {
+    return <div className="text-center p-4 mt-10">Loading user data...</div>;
+  }
+
+  if (error || !user) {
     return (
       <main className="flex flex-col justify-center items-center mt-[60px] w-full min-h-full p-60">
-        <div className="text-lg p-4">401 | You need to login dude.</div>
-        <Link href={`/login`}>
-          <Button>Login</Button>
+        <div className="text-lg p-4">No Profile found.</div>
+        <Link href={`/`}>
+          <Button>Back to Home</Button>
         </Link>
       </main>
     );
@@ -56,7 +80,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
                   placeholder="blur"
                   blurDataURL="data:image/png;base64,iVBORw0KGg...AA"
                 />
-                {user?.username === username && ( // Conditional rendering
+                {loggedInUser?.username === username && ( // Conditional rendering
                   <Link href="/editprofile">
                     <Button className="bg-blue-500 text-white hover:bg-blue-600 px-8 py-2 mt-4">
                       Edit Profile
