@@ -83,7 +83,7 @@ export const getAllTournamentsCreatedByAdmin = async (username: string):Promise<
 
 export const getAllTournamentsForUser = async (username: string):Promise<UserTournamentCardInfo[]> => {
     try {
-         const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments?username=`);
+        const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments?username=`);
         //const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments`); 
         return response.data;
     } catch (error) {
@@ -145,7 +145,7 @@ export const updateBracketScore = async (
         }
       };
 
-      const response = await axiosClient.put<string>(`/brackets/${id}`, payload);
+      const response = await axiosClient.put<string>(`/tournaments/brackets/${id}`, payload);
   
       return response.data;
     } catch (error) {
@@ -159,7 +159,7 @@ export const endBracket = async (
     ): Promise<string> => {
     try {
         
-    const response = await axiosClient.put<string>(`/brackets/${id}/end`);
+    const response = await axiosClient.put<string>(`/tournaments/brackets/${id}/end`);
       
     return response.data;
 
@@ -174,7 +174,7 @@ export const endRound = async (
     ): Promise<string> => {
     try {
 
-    const response = await axiosClient.put<string>(`/rounds/${id}/end`);
+    const response = await axiosClient.put<string>(`/tournaments/rounds/${id}/end`);
       
     return response.data;
 

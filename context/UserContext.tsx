@@ -45,6 +45,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       toast.success("Successfully logged out!")
       window.location.href = "/login";
     } catch (error) {
+      toast.error("Unable to Logout, please try again.")
       console.error('Logout failed', error);
     }
   };
