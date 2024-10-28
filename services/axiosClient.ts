@@ -1,6 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
-import router from "next/router";
 
 const axiosClient = axios.create({
   baseURL: "http://localhost:9000/api",
