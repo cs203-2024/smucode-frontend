@@ -1,9 +1,7 @@
 import axios from "axios";
-import Cookies from "js-cookie";
-import router from "next/router";
 
 const axiosClient = axios.create({
-  baseURL: "http://localhost:9000/api/",
+  baseURL: "http://localhost:9000/api",
     headers: {
         "Content-Type": "application/json",
     },
@@ -26,13 +24,13 @@ axiosClient.interceptors.response.use(
           
           return axiosClient(request);
         } catch (refreshError) {
-          router.push("/login");
+          window.href.location = "/login";
           
           return Promise.reject(refreshError);
         }
       } else {
         // Handle case where retry already failed
-        router.push("/login");
+        window.href.location = "/login";
       }
     } else if (error.response?.status === 500) {
       console.error("Something went wrong on our end, try again");
