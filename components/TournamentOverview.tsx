@@ -27,7 +27,7 @@ const TournamentOverview: React.FC = () => {
   useEffect(() => {
     if(user){
       // User can only sign up when tournament has not started and when they have not sign up yet
-      setCanSignUp(overviewData?.status === "UPCOMING" && user?.role === "ROLE_USER" && !signedUp);
+      setCanSignUp(overviewData?.status === "UPCOMING" && user?.role === "ROLE_PLAYER" && !signedUp);
     }
   }, [overviewData?.status, user]);
   

@@ -117,7 +117,7 @@ const TournamentBracket: React.FC<BracketProps> = ({ id, status, player1, player
     if (player1 && player2 && !isEnding) {
       setIsEnding(true);
       try {
-        await endBracket(id, getWinner(player1, player2));
+        await endBracket(id);
         toast.success("Bracket ended!");
         setBracketStatus("completed");
         setIsEditable(false);
@@ -202,15 +202,21 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
   const { user } = useUserContext();
   const tournamentOrganizerId = tournamentContext.organizerId;
   const tournamentId = tournamentContext.tournamentId;
-  const [isEditable, setIsEditable] = useState(status === "ongoing" && tournamentOrganizerId === user?.username);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isEndingRound, setIsEndingRound] = useState(false);
   const [roundStatus, setRoundStatus] = useState(status);
+  const [isEditable, setIsEditable] = useState(false);
   const filteredBrackets = brackets.filter(
     (bracket) =>
       bracket.player1?.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
       bracket.player2?.username.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  useEffect(() => {
+    if(user){
+      setIsEditable(roundStatus === "ongoing" && tournamentOrganizerId === user?.username);
+    }
+  }, [user,roundStatus]);
 
   const handleEndRound = async () => {
     const allBracketsCompleted = brackets.every((bracket) => bracket.status === "completed");

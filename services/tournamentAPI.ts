@@ -155,15 +155,11 @@ export const updateBracketScore = async (
   };
 
 export const endBracket = async (
-    id: string,
-    updateWinner: string | undefined
+    id: string
     ): Promise<string> => {
     try {
-        const payload = {
-          winner: updateWinner
-        };
-
-    const response = await axiosClient.put<string>(`/brackets/${id}`, payload);
+        
+    const response = await axiosClient.put<string>(`/brackets/${id}`);
       
     return response.data;
 
