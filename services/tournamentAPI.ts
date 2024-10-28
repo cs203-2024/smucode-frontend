@@ -159,7 +159,7 @@ export const endBracket = async (
     ): Promise<string> => {
     try {
         
-    const response = await axiosClient.put<string>(`/brackets/${id}`);
+    const response = await axiosClient.put<string>(`/brackets/${id}/end`);
       
     return response.data;
 
