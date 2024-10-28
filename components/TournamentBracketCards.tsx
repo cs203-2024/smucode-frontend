@@ -201,7 +201,6 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
   const tournamentContext = useTournamentContext();
   const { user } = useUserContext();
   const tournamentOrganizerId = tournamentContext.organizerId;
-  const tournamentId = tournamentContext.tournamentId;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isEndingRound, setIsEndingRound] = useState(false);
   const [roundStatus, setRoundStatus] = useState(status);
@@ -229,7 +228,7 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
     if (!isEndingRound) {
       setIsEndingRound(true);
       try {
-        await endRound(tournamentId);
+        await endRound(id);
         toast.success("Round ended!");
         setRoundStatus("completed");
         setIsEditable(false);

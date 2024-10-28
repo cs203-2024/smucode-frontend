@@ -174,7 +174,7 @@ export const endRound = async (
     ): Promise<string> => {
     try {
 
-    const response = await axiosClient.put<string>(`/tournaments/${id}/progress`);
+    const response = await axiosClient.put<string>(`/rounds/${id}/end`);
       
     return response.data;
 
