@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 import { User } from "@/components/types";
-import Cookies from "js-cookie";
+
 
 //interface for user credentials (used for login and signup)
 interface UserCredentials {
@@ -52,7 +52,7 @@ export const signup = async (
   }
 };
 
-export const logout = async (): Promise<string> => {
+export const logoutAccount = async (): Promise<string> => {
   try {
     const response = await axiosClient.post<string>("/auth/logout");
 
