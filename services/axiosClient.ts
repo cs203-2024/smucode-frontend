@@ -26,13 +26,12 @@ axiosClient.interceptors.response.use(
           
           return axiosClient(request);
         } catch (refreshError) {
-          router.push("/login");
-          
+          window.location.href = "/login";
           return Promise.reject(refreshError);
         }
       } else {
         // Handle case where retry already failed
-        router.push("/login");
+        window.location.href = "/login";
       }
     } else if (error.response?.status === 500) {
       console.error("Something went wrong on our end, try again");

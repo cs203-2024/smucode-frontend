@@ -195,7 +195,7 @@ export const getAllAvailableTournamentsForExplore = async ():Promise<UserTournam
         console.log(response);
         return response.data;
     } catch (error) {
-        console.error("Error retrieving tournaments created by admin:", error);
+        console.error("Error retrieving tournaments for explore:", error);
         throw error;
     } 
 }

@@ -101,7 +101,7 @@ export default function UserDashboardTournamentCard({data,fetchData}: UserDashbo
                         <RiNumbersFill className='pr-1 text-lg' />{data.testCaseWeight}%
                     </Badge>
                 </div>
-                <CardDescription className='pt-1 text-sm'>
+                <CardDescription className='pt-1 text-sm max-w-[110%] line-clamp-1'>
                     {getFormattedDateFromString(data.startDate)} - {getFormattedDateFromString(data.endDate)}
                 </CardDescription>
             </div>
