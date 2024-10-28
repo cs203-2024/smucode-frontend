@@ -63,7 +63,6 @@ const Nav = (): JSX.Element => {
         <div className="flex gap-7">
           <NavLink href="/tournaments/explore">Explore</NavLink>
           <NavLink href="/dashboard">Dashboard</NavLink>
-          <NavLink href="/mytournaments">My Tournaments</NavLink>
         </div>
       </div>
 

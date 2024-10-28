@@ -65,7 +65,7 @@ export default function AdminDashboardTournamentCard({data,fetchData}: AdminDash
                 
                 {data.signupsOpen ? (
                     <CardDescription className={cn(
-                        'pt-2',
+                        'pt-2 text-xs',
                         data.status != "COMPLETED" ? "":"text-gray-400"
                     )}>
                         Registration Closing: <span className='font-semibold'>{getFormattedDateFromString(data.signupEndDate)}</span>
@@ -75,7 +75,7 @@ export default function AdminDashboardTournamentCard({data,fetchData}: AdminDash
                         <div className='text-gray-700 font-semibold text-sm'>Tournament Has Ended</div>
                     ):(
                         <CardDescription className={cn(
-                            'pt-2',
+                            'pt-2 text-xs',
                             data.status != "COMPLETED" ? "":"text-gray-400"
                         )}>
                             {data.currentRound}
@@ -110,7 +110,7 @@ export default function AdminDashboardTournamentCard({data,fetchData}: AdminDash
                         <RiNumbersFill className='pr-1 text-lg' />{data.testCaseWeight}%
                     </Badge>
                 </div>
-                <CardDescription className='pt-1 text-sm'>
+                <CardDescription className='pt-1 text-xs'>
                     {getFormattedDateFromString(data.startDate)} - {getFormattedDateFromString(data.endDate)}
                 </CardDescription>
             </div>

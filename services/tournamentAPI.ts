@@ -84,7 +84,7 @@ export const getAllTournamentsCreatedByAdmin = async (username: string):Promise<
 export const getAllTournamentsForUser = async (username: string):Promise<UserTournamentCardInfo[]> => {
     try {
          const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments?username=`);
-        //const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments?username=${username}`); 
+        //const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments`); 
         return response.data;
     } catch (error) {
         console.error("Error retrieving tournaments for user:", error);

@@ -56,17 +56,17 @@ export default function UserDashboardTournamentCard({data,fetchData}: UserDashbo
                 
                 {data.signupsOpen ? (
                     <CardDescription className={cn(
-                        'pt-2',
+                        'pt-2 text-xs',
                         data.status != "COMPLETED" ? "":"text-gray-400"
                     )}>
-                        Registration Closing: <span className='font-semibold'>{getFormattedDateFromString(data.signupEndDate)}</span>
+                        Registration Closing: <span className='font-semibold text-xs'>{getFormattedDateFromString(data.signupEndDate)}</span>
                     </CardDescription>
                 ):
                     data.status === "COMPLETED" ? (
                         <div className='text-gray-700 font-semibold text-sm'>{getPlacingString(data.placing)}</div>
                     ):(
                         <CardDescription className={cn(
-                            'pt-2',
+                            'pt-2 text-xs',
                             data.status != "COMPLETED" ? "":"text-gray-400"
                         )}>
                             {data.currentRound}
@@ -101,7 +101,7 @@ export default function UserDashboardTournamentCard({data,fetchData}: UserDashbo
                         <RiNumbersFill className='pr-1 text-lg' />{data.testCaseWeight}%
                     </Badge>
                 </div>
-                <CardDescription className='pt-1 text-sm max-w-[110%] line-clamp-1'>
+                <CardDescription className='pt-1 text-xs max-w-[110%] line-clamp-1'>
                     {getFormattedDateFromString(data.startDate)} - {getFormattedDateFromString(data.endDate)}
                 </CardDescription>
             </div>

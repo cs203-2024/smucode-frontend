@@ -18,7 +18,7 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import TournamentCard from '../home/TournamentCard';
 import { TournamentCardInfo, UserTournamentCardInfo, UserDashboardTournamentCardInfo } from '../types';
-import { tournamentCardData, tournamentCardData2, userTournamentCardData, userTournamentCardData2 } from '@/components/home/testdata';
+import { tournamentCardData, tournamentCardData2, userTournamentCardData, userTournamentCardData2 } from '@/components/dashboard/testdata';
 import { useUserContext } from '@/context/UserContext';
 import { getAllTournamentsCreatedByAdmin, getAllTournamentsForUser } from '@/services/tournamentAPI';
 import UserDashboardTournamentCard from './UserDashboardTournamentCard';
