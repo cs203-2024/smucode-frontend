@@ -89,7 +89,7 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
 
   return (
     <div className={cn("grid gap-3", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} method="post">
         <div className="grid gap-3">
           <div className="grid gap-1">
             {inputFields.map((field) => (

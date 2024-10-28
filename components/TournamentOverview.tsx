@@ -27,7 +27,7 @@ const TournamentOverview: React.FC = () => {
   useEffect(() => {
     if(user){
       // User can only sign up when tournament has not started and when they have not sign up yet
-      setCanSignUp(overviewData?.status === "UPCOMING" && user?.role === "ROLE_USER" && !signedUp);
+      setCanSignUp(overviewData?.status === "UPCOMING" && user?.role === "ROLE_PLAYER" && !signedUp);
     }
   }, [overviewData?.status, user]);
   
@@ -157,7 +157,7 @@ const TournamentOverview: React.FC = () => {
       <div className='mx-[calc(20%)] text-xl font-semibold mt-8 mb-6'>
         <p>Tournament Details</p>
       </div>
-      <div className='grid text-sm grid-cols-[minmax(auto,70%)_minmax(auto,30%)] w-[calc(60%)] mx-[calc(20%)] gap-x-[6em] gap-y-[3em]'>
+      <div className='grid text-sm grid-cols-[minmax(auto,70%)_minmax(auto,30%)] w-[calc(60%)] mx-[calc(20%)] gap-x-[6em] gap-y-[3em] mb-6'>
         <div className='w-full bg-transparent border-t-2'>
         <div className="space-y-2 mt-10">
             <p className="text-gray-700 mb-6">{description || 'No description available.'}</p>
@@ -182,7 +182,7 @@ const TournamentOverview: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className='w-[80%] mx-auto rounded-lg'>
+        <div className='w-[100%] mx-auto rounded-lg'>
         <div className="bg-white shadow p-6 rounded-lg h-[300px] text-md">
           <h2 className="text-md font-semibold mb-4">Tournament Timeline</h2>
           <div className="space-y-2 text-sm">

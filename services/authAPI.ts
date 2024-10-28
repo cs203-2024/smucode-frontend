@@ -28,10 +28,6 @@ export const login = async (
       "/auth/login",
       credentials,
     );
-    const { token } = response.data;
-
-    //store the jwt token in cookies
-    Cookies.set("authToken", token, { expires: 1, path: "/" });
 
     return response.data;
   } catch (error) {
@@ -59,9 +55,6 @@ export const signup = async (
 export const logout = async (): Promise<string> => {
   try {
     const response = await axiosClient.post<string>("/auth/logout");
-
-    // Remove the JWT token
-    Cookies.remove("authToken");
 
     return response.data;
   } catch (error) {

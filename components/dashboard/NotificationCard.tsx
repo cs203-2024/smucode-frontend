@@ -41,14 +41,14 @@ export default function NotificationCard() {
                                 )}>
                                     <div className="flex items-center">
                                         <div className="flex items-center gap-2">
-                                            <div className="font-semibold">{data.message}</div>
+                                            <div className="font-semibold max-w-[50%] line-clamp-1">{data.message}</div>
                                             {!data.read && (
                                                 <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                                             )}
                                         </div>
                                         <div
                                             className={cn(
-                                                "ml-auto text-xs",
+                                                "ml-auto text-xs text-right",
                                                 data.read ? "text-foreground":"text-muted-foreground"
                                             )}
                                             >

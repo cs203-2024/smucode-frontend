@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-import { tournamentCardData, tournamentCardData2, userTournamentCardData, userTournamentCardData2 } from "@/components/home/testdata";
+import { tournamentCardData, tournamentCardData2, userTournamentCardData, userTournamentCardData2 } from "@/components/dashboard/testdata";
 import UserTournamentCard from "@/components/home/UserTournamentCard";
 import ExploreTournamentCard from "@/components/explore/ExploreTournamentCard";
 import { getAllAvailableTournamentsForExplore } from "@/services/tournamentAPI";
@@ -16,7 +16,7 @@ export default function ExplorePage() {
         try {
             const response = await getAllAvailableTournamentsForExplore();
             console.log("Explore data received!");
-            //console.log(response);
+            console.log(response);
             return response;
         } catch (error) {
             console.error(error);
@@ -29,9 +29,9 @@ export default function ExplorePage() {
         setExploreData(exploreDataResponse);
     }
 
-    // useEffect(() => {
-    //     setExploreData(getDataForExplore())
-    // }, []);
+    useEffect(() => {
+        fetchExploreData()
+    }, []);
 
     return (
         <main className="w-full px-8 pt-4 mt-[60px] mb-8">
@@ -42,10 +42,10 @@ export default function ExplorePage() {
             <ScrollArea>
                 <div className="flex flex-wrap justify-center items-start gap-4">
                     {exploreData.map((data) => (
-                        <ExploreTournamentCard data={data} fetchData={fetchExploreData} />
+                        <ExploreTournamentCard key={data.id} data={data} fetchData={fetchExploreData} />
                     ))}
                     {userTournamentCardData2.map((data) => (
-                        <ExploreTournamentCard data={data} fetchData={fetchExploreData} />
+                        <ExploreTournamentCard key={data.id} data={data} fetchData={fetchExploreData} />
                     ))}
                 </div>
             </ScrollArea>

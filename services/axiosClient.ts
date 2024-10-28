@@ -24,13 +24,14 @@ axiosClient.interceptors.response.use(
           
           return axiosClient(request);
         } catch (refreshError) {
-          window.href.location = "/login";
+          window.location.href = "/login";
           
           return Promise.reject(refreshError);
         }
       } else {
         // Handle case where retry already failed
-        window.href.location = "/login";
+        window.location.href = "/login";
+
       }
     } else if (error.response?.status === 500) {
       console.error("Something went wrong on our end, try again");
