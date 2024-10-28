@@ -1,4 +1,8 @@
-import { TournamentProps, TournamentOverviewProps, ParticipantCardListProp } from "./types";
+import {
+  TournamentProps,
+  TournamentOverviewProps,
+  ParticipantCardListProp,
+} from "./types";
 
 const mockTournamentData: TournamentOverviewProps = {
   id: "1",
@@ -283,19 +287,75 @@ const mockTournamentData: TournamentOverviewProps = {
 //           }
 //         ]
 //       }
-//     ]  
+//     ]
 // };
 
 const mockParticipantsData: ParticipantCardListProp = {
   participants: [
-    { id: "1", name: "John Doe", profilePicture: "", rank: 1, wins: 10, losses: 2 },
-    { id: "2", name: "Jane Smith", profilePicture: "", rank: 2, wins: 9, losses: 3 },
-    { id: "3", name: "Bob Johnson", profilePicture: "", rank: 3, wins: 8, losses: 4 },
-    { id: "4", name: "Alice Brown", profilePicture: "", rank: 4, wins: 7, losses: 5 },
-    { id: "5", name: "Charlie Wilson", profilePicture: "", rank: 5, wins: 6, losses: 6 },
-    { id: "6", name: "Eva Martinez", profilePicture: "", rank: 6, wins: 5, losses: 7 },
-    { id: "7", name: "David Lee", profilePicture: "", rank: 7, wins: 4, losses: 8 },
-    { id: "8", name: "Grace Taylor", profilePicture: "", rank: 8, wins: 3, losses: 9 },
+    {
+      id: "1",
+      name: "John Doe",
+      profilePicture: "",
+      rank: 1,
+      wins: 10,
+      losses: 2,
+    },
+    {
+      id: "2",
+      name: "Jane Smith",
+      profilePicture: "",
+      rank: 2,
+      wins: 9,
+      losses: 3,
+    },
+    {
+      id: "3",
+      name: "Bob Johnson",
+      profilePicture: "",
+      rank: 3,
+      wins: 8,
+      losses: 4,
+    },
+    {
+      id: "4",
+      name: "Alice Brown",
+      profilePicture: "",
+      rank: 4,
+      wins: 7,
+      losses: 5,
+    },
+    {
+      id: "5",
+      name: "Charlie Wilson",
+      profilePicture: "",
+      rank: 5,
+      wins: 6,
+      losses: 6,
+    },
+    {
+      id: "6",
+      name: "Eva Martinez",
+      profilePicture: "",
+      rank: 6,
+      wins: 5,
+      losses: 7,
+    },
+    {
+      id: "7",
+      name: "David Lee",
+      profilePicture: "",
+      rank: 7,
+      wins: 4,
+      losses: 8,
+    },
+    {
+      id: "8",
+      name: "Grace Taylor",
+      profilePicture: "",
+      rank: 8,
+      wins: 3,
+      losses: 9,
+    },
   ],
 };
 
@@ -315,7 +375,9 @@ export const fetchTournamentOverviewData = async (id: string | undefined) => {
 //   return null;
 // };
 
-export const fetchTournamentParticipantsData = async (id: string | undefined) => {
+export const fetchTournamentParticipantsData = async (
+  id: string | undefined
+) => {
   await new Promise((resolve) => setTimeout(resolve, 500));
   if (id == "1") {
     return mockParticipantsData;
@@ -362,9 +424,22 @@ export const profileUsers = [
   },
 ];
 
+export const exampleUser = [
+  {
+    username: "adminChamp",
+    email: "adminChamp@gmail.com",
+    profileImageUrl: "/assets/images/profile-picture.jpg",
+    role: "admin",
+    mu: 25,
+    sigma: 8.33,
+    skillIndex: 30,
+  },
+];
+
 // Function to fetch user data based on ID
 export const fetchUserData = async (id: string | undefined) => {
   await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate a delay
+  // const user = exampleUser.find((user) => user.username === username);
   const user = profileUsers.find((user) => user.id === id);
   return user || null;
 };
@@ -458,7 +533,6 @@ export const fetchOpponentsData = async () => {
   return opponents;
 };
 
-
 // export const updateBracketScore = async (
 //   roundId: number,
 //   bracketId: string,
@@ -467,7 +541,6 @@ export const fetchOpponentsData = async () => {
 // ) => {
 
 //   await new Promise((resolve) => setTimeout(resolve, 500));
-
 
 //   const round = mockTournamentBracketsData.rounds.find((round) => round.id === roundId);
 //   if (!round) return { success: false, message: "Round not found" };
@@ -488,7 +561,6 @@ export const fetchOpponentsData = async () => {
 // ) => {
 
 //   await new Promise((resolve) => setTimeout(resolve, 500));
-
 
 //   const round = mockTournamentBracketsData.rounds.find((round) => round.id === roundId);
 //   if (!round) return { success: false, message: "Round not found" };
