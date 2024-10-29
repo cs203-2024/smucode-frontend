@@ -14,7 +14,7 @@ import { useUserContext } from '@/context/UserContext';
 import { getFormattedDateFromString } from '@/lib/utils';
 
 const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; status: string }> = ({ player, isWinner, status }) => {
-  if (!player) return <div className="flex items-center justify-between bg-transparent p-1.5 h-10 border-gray-400 rounded-full"></div>;
+  if (!player || !player.username) return <div className="flex items-center justify-between bg-transparent p-1.5 h-10 border-gray-400 rounded-full"></div>;
   return (
     <div className={`${!isWinner && status === "completed" ? "opacity-40" : ""} flex items-center py-1 justify-between text-sm`}>
       <div className="flex items-center space-x-2">
@@ -73,7 +73,7 @@ const TournamentBracket: React.FC<BracketProps> = ({ id, status, player1, player
   const [isEditable, setIsEditable] = useState(false);
   const [bracketStatus, setBracketStatus] = useState(status);
   const getWinner = (player1: PlayerInfo | undefined, player2: PlayerInfo | undefined) => {
-    if (player1 && player2 && bracketStatus === "completed") {
+    if (player1 && player2 && player1.username && player2.username && bracketStatus === "completed") {
       if (player1.score === 0 && player2.score === 0) return "";
       return player1.score > player2.score ? player1.username : player2.username;
     }
@@ -312,8 +312,8 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
   const filteredRounds = rounds.filter((round) => {
     return round.brackets.some(
       (bracket) =>
-        bracket.player1?.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        bracket.player2?.username.toLowerCase().includes(searchQuery.toLowerCase())
+        bracket.player1?.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        bracket.player2?.username?.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }).reverse();
 
