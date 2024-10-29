@@ -32,9 +32,9 @@ export default function DashboardTournamentCardWrapper() {
     const [adminData, setAdminData] = useState<TournamentCardInfo[]>([]); // Use state for adminData
     const [userData, setUserData] = useState<UserTournamentCardInfo[]>([]);
 
-    async function getDataForAdmin(username: string) {
+    async function getDataForAdmin() {
         try {
-            const response = await getAllTournamentsCreatedByAdmin(username);
+            const response = await getAllTournamentsCreatedByAdmin();
             console.log("Admin data received in wrapper");
             console.log(response[0]);
             return response;
@@ -43,22 +43,22 @@ export default function DashboardTournamentCardWrapper() {
         }
     }
 
-    async function getDataForUser(username: string) {
+    async function getDataForUser() {
         try {
-            const response = await getAllTournamentsForUser(username);
+            const response = await getAllTournamentsForUser();
             return response;
         } catch (error) {
             console.error(error);
         }
     }
 
-    async function fetchData(username: string) {
+    async function fetchData() {
         if (user?.role === "ROLE_ADMIN") {
-            const adminDataResponse = (await getDataForAdmin(username)) ?? [];
+            const adminDataResponse = (await getDataForAdmin()) ?? [];
             console.log("Admin data received:", adminDataResponse);
             setAdminData(adminDataResponse); // Update the state with the fetched data
         } else {
-            const userDataResponse = (await getDataForUser(username)) ?? [];
+            const userDataResponse = (await getDataForUser()) ?? [];
             console.log("User data received:", userDataResponse);
             setUserData(userDataResponse); // Update the state with the fetched data
         }
@@ -66,7 +66,7 @@ export default function DashboardTournamentCardWrapper() {
 
     useEffect(() => {     
 
-        fetchData(username); // Call the function
+        fetchData(); // Call the function
     }, [user]); // Ensure it runs when `user` or `username` is available
     
     return (
@@ -92,17 +92,17 @@ export default function DashboardTournamentCardWrapper() {
                                 <ScrollArea className='h-[55vh] w-full whitespace-nowrap pr-3'>
                                     <div className='pb-4'>
                                         {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
-                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
-                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
+                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         ))}
 
                                         {/* Uncomment below when real data is present */}
 
                                         {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
-                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         )):userData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
-                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
+                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         ))}
                                     </div>
                                 </ScrollArea>
@@ -112,17 +112,17 @@ export default function DashboardTournamentCardWrapper() {
                                 <ScrollArea className='h-[55vh] w-full pr-3'>
                                     <div className='pb-4'>
                                         {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
-                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
-                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
+                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         ))}
 
                                         {/* Uncomment below when real data is present */}
 
                                         {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
-                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         )):userData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
-                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
+                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         ))}
                                     </div>
                                 </ScrollArea>
@@ -132,17 +132,17 @@ export default function DashboardTournamentCardWrapper() {
                                 <ScrollArea className='h-[55vh] whitespace-nowrap pr-3'>
                                     <div className='pb-4'>
                                         {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
-                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
-                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
+                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         ))}
 
                                         {/* Uncomment below when real data is present */}
 
                                         {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
-                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("admin")} />
+                                            <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         )):userData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
-                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData("user")} />
+                                            <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         ))}
                                     </div>
                                 </ScrollArea>

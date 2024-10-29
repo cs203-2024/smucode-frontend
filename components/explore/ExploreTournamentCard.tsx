@@ -120,7 +120,6 @@ interface AlertDialogDemoProps {
 function AlertDialogDemo({
     fetchData,
     tournamentId,
-    username,
 }: AlertDialogDemoProps) {
 
     const { toast } = useToast();

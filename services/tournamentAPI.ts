@@ -69,7 +69,7 @@ export const removeSignUpForTournament = async (tournamentId: string):Promise<Si
     }
 }
 
-export const getAllTournamentsCreatedByAdmin = async (username: string):Promise<TournamentCardInfo[]> => {
+export const getAllTournamentsCreatedByAdmin = async ():Promise<TournamentCardInfo[]> => {
     try {
         // const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?username=admin`);
         //const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?username=${username}`); 
@@ -82,7 +82,7 @@ export const getAllTournamentsCreatedByAdmin = async (username: string):Promise<
     } 
 }
 
-export const getAllTournamentsForUser = async (username: string):Promise<UserTournamentCardInfo[]> => {
+export const getAllTournamentsForUser = async ():Promise<UserTournamentCardInfo[]> => {
     try {
         //const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments?username=`);
         const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments`); 
