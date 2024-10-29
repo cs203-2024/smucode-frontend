@@ -195,3 +195,14 @@ export type UserDashboardTournamentCardInfo = {
   signupsOpen: boolean; // derived from backend attributes
   placing: number; // -1 if tournament incomplete, actual placing number otherwise (1 - number of players)
 }
+
+export type NotificationCardInfo = {
+  id: string;
+  tournamentId: string;
+  tournamentName: string;
+  message: string;
+  type: string; // NotificationType 
+  category: string;
+  createdAt: string;
+  isRead: boolean;
+}
