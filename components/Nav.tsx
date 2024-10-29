@@ -57,7 +57,7 @@ const Nav = (): JSX.Element => {
   return (
     <nav className="fixed top-0 flex z-50 justify-between h-[60px] items-center w-full bg-white shadow-md p-4">
       <div className="flex items-center gap-10">
-        <Link href="/" className="flex gap-2 items-center">
+        <Link href={ user ? "/dashboard": "/" } className="flex gap-2 items-center">
           <Image src="/assets/images/logo.png" width={30} height={30} className="object-contain" alt="logo" />
           <p className="logo_text logo_text_gradient">BrawlCode</p>
         </Link>

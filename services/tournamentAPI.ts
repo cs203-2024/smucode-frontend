@@ -72,7 +72,8 @@ export const removeSignUpForTournament = async (tournamentId: string):Promise<Si
 export const getAllTournamentsCreatedByAdmin = async (username: string):Promise<TournamentCardInfo[]> => {
     try {
         // const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?username=admin`);
-        const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?username=${username}`); 
+        //const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?username=${username}`); 
+        const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments`); 
         console.log(response);
         return response.data;
     } catch (error) {
@@ -83,8 +84,8 @@ export const getAllTournamentsCreatedByAdmin = async (username: string):Promise<
 
 export const getAllTournamentsForUser = async (username: string):Promise<UserTournamentCardInfo[]> => {
     try {
-        const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments?username=`);
-        //const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments`); 
+        //const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments?username=`);
+        const response = await axiosClient.get<UserTournamentCardInfo[]>(`/tournaments`); 
         return response.data;
     } catch (error) {
         console.error("Error retrieving tournaments for user:", error);
