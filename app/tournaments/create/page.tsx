@@ -317,7 +317,7 @@ export default function CreateTournament() {
                                             </SelectContent>
                                         </Select>
                                         <FormDescription>
-                                            The maximum number of players.
+                                            Maximum number of players.
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>

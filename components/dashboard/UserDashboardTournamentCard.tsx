@@ -105,7 +105,7 @@ export default function UserDashboardTournamentCard({data,fetchData}: UserDashbo
                     {getFormattedDateFromString(data.startDate)} - {getFormattedDateFromString(data.endDate)}
                 </CardDescription>
             </div>
-            {data.status === "UPCOMING" && data.signupsOpen ? (
+            {data.status === "UPCOMING" && data.signupsOpen && data.signedUp ? (
                 <div className='col-span-1 w-full flex justify-end items-center'>
                     <AlertDialogDemo fetchData={fetchData} tournamentId={data.id} username={username} />
                 </div>
