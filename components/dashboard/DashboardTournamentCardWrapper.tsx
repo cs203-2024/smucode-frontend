@@ -93,7 +93,7 @@ export default function DashboardTournamentCardWrapper() {
                                     <div className='pb-4'>
                                         {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
                                             <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
-                                        )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
+                                        )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "upcoming" && item.signedUp).map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         ))}
 
@@ -101,7 +101,7 @@ export default function DashboardTournamentCardWrapper() {
 
                                         {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
                                             <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
-                                        )):userData.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
+                                        )):userData.filter((item) => item.status.toLowerCase() === "upcoming" && item.signedUp).map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         ))}
                                     </div>
@@ -113,7 +113,7 @@ export default function DashboardTournamentCardWrapper() {
                                     <div className='pb-4'>
                                         {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
                                             <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
-                                        )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
+                                        )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "ongoing" && item.participated).map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         ))}
 
@@ -121,7 +121,7 @@ export default function DashboardTournamentCardWrapper() {
 
                                         {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
                                             <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
-                                        )):userData.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
+                                        )):userData.filter((item) => item.status.toLowerCase() === "ongoing" && item.participated).map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         ))}
                                     </div>
@@ -133,7 +133,7 @@ export default function DashboardTournamentCardWrapper() {
                                     <div className='pb-4'>
                                         {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
                                             <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
-                                        )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
+                                        )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "completed" && item.participated).map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         ))}
 
@@ -141,7 +141,7 @@ export default function DashboardTournamentCardWrapper() {
 
                                         {user?.role === "ROLE_ADMIN" ? adminData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
                                             <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
-                                        )):userData.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
+                                        )):userData.filter((item) => item.status.toLowerCase() === "completed" && item.participated).map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         ))}
                                     </div>

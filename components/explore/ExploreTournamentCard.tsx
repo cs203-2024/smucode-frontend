@@ -81,7 +81,7 @@ export default function ExploreTournamentCard({data, fetchData}: ExploreTourname
                 </div>
             </div>
             <CardContent className='mb-0 py-2'>    
-                <div className='flex justify-start items-center py-2 gap-2'>
+                <div className='flex justify-start items-center py-2 gap-2 text-sm'>
                     Period: 
                     <div className='rounded-full font-semibold'>{getFormattedDateFromString(data.startDate)} to {getFormattedDateFromString(data.endDate)}</div>
                 </div>            
