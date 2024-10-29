@@ -54,7 +54,6 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
           sessionStorage.removeItem("redirectAfterLogin"); 
           router.push(redirectAfterLogin);
         } else {
-          window.location.href = "/";
           router.push('/dashboard'); //TODO: redirect to relevant home page
         }
       } else {
