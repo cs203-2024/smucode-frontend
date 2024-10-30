@@ -1,5 +1,5 @@
 
-import TournamentBrackets from "@/components/TournamentBrackets";
+import TournamentBrackets from "@/components/tournaments/TournamentBrackets";
 const TournamentBracketsPage: React.FC = () => {
   return (
     <>

@@ -19,8 +19,8 @@ export type RoundProps = {
     id: string;
     seqId: number;
     name: string;
-    startDate: string;
-    endDate: string;
+    startDateTime: string;
+    endDateTime: string;
     status: string;
     brackets: BracketProps[];
 };

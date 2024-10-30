@@ -5,7 +5,7 @@ import { User, Trophy, Medal, Grid, List } from 'lucide-react';
 import { useTournamentContext } from "@/context/TournamentContext";
 import { fetchTournamentParticipantsData } from '@/components/mockApi';
 import { ParticipantCardListProp, Participant } from '@/components/types';
-import { Skeleton } from './ui/skeleton';
+import { Skeleton } from '../ui/skeleton';
 
 interface ParticipantCardProps {
   participant: Participant;

@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import TournamentBracketZoomable from '@/components/TournamentBracketZoomable';
-import TournamentBracketCards from '@/components/TournamentBracketCards'; 
+import TournamentBracketZoomable from './TournamentBracketZoomable';
+import TournamentBracketCards from './TournamentBracketCards'; 
 import { fetchTournamentBracketsData } from '@/services/tournamentAPI'; 
 import { TournamentProps } from '@/components/types';
 import { Icons } from "@/components/icons";
 import { useTournamentContext } from "@/context/TournamentContext";
-import { Skeleton } from './ui/skeleton';
+import { Skeleton } from '../ui/skeleton';
 import { LayoutGrid } from 'lucide-react';
 
 const TournamentBrackets: React.FC = () => {

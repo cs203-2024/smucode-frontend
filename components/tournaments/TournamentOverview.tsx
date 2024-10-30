@@ -10,7 +10,7 @@ import { Calendar, LoaderCircle } from 'lucide-react';
 import { useUserContext } from '@/context/UserContext';
 import { toast } from 'sonner';
 import { removeSignUpForTournament, signUpForTournament } from '@/services/tournamentAPI';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogOverlay, DialogTitle } from '@radix-ui/react-dialog';
 
 const TournamentOverview: React.FC = () => {
@@ -40,6 +40,7 @@ const TournamentOverview: React.FC = () => {
         await signUpForTournament(id);
         toast.success("Signed up successfully!");
         setSignedUp(true);
+        setIsConfirmDialogOpen(false);
       } catch (error) {
         console.error("Failed to sign up:", error);
         toast.error("Failed to sign up. Please try again.");
@@ -58,7 +59,7 @@ const TournamentOverview: React.FC = () => {
         await removeSignUpForTournament(id);
         toast.success("Successfully Removed Registration!"); 
         setSignedUp(false);
-        
+        setIsRemoveDialogOpen(false);
       } catch (error) {
         console.error("Failed to remove registration:", error);
         toast.error("Failed to remove registration. Please try again.");
@@ -137,7 +138,7 @@ const TournamentOverview: React.FC = () => {
               Registered
             </Button>
           }
-          { canSignUp &&
+          { canSignUp && !signedUp &&
             <Button variant="outline" className="logo_gradient text-white font-semibold w-[110px] mt-8" onClick={() => setIsConfirmDialogOpen(true)}>
               Sign Up
             </Button>
