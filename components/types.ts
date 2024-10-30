@@ -107,6 +107,7 @@ export interface TournamentOverviewProps {
       space: number;
       testCases: number;
     };
+    signedUp?: boolean;
   }
 
   // For testing the profile page

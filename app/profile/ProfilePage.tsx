@@ -45,7 +45,7 @@ const ProfilePage: React.FC = () => {
                   <Image
                     src={
                       user?.profileImageUrl ||
-                      /*default img*/ "/assets/images/avatar.png"
+                      /*default img*/ "/assets/images/default_profile.png"
                     }
                     alt={`${user?.username}'s Profile Picture`}
                     width={256} // Increased width

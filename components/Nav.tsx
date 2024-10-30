@@ -81,13 +81,13 @@ const Nav = (): JSX.Element => {
         </div>
       </div>
 
-      <div className="relative flex gap-3">
+      <div className="relative mt-1 flex gap-3">
         {user ? (
           <>
             <div className="relative">
               <DropdownMenu>
                 <DropdownMenuTrigger><Image
-                  src={user?.profileImageUrl || '/assets/images/avatar.png'}
+                  src={user?.profileImageUrl || '/assets/images/default_profile.png'}
                   width={35}
                   height={35}
                   className="rounded-full cursor-pointer"
@@ -96,7 +96,7 @@ const Nav = (): JSX.Element => {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem><Link href="/profile" className='pl-0 py-1 pr-[60px]'>Profile</Link></DropdownMenuItem>
+                  <DropdownMenuItem><Link href={`/profile/${user?.username}`} className='pl-0 py-1 pr-[60px]'>Profile</Link></DropdownMenuItem>
                   <DropdownMenuItem className='cursor-pointer' onClick={logout}>Sign Out</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
