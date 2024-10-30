@@ -135,7 +135,7 @@ const formSchema = z.object({
 })
 .refine((data) => {
     console.log(data.signupEndDate.getTime() + ", " + data.startDate.getTime());
-    return data.signupEndDate.getTime() < data.startDate.getTime();
+    return data.signupEndDate.getTime() > new Date().getTime() && data.signupEndDate.getTime() < data.startDate.getTime();
 }, {
     message: "Signups must end before Start Date Time.",
     path: ["signupEndDate"]

@@ -22,6 +22,12 @@ export function getFormattedDateFromString(input: string) {
   });
 }
 
+export function formatDateToShortTime(date: Date): string {
+  const hours = date.getHours().toString().padStart(2, '0'); 
+  const minutes = date.getMinutes().toString().padStart(2, '0'); 
+  return `${hours}:${minutes}`; 
+}
+
 export function getTimeUntil(date1: string): string {
     if (!date1) return "Invalid date";
     

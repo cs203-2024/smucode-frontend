@@ -1,4 +1,4 @@
-import TournamentOverview from '@/components/TournamentOverview';
+import TournamentOverview from '@/components/tournaments/TournamentOverview';
 
 
 const TournamentOverviewPage = () => {

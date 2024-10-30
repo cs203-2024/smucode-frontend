@@ -185,6 +185,26 @@ export const endRound = async (
     }
 };
 
+export const updateRoundStartEndDate = async (
+    id: string | undefined,
+    updateStartDate: Date,
+    updateEndDate: Date
+    ): Promise<string> => {
+    try {
+    const payload = {
+        startDate: updateStartDate,
+        endDate: updateEndDate
+    }
+    const response = await axiosClient.put<string>(`/tournaments/round/${id}`, payload);
+      
+    return response.data;
+
+    } catch (error) {
+     console.error("Error updating round:", error);
+     throw error;
+    }
+};
+
 export const getAllAvailableTournamentsForExplore = async ():Promise<UserTournamentCardInfo[]> => {
     try {
         // const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?username=admin`);
