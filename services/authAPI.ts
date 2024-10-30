@@ -63,16 +63,16 @@ export const logoutAccount = async (): Promise<string> => {
   }
 };
 
-export const deleteAccount = async (): Promise<string> => {
-  try {
-    const response = await axiosClient.delete<string>("/auth/delete-account");
+// export const deleteAccount = async (): Promise<string> => {
+//   try {
+//     const response = await axiosClient.delete<string>("/auth/delete-account");
 
-    return response.data;
-  } catch (error) {
-    console.error("Error deleting account:", error);
-    throw error;
-  }
-};
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error deleting account:", error);
+//     throw error;
+//   }
+// };
 
 // export const changePassword = async (): Promise<string> => {
 //   try {
@@ -85,12 +85,37 @@ export const deleteAccount = async (): Promise<string> => {
 //   }
 // };
 
+export const deleteAccount = async (username: string, password: string): Promise<string> => {
+  console.log("Username:", username); // Log the username to ensure it's being captured
+  console.log("Password:", password); // Log the password to ensure it's being captured
+  
+  try {
+    const response = await axiosClient.delete<string>("/auth/delete-account", {
+      data: {
+        username,
+        password,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    throw error;
+  }
+};
+
 // Update the changePassword function to accept a new password
 
-export const changePassword = async (newPassword: string): Promise<string> => {
+export const changePassword = async (username: string, oldPassword: string, newPassword: string): Promise<string> => {
+  console.log("Username:", username); // Log the username to ensure it's being captured
+  console.log("Old password:", oldPassword); // Log the old password to ensure it's being captured
+  console.log("New password:", newPassword); // Log the new password to ensure it's being captured
+  
   try {
     const response = await axiosClient.put<string>("/auth/change-password", {
-      password: newPassword,
+      username,
+      oldPassword,
+      newPassword,
     });
 
     return response.data;
