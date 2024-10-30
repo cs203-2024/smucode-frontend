@@ -8,7 +8,7 @@ import { Poppins } from 'next/font/google'
 
 // Metadata
 export const metadata = {
-    title: "SMUCode",
+    title: "BrawlCode",
     description: ""
 };
 
