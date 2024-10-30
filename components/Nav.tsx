@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { useUserContext } from '@/context/UserContext';
+import { useEffect, useState } from 'react';
 
 import {
   DropdownMenu,
@@ -14,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+
 interface NavLinkProps {
   href: string;
   children: React.ReactNode;
@@ -22,6 +24,7 @@ interface NavLinkProps {
 interface User {
   username: string,
   profileImageUrl?: string;
+  role: string;
 }
 
 interface UserContextType {
@@ -32,7 +35,14 @@ interface UserContextType {
 const Nav = (): JSX.Element => {
   const { user, logout } = useUserContext() as UserContextType;
   const pathname = usePathname();
+  const [isAdmin, setIsAdmin] = useState<Boolean>(user?.role === "ROLE_ADMIN");
 
+  useEffect(() => {
+    if (user) {
+      setIsAdmin(user.role === "ROLE_ADMIN");
+    }
+  }, [user]);
+  
   const NavLink: React.FC<NavLinkProps> = ({ href, children }) => {
     const isActive = pathname === href;
     return (
@@ -61,21 +71,23 @@ const Nav = (): JSX.Element => {
           <Image src="/assets/images/logo.png" width={30} height={30} className="object-contain" alt="logo" />
           <p className="logo_text logo_text_gradient">BrawlCode</p>
         </Link>
-        { user &&
-          <div className="flex gap-7">
+        <div className="flex gap-7">
+        { user && !isAdmin &&
             <NavLink href="/tournaments/explore">Explore</NavLink>
-            <NavLink href="/dashboard">Dashboard</NavLink>
-          </div>
         }
+        { user &&
+            <NavLink href="/dashboard">Dashboard</NavLink>
+        }
+        </div>
       </div>
 
-      <div className="relative flex gap-3">
+      <div className="relative mt-1 flex gap-3">
         {user ? (
           <>
             <div className="relative">
               <DropdownMenu>
                 <DropdownMenuTrigger><Image
-                  src={user?.profileImageUrl || '/assets/images/avatar.png'}
+                  src={user?.profileImageUrl || '/assets/images/default_profile.png'}
                   width={35}
                   height={35}
                   className="rounded-full cursor-pointer"
@@ -84,7 +96,7 @@ const Nav = (): JSX.Element => {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem><Link href="/profile" className='pl-0 py-1 pr-[60px]'>Profile</Link></DropdownMenuItem>
+                  <DropdownMenuItem><Link href={`/profile/${user?.username}`} className='pl-0 py-1 pr-[60px]'>Profile</Link></DropdownMenuItem>
                   <DropdownMenuItem className='cursor-pointer' onClick={logout}>Sign Out</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

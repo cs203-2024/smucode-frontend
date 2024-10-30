@@ -35,11 +35,7 @@ const items: ISidebarItem[] = [
     name: "Participants",
     path: "participants",
     icon: Users,
-  },
-  {
-    name: "Brawl",
-    path: "brawl",
-    icon: Swords,
+  }
     // items: [
     //   {
     //     name: "General",
@@ -50,7 +46,6 @@ const items: ISidebarItem[] = [
     //     path: "settings/notifications",
     //   },
     // ],
-  },
 ];
 
 const Sidebar = () => {

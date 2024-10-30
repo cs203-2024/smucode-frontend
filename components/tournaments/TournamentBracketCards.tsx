@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { TournamentProps, RoundProps, PlayerInfo, BracketProps } from './types';
-import { Button } from './ui/button';
+import { TournamentProps, RoundProps, PlayerInfo, BracketProps } from '../types';
+import { Button } from '../ui/button';
 import { Edit, LoaderCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogOverlay, DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
-import { DialogFooter, DialogHeader } from './ui/dialog';
-import { Input } from './ui/input';
-import { updateBracketScore, endBracket, endRound } from '@/services/tournamentAPI';
+import { DialogFooter, DialogHeader } from '../ui/dialog';
+import { Input } from '../ui/input';
+import { updateBracketScore, endBracket, endRound, updateRoundStartEndDate } from '@/services/tournamentAPI';
 import { toast } from "sonner";
 import { useTournamentContext } from '@/context/TournamentContext';
 import { useUserContext } from '@/context/UserContext';
-import { getFormattedDateFromString } from '@/lib/utils';
+import { formatDateToShortTime,getFormattedDateFromString } from '@/lib/utils';
+import { DateTimePicker } from '@/components/DateTimePicker'
 
 const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; status: string }> = ({ player, isWinner, status }) => {
   if (!player || !player.username) return <div className="flex items-center justify-between bg-transparent p-1.5 h-10 border-gray-400 rounded-full"></div>;
@@ -197,26 +198,75 @@ const TournamentBracket: React.FC<BracketProps> = ({ id, status, player1, player
   );
 };
 
-const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name, id, status, startDate, endDate, brackets, searchQuery }) => {
+const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name, id, status, startDateTime, endDateTime, brackets, searchQuery }) => {
   const tournamentContext = useTournamentContext();
   const { user } = useUserContext();
   const tournamentOrganizerId = tournamentContext.organizerId;
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isEndDialogOpen, setIsEndDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isEndingRound, setIsEndingRound] = useState(false);
   const [roundStatus, setRoundStatus] = useState(status);
   const [isEditable, setIsEditable] = useState(false);
-  const filteredBrackets = brackets.filter(
-    (bracket) =>
-      bracket.player1?.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      bracket.player2?.username.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const [isEditingRound, setIsEditingRound] = useState(false);
+  const [localStartDateTime, setLocalStartDateTime] = useState<string>(startDateTime);
+  const [localEndDateTime, setLocalEndDateTime] = useState<string>(endDateTime)
+  const [startDate, setStartDate] = useState<Date | undefined>(startDateTime ? new Date(startDateTime) : undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(endDateTime ? new Date(endDateTime) : undefined);
+  const [startTime, setStartTime] = useState<string>(startDateTime ? formatDateToShortTime(new Date(startDateTime)) : "09:00");
+  const [endTime, setEndTime] = useState<string>(endDateTime ? formatDateToShortTime(new Date(endDateTime)) : "18:00");
+  const [dateError, setDateError ] = useState<string>("");
+  const [updateStartDate, setUpdateStartDate] = useState<Date | undefined>(undefined);
+  const [updateEndDate, setUpdateEndDate] = useState<Date | undefined>(undefined);
 
+  // Date Time Logic
+  const handleStartDateChange = (newDate: Date | undefined) => {
+    setStartDate(newDate);
+  };
+
+  const handleStartTimeChange = (newTime: string) => {
+    setStartTime(newTime);
+  };
+
+  const handleEndDateChange = (newDate: Date | undefined) => {
+    setEndDate(newDate);
+  };
+
+  const handleEndTimeChange = (newTime: string) => {
+    setEndTime(newTime);
+  };
+
+  // Check if end date/time is before start date/time
+  useEffect(() => {
+    if (startDate && endDate) {
+      const [startHours, startMinutes] = startTime.split(':').map(Number);
+      const [endHours, endMinutes] = endTime.split(':').map(Number);
+
+      const startDateTime = new Date(startDate);
+      startDateTime.setHours(startHours, startMinutes);
+
+      const endDateTime = new Date(endDate);
+      endDateTime.setHours(endHours, endMinutes);
+      
+      if (endDateTime <= startDateTime) {
+        setDateError("End date/time is before start date/time.");
+        setUpdateStartDate(undefined);
+        setUpdateEndDate(undefined);
+      } else {
+        setDateError("");
+        setUpdateStartDate(startDateTime);
+        setUpdateEndDate(endDateTime);
+      }
+    }
+  }, [startDate, endDate, startTime, endTime]);
+
+  // Admin editable logic
   useEffect(() => {
     if(user){
       setIsEditable(roundStatus === "ongoing" && tournamentOrganizerId === user?.username);
     }
   }, [user,roundStatus]);
 
+   // Handle actions
   const handleEndRound = async () => {
     const allBracketsCompleted = brackets.every((bracket) => bracket.status === "completed");
 
@@ -232,7 +282,7 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
         toast.success("Round ended!");
         setRoundStatus("completed");
         setIsEditable(false);
-        setIsDialogOpen(false);
+        setIsEndDialogOpen(false);
       } catch (error) {
         console.error("Failed to end round:", error);
         toast.error("Failed to end round. Please try again.");
@@ -241,6 +291,31 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
       }
     }
   };  
+ 
+  const handleEditRound = async () => {
+
+    if (!isEditingRound && updateStartDate && updateEndDate) {
+      setIsEditingRound(true);
+      try {
+        await updateRoundStartEndDate(id, updateStartDate, updateEndDate);
+        toast.success("Successfully updated round details");
+        setLocalStartDateTime(updateStartDate.toLocaleString("en-GB", {dateStyle: "short",timeStyle: "short"}));
+        setLocalEndDateTime(updateEndDate.toLocaleString("en-GB", {dateStyle: "short",timeStyle: "short"}));
+        setIsEditDialogOpen(false);
+      } catch (error) {
+        console.error("Failed to update round details:", error);
+        toast.error("Failed to update round details. Please try again.");
+      } finally {
+        setIsEditingRound(false);
+      }
+    }
+  };  
+
+  const filteredBrackets = brackets.filter(
+    (bracket) =>
+      bracket.player1?.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      bracket.player2?.username.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   if (filteredBrackets.length === 0) {
     return (
@@ -256,17 +331,28 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
         <h2 className="font-bold text-xl">{name}</h2>
 
         {isEditable && (
-          <Button
-            variant="outline"
-            className="ml-5 text-sm"
-            onClick={() => setIsDialogOpen(true)} // Open the dialog on click
-          >
-            End Round
-          </Button>
+          <>
+            <Button
+              variant="outline"
+              className="ml-5 text-sm"
+              onClick={() => setIsEditDialogOpen(true)} 
+            >
+              Edit
+            </Button>
+
+            <Button
+              variant="outline"
+              className="ml-5 text-sm"
+              onClick={() => setIsEndDialogOpen(true)} 
+            >
+              End Round
+            </Button>
+          </>
         )}
       </div>
-      <p className="text-sm text-gray-700">Start Date: {startDate ? getFormattedDateFromString(startDate) : "TBD"}</p>
-      <p className="text-sm text-gray-700 mb-4">End Date: {endDate ? getFormattedDateFromString(endDate) : "TBD"}</p>
+
+      <p className="text-sm text-gray-700">Start Date: {localStartDateTime ? getFormattedDateFromString(localStartDateTime) : "TBD"}</p>
+      <p className="text-sm text-gray-700 mb-4">End Date: {localEndDateTime ? getFormattedDateFromString(localEndDateTime) : "TBD"}</p>
       <div className="overflow-x-auto mr-[100px]">
         <div className="inline-grid grid-cols-4 gap-x-5 gap-y-8 pb-4 min-w-[1050px] mr-[130px]">
           {filteredBrackets.map((bracket) => (
@@ -284,13 +370,49 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
         </div>
       </div>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {/* Edit round dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogOverlay className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <DialogContent className="bg-white p-6 rounded-md shadow-md">
+         <DialogTitle className="font-medium text-sm">Update Round Start/End Date</DialogTitle>
+         <div className='text-sm m-6'>
+            <p className='mt-2 mb-1'>Start Date & Time</p>
+            <DateTimePicker
+              initialDate={startDate}
+              onDateChange={handleStartDateChange}
+              initialTime={startTime}
+              onTimeChange={handleStartTimeChange}
+            />
+            <p className='mt-2 mb-1'>End Date & Time</p>
+            <DateTimePicker
+              initialDate={endDate}
+              onDateChange={handleEndDateChange}
+              initialTime={endTime}
+              onTimeChange={handleEndTimeChange}
+            />
+            <p className='mt-4 text-red-500'>{dateError}</p>
+          </div>
+         <div className="flex justify-end space-x-2 mt-4">
+           <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
+           <Button className="w-[150px]" onClick={handleEditRound} disabled={isEditingRound}>
+                {isEndingRound?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Update")}
+            </Button>
+         </div>
+       </DialogContent>
+       </DialogOverlay>
+      </Dialog>
+          
+
+
+
+      {/* End round dialog */}
+      <Dialog open={isEndDialogOpen} onOpenChange={setIsEndDialogOpen}>
         <DialogOverlay className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <DialogContent className="bg-white p-6 rounded-md shadow-md">
          <DialogTitle className="font-medium text-sm">Confirm End Round</DialogTitle>
          <p className="text-sm">Are you sure you want to end this round?</p>
          <div className="flex justify-end space-x-2 mt-4">
-           <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+           <Button variant="outline" onClick={() => setIsEndDialogOpen(false)}>Cancel</Button>
            <Button className="w-[150px]" onClick={handleEndRound} disabled={isEndingRound}>
                 {isEndingRound?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Yes, end round")}
             </Button>
@@ -298,6 +420,7 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
        </DialogContent>
        </DialogOverlay>
       </Dialog>
+
     </div>
   );
 };
@@ -342,8 +465,8 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
               id={round.id} 
               seqId={round.seqId}
               name={round.name} 
-              startDate={round.startDate}
-              endDate={round.endDate}
+              startDateTime={round.startDateTime}
+              endDateTime={round.endDateTime}
               status={round.status}
               brackets={round.brackets}
               searchQuery={searchQuery}

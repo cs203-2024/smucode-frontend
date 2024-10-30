@@ -10,7 +10,7 @@ import { Calendar, LoaderCircle } from 'lucide-react';
 import { useUserContext } from '@/context/UserContext';
 import { toast } from 'sonner';
 import { removeSignUpForTournament, signUpForTournament } from '@/services/tournamentAPI';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogOverlay, DialogTitle } from '@radix-ui/react-dialog';
 
 const TournamentOverview: React.FC = () => {
@@ -19,18 +19,26 @@ const TournamentOverview: React.FC = () => {
   const { loadingTournamentContext, overviewData } = useTournamentContext();
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [isRemovingSignUp, setIsRemovingSignUp] = useState(false);
-  const [signedUp, setSignedUp] = useState(false);
+  const [userSignedUp, setUserSignedUp] = useState<Boolean | undefined>(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
   const [canSignUp, setCanSignUp] = useState(false);
 
   useEffect(() => {
+    if(user && user?.role === "ROLE_PLAYER"){
+      setUserSignedUp(overviewData?.signedUp);
+    }
+  }, [overviewData, user]);
+
+  useEffect(() => {
     if(user){
       // User can only sign up when tournament has not started and when they have not sign up yet
-      setCanSignUp(overviewData?.status === "UPCOMING" && user?.role === "ROLE_PLAYER" && !signedUp);
+      setCanSignUp(overviewData?.status === "UPCOMING" && user?.role === "ROLE_PLAYER" && !userSignedUp);
     }
-  }, [overviewData?.status, user]);
+  }, [overviewData?.status, user, userSignedUp]);
   
+  
+
   const handleTournamentSignUp = async () => {
     
     if (canSignUp && !isSigningUp) {
@@ -39,7 +47,8 @@ const TournamentOverview: React.FC = () => {
 
         await signUpForTournament(id);
         toast.success("Signed up successfully!");
-        setSignedUp(true);
+        setUserSignedUp(true);
+        setIsConfirmDialogOpen(false);
       } catch (error) {
         console.error("Failed to sign up:", error);
         toast.error("Failed to sign up. Please try again.");
@@ -51,14 +60,14 @@ const TournamentOverview: React.FC = () => {
 
   const handleTournamentRemoveSignUp = async () => {
     
-    if (signedUp && !isRemovingSignUp) {
+    if (userSignedUp && !isRemovingSignUp) {
       setIsRemovingSignUp(true);
       try {
 
         await removeSignUpForTournament(id);
         toast.success("Successfully Removed Registration!"); 
-        setSignedUp(false);
-        
+        setUserSignedUp(false);
+        setIsRemoveDialogOpen(false);
       } catch (error) {
         console.error("Failed to remove registration:", error);
         toast.error("Failed to remove registration. Please try again.");
@@ -132,8 +141,8 @@ const TournamentOverview: React.FC = () => {
               {getFormattedDateFromString(startDate)} - {getFormattedDateFromString(endDate)}
             </p>
           </div>
-          { signedUp &&
-            <Button variant="outline" className="logo_gradient text-white font-semibold w-[100px] mt-8" onClick={() => setIsRemoveDialogOpen(true)}>
+          { userSignedUp &&
+            <Button variant="outline" className="logo_gradient text-white font-semibold w-[110px] mt-8" onClick={() => setIsRemoveDialogOpen(true)}>
               Registered
             </Button>
           }
