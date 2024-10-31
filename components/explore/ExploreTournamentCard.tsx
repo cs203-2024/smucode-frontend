@@ -102,7 +102,7 @@ export default function ExploreTournamentCard({data, fetchData}: ExploreTourname
                 </CardDescription>
                 <div className='flex justify-end items-center gap-2'>
                     <AlertDialogDemo fetchData={fetchData} tournamentId={data.id} username={username} />
-                    <Link href={`tournaments/${data.id}/overview`}>
+                    <Link href={`/tournaments/${data.id}/overview`}>
                         <Button className='font-semibold'>View</Button>
                     </Link>
                 </div>

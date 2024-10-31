@@ -1,8 +1,11 @@
 import { LoginForm } from "@/components/LoginForm";
+import RoleBasedRedirect from "@/components/RoleBasedRedirect";
 import Link from "next/link";
 
 export default function LoginPage() {
   return (
+    <>
+    <RoleBasedRedirect />
     <div className="min-h-screen flex items-center justify-center">
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
@@ -24,5 +27,6 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+    </>
   );
 }
