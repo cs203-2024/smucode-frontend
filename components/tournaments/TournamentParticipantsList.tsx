@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { User, Trophy, Medal, Grid, List } from 'lucide-react';
 import { useTournamentContext } from "@/context/TournamentContext";
 import { fetchTournamentParticipantsData } from '@/services/tournamentAPI'; 
-import { ParticipantCardListProp, Participant } from '@/components/types';
+import { Participants, Participant } from '@/components/types';
 import { Skeleton } from '../ui/skeleton';
 
 interface ParticipantCardProps {
@@ -15,19 +15,23 @@ interface ParticipantCardProps {
 const ParticipantCard: React.FC<ParticipantCardProps> = ({ participant, viewMode }) => {
   return (
     <div className={`bg-white rounded-xl shadow-sm p-3 ${viewMode === 'grid' ? 'flex flex-col items-center' : 'flex items-center'}`}>
-      <div className={`relative ${viewMode === 'grid' ? 'mb-2' : 'mr-3'}`}>
-        <div className='w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center'>
-            {participant.profileImageUrl ? (
-              <img src={participant.profileImageUrl} alt={participant.username} className="w-full h-full rounded-full object-cover" />
-            ) : (
-              <span className="text-md">{participant.username.charAt(0)}</span>
-            )}
-        </div>
-      </div>
-      <div className={`${viewMode === 'grid' ? 'text-center' : 'flex-grow'}`}>
-        <h2 className="text-sm font-semibold text-black mb-0.5">{participant.username}</h2>
+    <div className={`relative ${viewMode === 'grid' ? 'mb-2' : 'mr-3'}`}>
+      <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center">
+        {participant.profileImageUrl ? (
+          <img src={participant.profileImageUrl} alt={participant.username} className="w-full h-full rounded-full object-cover" />
+        ) : (
+          <span className="text-md">{participant.username.charAt(0)}</span>
+        )}
       </div>
     </div>
+    <div className={`${viewMode === 'grid' ? 'text-center' : 'flex-grow'}`}>
+      <h2 className="text-sm font-semibold text-black mb-0.5">
+        <a href={`/profile/${participant.username}`} className="text-black-500 hover:text-blue-500 hover:underline">
+          {participant.username}
+        </a>
+      </h2>
+    </div>
+  </div>
   );
 };
 
@@ -67,14 +71,16 @@ const TournamentParticipantsList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [tournamentData, setTournamentData] = useState<ParticipantCardListProp | null>(null);
+  const [tournamentData, setTournamentData] = useState<Participants | null>(null);
 
   useEffect(() => {
     const loadTournamentData = async () => {
       try {
         const data = await fetchTournamentParticipantsData(tournamentId);
+        console.log(data);
         setTournamentData(data);
         setLoading(false);
+        console.log(tournamentData);
       } catch (err) {
         setError('Failed to load tournament data');
         setLoading(false);
@@ -109,12 +115,12 @@ const TournamentParticipantsList: React.FC = () => {
   if (error) {
     return <div className="text-center p-4 text-red-500 mt-10">{error}</div>;
   }
-
-  if (!tournamentData || !tournamentData.participants || tournamentData.participants.length === 0) {
+  
+  if (!tournamentData || tournamentData.length === 0) {
     return <div className="text-center p-4 mt-10">No tournament participants data available</div>;
   }
 
-  const filteredParticipants = tournamentData.participants.filter((participant) =>
+  const filteredParticipants = tournamentData.filter((participant) =>
     participant.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 

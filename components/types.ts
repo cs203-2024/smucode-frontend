@@ -57,8 +57,7 @@ export type User = {
 export interface UserContextType {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
-    // loading: boolean;
-    // login: () => Promise<void>;
+    loading: boolean;
     logout: () => Promise<void>;
 }
 
@@ -127,14 +126,12 @@ export interface TournamentOverviewProps {
   }
 
 
-  export type ParticipantCardListProp = {
-    participants: Participant[];
-  };
-
   export type Participant = {
     username: string;
     profileImageUrl: string;
   };
+
+  export type Participants = Participant[];
 
   export type ParticipantCardProps = {
     participants: Participant;

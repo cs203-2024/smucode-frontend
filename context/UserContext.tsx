@@ -9,24 +9,14 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true); 
 
   useEffect(() => {
-  //   const dummyAdminUser: User = {
-  //     username: "adminDaddy",
-  //     email: "admin@example.com",
-  //     profileImageUrl: null,
-  //     role: "ROLE_ADMIN", // Role is "admin"
-  //     mu: 25,
-  //     sigma: 8.333,
-  //     skillIndex: 0,
-  //   };
-
-  //   // Set the dummy user with the admin role
-  //   setUser(dummyAdminUser);
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -50,7 +40,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-      <UserContext.Provider value={{ user, setUser, logout }}>
+      <UserContext.Provider value={{ user, setUser, logout, loading }}>
         {children}
       </UserContext.Provider>
   );

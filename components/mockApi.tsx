@@ -1,7 +1,6 @@
 import {
   TournamentProps,
   TournamentOverviewProps,
-  ParticipantCardListProp,
 } from "./types";
 
 const mockTournamentData: TournamentOverviewProps = {
