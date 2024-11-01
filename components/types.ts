@@ -8,19 +8,20 @@ export type PlayerInfo = {
 
 export type BracketProps = {
     id: string;
-    seqId: number;
+    seqId?: number;
     status: string;
     player1?: PlayerInfo;
     player2?: PlayerInfo;
     winner?: string;
+    updateBracketStatus?: (updatedBracket: BracketProps) => void;
 };
 
 export type RoundProps = {
     id: string;
     seqId: number;
     name: string;
-    startDateTime: string;
-    endDateTime: string;
+    startDate: string;
+    endDate: string;
     status: string;
     brackets: BracketProps[];
 };
@@ -131,12 +132,8 @@ export interface TournamentOverviewProps {
   };
 
   export type Participant = {
-    id: string;
-    name: string;
-    profilePicture: string;
-    rank: number;
-    wins: number;
-    losses: number;
+    username: string;
+    profileImageUrl: string;
   };
 
   export type ParticipantCardProps = {

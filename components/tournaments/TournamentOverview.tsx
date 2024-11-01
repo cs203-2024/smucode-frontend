@@ -133,7 +133,7 @@ const TournamentOverview: React.FC = () => {
           </Badge>
         </div>
           <p className="text-gray-600 mt-8">
-            Organized by {organiser}
+            Organised by {organiser}
           </p>
           <div className="flex items-center gap-1">
           <Calendar size={14} className='mt-2.5'></Calendar>

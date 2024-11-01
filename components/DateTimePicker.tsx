@@ -47,7 +47,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className={`w-[240px] justify-start text-left font-normal ${
+                className={`w-[240px] justify-start text-left font-normal text-xs ${
                   !selectedDate && "text-muted-foreground"
                 }`}
               >
@@ -71,7 +71,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
             type="time"
             value={selectedTime}
             onChange={handleTimeChange}
-            className="rounded-md border border-input bg-background px-3 py-1.5 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="rounded-md border border-input bg-background px-3 py-1.5 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           />
         </div>
       </div>

@@ -7,7 +7,7 @@ import { getFormattedDateFromString } from '@/lib/utils';
 const TournamentBracket = ({ id, status, player1, player2 }: BracketProps) => {
 
   const getWinner = (player1: PlayerInfo | undefined, player2: PlayerInfo | undefined) => {
-    if (player1 && player2 && status === "completed") {
+    if (player1 && player2 && status === "COMPLETED") {
       if (player1.score === 0 && player2.score === 0) {
         return ""; 
       }
@@ -26,7 +26,7 @@ const TournamentBracket = ({ id, status, player1, player2 }: BracketProps) => {
     }
 
     return (
-      <div className={`${!isWinner && status === "completed" ? "opacity-40" : ""} flex items-center justify-between bg-white shadow-md p-1.5 rounded-full`}>
+      <div className={`${!isWinner && status === "COMPLETED" ? "opacity-40" : ""} flex items-center justify-between bg-white shadow-md p-1.5 rounded-full`}>
         <div className="flex items-center space-x-2">
           <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
             {player.image ? (
@@ -35,9 +35,9 @@ const TournamentBracket = ({ id, status, player1, player2 }: BracketProps) => {
               <span className="text-sm">{player.username.charAt(0)}</span>
             )}
           </div>
-          <p className={`${status !== "completed" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
+          <p className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
         </div>
-        <div className={`${status !== "completed" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
+        <div className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
           <span className="font-semibold">{player.score}</span>
         </div>
       </div>
@@ -56,7 +56,7 @@ const TournamentBracket = ({ id, status, player1, player2 }: BracketProps) => {
 
 
 
-const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDateTime, endDateTime }) => {
+const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDate, endDate }) => {
 
   const getSpacingClass = (count: number) => {
     switch (count) {
@@ -78,8 +78,8 @@ const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDateTi
   return (
     <div className={`p-6 h-full w-[20vw] min-w-80 flex flex-col`}>
       <h2 className="font-bold mb-4 min-w-70 text-2xl">{name}</h2>
-      <p className="text-gray-700">Start Date: {startDateTime ? getFormattedDateFromString(startDateTime) : "TBD"}</p>
-      <p className="text-gray-700 mb-4">End Date: {endDateTime ? getFormattedDateFromString(endDateTime) : "TBD"}</p>
+      <p className="text-gray-700">Start Date: {startDate ? getFormattedDateFromString(startDate) : "TBD"}</p>
+      <p className="text-gray-700 mb-4">End Date: {endDate ? getFormattedDateFromString(endDate) : "TBD"}</p>
       <div className={`${spacingClass} h-fit justify-center flex flex-col flex-grow overflow-hidden`}>
         {brackets.map((bracket) => (
           <div key={bracket.id} className="flex items-center">
@@ -89,7 +89,7 @@ const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDateTi
               seqId={bracket.seqId}
               status={bracket.status}
               player1={bracket.player1}
-              player2={bracket.player2}
+              player2={bracket.player2} 
             />
           </div>
         ))}
@@ -101,20 +101,22 @@ const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDateTi
 const TournamentWrapper = ({ rounds } : TournamentProps) => {
   return (
     <div className="flex flex-row min-w-[100vw] space-x-4 overflow-x-auto p-4">
-    {rounds.map((round) => (
-      <div key={round.id} className="flex-shrink-0">
-       <TournamentRound 
-          key={round.id} 
-          id={round.id} 
-          seqId={round.seqId}
-          name={round.name} 
-          startDateTime={round.startDateTime}
-          endDateTime={round.endDateTime}
-          status={round.status}
-          brackets={round.brackets}
-         />
-      </div>
-    ))}
+   {rounds
+      .slice() 
+      .sort((a, b) => a.seqId - b.seqId)
+      .map((round) => (
+        <div key={round.id} className="flex-shrink-0">
+          <TournamentRound 
+            id={round.id} 
+            seqId={round.seqId}
+            name={round.name} 
+            startDate={round.startDate}
+            endDate={round.endDate}
+            status={round.status}
+            brackets={round.brackets}
+          />
+        </div>
+      ))}
   </div>
   )
 }

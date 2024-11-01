@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { User, Trophy, Medal, Grid, List } from 'lucide-react';
 import { useTournamentContext } from "@/context/TournamentContext";
-import { fetchTournamentParticipantsData } from '@/components/mockApi';
+import { fetchTournamentParticipantsData } from '@/services/tournamentAPI'; 
 import { ParticipantCardListProp, Participant } from '@/components/types';
 import { Skeleton } from '../ui/skeleton';
 
@@ -17,29 +17,48 @@ const ParticipantCard: React.FC<ParticipantCardProps> = ({ participant, viewMode
     <div className={`bg-white rounded-xl shadow-sm p-3 ${viewMode === 'grid' ? 'flex flex-col items-center' : 'flex items-center'}`}>
       <div className={`relative ${viewMode === 'grid' ? 'mb-2' : 'mr-3'}`}>
         <div className='w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center'>
-            {participant.profilePicture ? (
-              <img src={participant.profilePicture} alt={participant.name} className="w-full h-full rounded-full object-cover" />
+            {participant.profileImageUrl ? (
+              <img src={participant.profileImageUrl} alt={participant.username} className="w-full h-full rounded-full object-cover" />
             ) : (
-              <span className="text-md">{participant.name.charAt(0)}</span>
+              <span className="text-md">{participant.username.charAt(0)}</span>
             )}
         </div>
-        {participant.rank <= 3 && (
-          <div className="absolute -top-1 -right-1 bg-yellow-400 rounded-full p-0.5">
-            {participant.rank === 1 ? <Trophy size={12} /> : <Medal size={12} />}
-          </div>
-        )}
       </div>
       <div className={`${viewMode === 'grid' ? 'text-center' : 'flex-grow'}`}>
-        <h2 className="text-sm font-semibold text-black mb-0.5">{participant.name}</h2>
-        <p className="text-xs text-gray-600 mb-0.5">Rank: {participant.rank}</p>
-        <div className={`${viewMode === 'grid' ? 'flex justify-between text-xs' : 'flex space-x-2 text-sm'}`}>
-          <p className="text-green-600 font-semibold">W: {participant.wins}</p>
-          <p className="text-red-600 font-semibold">L: {participant.losses}</p>
-        </div>
+        <h2 className="text-sm font-semibold text-black mb-0.5">{participant.username}</h2>
       </div>
     </div>
   );
 };
+
+// const ParticipantCard: React.FC<ParticipantCardProps> = ({ participant, viewMode }) => {
+//   return (
+//     <div className={`bg-white rounded-xl shadow-sm p-3 ${viewMode === 'grid' ? 'flex flex-col items-center' : 'flex items-center'}`}>
+//       <div className={`relative ${viewMode === 'grid' ? 'mb-2' : 'mr-3'}`}>
+//         <div className='w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center'>
+//             {participant.profileImageUrl ? (
+//               <img src={participant.profileImageUrl} alt={participant.username} className="w-full h-full rounded-full object-cover" />
+//             ) : (
+//               <span className="text-md">{participant.username.charAt(0)}</span>
+//             )}
+//         </div>
+//         {participant.rank <= 3 && (
+//           <div className="absolute -top-1 -right-1 bg-yellow-400 rounded-full p-0.5">
+//             {participant.rank === 1 ? <Trophy size={12} /> : <Medal size={12} />}
+//           </div>
+//         )}
+//       </div>
+//       <div className={`${viewMode === 'grid' ? 'text-center' : 'flex-grow'}`}>
+//         <h2 className="text-sm font-semibold text-black mb-0.5">{participant.username}</h2>
+//         <p className="text-xs text-gray-600 mb-0.5">Rank: {participant.rank}</p>
+//         <div className={`${viewMode === 'grid' ? 'flex justify-between text-xs' : 'flex space-x-2 text-sm'}`}>
+//           <p className="text-green-600 font-semibold">W: {participant.wins}</p>
+//           <p className="text-red-600 font-semibold">L: {participant.losses}</p>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 
 
 const TournamentParticipantsList: React.FC = () => {
@@ -91,12 +110,12 @@ const TournamentParticipantsList: React.FC = () => {
     return <div className="text-center p-4 text-red-500 mt-10">{error}</div>;
   }
 
-  if (!tournamentData || tournamentData.participants.length === 0) {
+  if (!tournamentData || !tournamentData.participants || tournamentData.participants.length === 0) {
     return <div className="text-center p-4 mt-10">No tournament participants data available</div>;
   }
 
   const filteredParticipants = tournamentData.participants.filter((participant) =>
-    participant.name.toLowerCase().includes(searchTerm.toLowerCase())
+    participant.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
 
@@ -147,7 +166,7 @@ const TournamentParticipantsList: React.FC = () => {
           }
           >
           {filteredParticipants.map((participant) => (
-            <ParticipantCard key={participant.id} participant={participant} viewMode={viewMode} />
+            <ParticipantCard key={participant.username} participant={participant} viewMode={viewMode} />
           ))}
           </div>
         )}

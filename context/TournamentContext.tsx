@@ -7,7 +7,7 @@ import { TournamentOverviewProps } from '@/components/types';
 interface TournamentContextType {
   loadingTournamentContext: boolean;
   tournamentId?: string;
-  organizerId?: string;
+  organiserId?: string;
   overviewData?: TournamentOverviewProps | null;
 }
 
@@ -29,34 +29,34 @@ interface TournamentContextProviderProps {
 export const TournamentContextProvider = ({ children }: TournamentContextProviderProps) => {
   const params = useParams();
   const tournamentId = params?.id as string | undefined;
-  const [organizerId, setOrganizerId] = useState<string | undefined>(undefined);
+  const [organiserId, setOrganiserId] = useState<string | undefined>(undefined);
   const [overviewData, setOverviewData] = useState<TournamentOverviewProps | null>(null);
   const [loadingTournamentContext, setLoadingTournamentContext] = useState(true);
 
   useEffect(() => {
     if (tournamentId) {
       setLoadingTournamentContext(true);
-      const fetchOrganizerId = async () => {
+      const fetchOrganiserId = async () => {
         try {
           const response = await fetchTournamentOverviewData(tournamentId);
-          setOrganizerId(response?.organiser);
+          setOrganiserId(response?.organiser);
           setOverviewData(response);
         } catch (error) {
-          console.error("Failed to fetch organizerId:", error);
+          console.error("Failed to fetch organiserId:", error);
         } finally {
           setLoadingTournamentContext(false);
         }
       };
 
-      fetchOrganizerId();
+      fetchOrganiserId();
     } else {
-      setOrganizerId(undefined);
+      setOrganiserId(undefined);
       setOverviewData(null);
     }
   }, [tournamentId]);
 
   return (
-    <TournamentContext.Provider value={{ loadingTournamentContext, tournamentId, organizerId, overviewData }}>
+    <TournamentContext.Provider value={{ loadingTournamentContext, tournamentId, organiserId, overviewData }}>
       {children}
     </TournamentContext.Provider>
   );
