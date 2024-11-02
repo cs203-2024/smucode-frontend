@@ -181,7 +181,9 @@ const TournamentOverview: React.FC = () => {
         <div className="space-y-2 mt-10">
             <p className="text-gray-700 mb-6">{description || 'No description available.'}</p>
             <p><b>Format:</b> {format}</p>
+            { band &&
             <p><b>Band:</b> {band}</p>
+            }
             {/* Show no. of signups and capacity when tournament not started */}
             { tournamentStatus == "UPCOMING" &&
             <>
@@ -190,9 +192,11 @@ const TournamentOverview: React.FC = () => {
             </>
             }
             { tournamentStatus == "ONGOING" &&
-              <p><b>Participants:</b> {capacity}</p>
+            <>
+               <p><b>Participants:</b> {capacity}</p>
+               <p><b>Current Round:</b> {currentRound || 'Not started'}</p>
+            </>
             }
-            <p><b>Current Round:</b> {currentRound || 'Not started'}</p>
             <div>
               <h3 className="font-semibold mb-1">Score Criteria:</h3>
               {scoreCriteria ? (
