@@ -71,16 +71,15 @@ const TournamentParticipantsList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [tournamentData, setTournamentData] = useState<Participants | null>(null);
+  const [tournamentData, setTournamentData] = useState<Participants>([]);
+
 
   useEffect(() => {
     const loadTournamentData = async () => {
       try {
         const data = await fetchTournamentParticipantsData(tournamentId);
-        console.log(data);
-        setTournamentData(data);
+        setTournamentData(data.participants);
         setLoading(false);
-        console.log(tournamentData);
       } catch (err) {
         setError('Failed to load tournament data');
         setLoading(false);
@@ -119,7 +118,7 @@ const TournamentParticipantsList: React.FC = () => {
   if (!tournamentData || tournamentData.length === 0) {
     return <div className="text-center p-4 mt-10">No tournament participants data available</div>;
   }
-
+  
   const filteredParticipants = tournamentData.filter((participant) =>
     participant.username.toLowerCase().includes(searchTerm.toLowerCase())
   );

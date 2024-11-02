@@ -68,7 +68,7 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
   );
 };
 
-const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, player1, player2, updateBracketStatus }) => {
+const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, player1, player2, winner, updateBracketStatus }) => {
   const tournamentContext = useTournamentContext();
   const { user } = useUserContext();
   const tournamentOrganiserId = tournamentContext.organiserId;
@@ -85,6 +85,10 @@ const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, playe
   const [bracketStatus, setBracketStatus] = useState(status);
 
   const getWinner = (playerOne: PlayerInfo | undefined, playerTwo: PlayerInfo | undefined) => {
+    // Return winner directly if there is a winner
+    if(winner){
+      return winner;
+    }
     if (playerOne && playerTwo && playerOne.username && playerTwo.username && bracketStatus === "COMPLETED") {
       if (playerOne.score === 0 && playerTwo.score === 0) return "";
       return playerOne.score > playerTwo.score ? playerOne.username : playerTwo.username;
@@ -445,6 +449,7 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
                 status={bracket.status}
                 player1={bracket.player1}
                 player2={bracket.player2}
+                winner={bracket.winner}
                 updateBracketStatus={updateBracketStatus}
               />
             </div>

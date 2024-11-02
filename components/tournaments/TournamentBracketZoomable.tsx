@@ -4,9 +4,13 @@ import { Crosshair, ZoomIn, ZoomOut } from 'lucide-react';
 import { BracketProps, PlayerInfo, RoundProps, TournamentProps } from '../types';
 import { getFormattedDateFromString } from '@/lib/utils';
 
-const TournamentBracket = ({ id, status, player1, player2 }: BracketProps) => {
+const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProps) => {
 
   const getWinner = (player1: PlayerInfo | undefined, player2: PlayerInfo | undefined) => {
+    // Return winner directly if there is a winner
+    if(winner){
+      return winner;
+    }
     if (player1 && player2 && status === "COMPLETED") {
       if (player1.score === 0 && player2.score === 0) {
         return ""; 
@@ -90,6 +94,7 @@ const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDate, 
               status={bracket.status}
               player1={bracket.player1}
               player2={bracket.player2} 
+              winner={bracket.winner}
             />
           </div>
         ))}
