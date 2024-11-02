@@ -211,9 +211,13 @@ const TournamentOverview: React.FC = () => {
                <p><b>Capacity:</b> {capacity}</p>
             </>
             }
-            { tournamentStatus == "ONGOING" &&
+            { tournamentStatus !== "UPCOMING" &&
             <>
                <p><b>Participants:</b> {capacity}</p>
+            </>
+            }
+            { tournamentStatus == "ONGOING" &&
+            <>
                <p><b>Current Round:</b> {currentRound || 'Not started'}</p>
             </>
             }

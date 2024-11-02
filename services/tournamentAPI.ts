@@ -1,6 +1,5 @@
 import axiosClient from './axiosClient';
 import { TournamentSignUpInfo, TournamentCardInfo, UserTournamentCardInfo, TournamentProps, TournamentOverviewProps, ParticipantCardListProp, PlayerInfo } from '@/components/types';
-import Cookies from "js-cookie";
 
 //interface for tournament
 interface Tournament {

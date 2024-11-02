@@ -6,6 +6,7 @@ import { useTournamentContext } from "@/context/TournamentContext";
 import { fetchTournamentParticipantsData } from '@/services/tournamentAPI'; 
 import { Participants, Participant } from '@/components/types';
 import { Skeleton } from '../ui/skeleton';
+import Link from 'next/link';
 
 interface ParticipantCardProps {
   participant: Participant;
@@ -26,9 +27,12 @@ const ParticipantCard: React.FC<ParticipantCardProps> = ({ participant, viewMode
     </div>
     <div className={`${viewMode === 'grid' ? 'text-center' : 'flex-grow'}`}>
       <h2 className="text-sm font-semibold text-black mb-0.5">
-        <a href={`/profile/${participant.username}`} className="text-black-500 hover:text-blue-500 hover:underline">
+        <Link 
+          href={`/profile/${participant.username}`} 
+          className="text-black-500 hover:text-blue-500 hover:underline"
+        >
           {participant.username}
-        </a>
+        </Link>
       </h2>
     </div>
   </div>
