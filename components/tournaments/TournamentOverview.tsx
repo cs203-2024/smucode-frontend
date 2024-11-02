@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Calendar, LoaderCircle } from 'lucide-react';
 import { useUserContext } from '@/context/UserContext';
 import { toast } from 'sonner';
-import { removeSignUpForTournament, signUpForTournament } from '@/services/tournamentAPI';
+import { removeSignUpForTournament, signUpForTournament, leaveOngoingTournament } from '@/services/tournamentAPI';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogOverlay, DialogTitle } from '@radix-ui/react-dialog';
 
@@ -62,10 +62,28 @@ const TournamentOverview: React.FC = () => {
 
   const handleTournamentRemoveSignUp = async () => {
     
-    if (userSignedUp && !isRemovingSignUp) {
+    if (userSignedUp && !isRemovingSignUp && tournamentStatus == "UPCOMING") {
       setIsRemovingSignUp(true);
       try {
         await removeSignUpForTournament(id);
+        toast.success("Successfully removed registration!"); 
+        setUserSignedUp(false);
+        setIsRemoveDialogOpen(false);
+      } catch (error) {
+        console.error("Failed to remove registration:", error);
+        toast.error("Failed to remove registration. Please try again.");
+      } finally {
+        setIsRemovingSignUp(false);
+      }
+    }
+  };
+
+  const handleLeaveTournament = async () => {
+    
+    if (userSignedUp && !isRemovingSignUp && tournamentStatus == "ONGOING") {
+      setIsRemovingSignUp(true);
+      try {
+        await leaveOngoingTournament(id);
         toast.success("Successfully left tournament!"); 
         setUserSignedUp(false);
         setIsRemoveDialogOpen(false);
@@ -77,6 +95,8 @@ const TournamentOverview: React.FC = () => {
       }
     }
   };
+
+
   // Loading State
   if (loadingTournamentContext) {
     return (
@@ -197,9 +217,9 @@ const TournamentOverview: React.FC = () => {
                <p><b>Current Round:</b> {currentRound || 'Not started'}</p>
             </>
             }
+            { scoreCriteria && 
             <div>
-              <h3 className="font-semibold mb-1">Score Criteria:</h3>
-              {scoreCriteria ? (
+            <h3 className="font-semibold mb-1">Score Criteria:</h3>
                 <ul className="list-disc list-inside space-y-2">
                   {Object.entries(scoreCriteria).map(([criteria, points], index) => (
                     <li key={index}>
@@ -207,10 +227,8 @@ const TournamentOverview: React.FC = () => {
                     </li>
                   ))}
                 </ul>
-              ) : (
-                <p>Not specified</p>
-              )}
             </div>
+            }
           </div>
         </div>
         <div className='w-[100%] mx-auto rounded-lg'>
@@ -267,7 +285,7 @@ const TournamentOverview: React.FC = () => {
                 <br/>
             <div className="flex justify-end space-x-2 mt-4">
               <Button variant="outline" onClick={() => setIsRemoveDialogOpen(false)}>Cancel</Button>
-              <Button className="w-[110px]" onClick={handleTournamentRemoveSignUp} disabled={isRemovingSignUp}>
+              <Button className="w-[110px]" onClick={tournamentStatus == "ONGOING" ? handleLeaveTournament : handleTournamentRemoveSignUp} disabled={isRemovingSignUp}>
                     {isRemovingSignUp?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Leave")}
               </Button>
             </div>

@@ -69,6 +69,16 @@ export const removeSignUpForTournament = async (tournamentId: string):Promise<Si
     }
 }
 
+export const leaveOngoingTournament = async (tournamentId: string):Promise<SignUpResponse> => {
+    try {
+        const response = await axiosClient.delete<SignUpResponse>(`/tournaments/${tournamentId}/leave`); 
+        return response.data;
+    } catch (error) {
+        console.error("Error leaving for tournament:", error);
+        throw error;
+    }
+}
+
 export const getAllTournamentsCreatedByAdmin = async ():Promise<TournamentCardInfo[]> => {
     try {
         // const response = await axiosClient.get<TournamentCardInfo[]>(`/tournaments?username=admin`);
