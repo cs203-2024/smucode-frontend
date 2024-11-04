@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/new-york/card";
 import { RecentOpponents } from "@/app/profile/RecentOpponents";
 import { Button } from "@/components/ui/new-york/button";
-import { getCardData } from "../app/profile/cardData";
-import { User } from "@/components/types";
+import { getCardData } from "@/components/cardData";
+import { UserProfile } from "@/components/types";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import Link from "next/link";
 import { getUserProfile } from "@/services/userAPI"; // Import the API function
@@ -23,7 +23,7 @@ interface ProfilePageProps {
 
 const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
   const { user: loggedInUser } = useUserContext(); // Get the logged-in user from context
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,7 +31,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
     const fetchUserData = async () => {
       try {
         const data = await getUserProfile(username);
-        console.log("User data:", data);
         setUser(data);
       } catch (err) {
         setError("Failed to fetch user data");
@@ -58,7 +57,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
     );
   }
 
-  const cardData = getCardData(user);
+  const cardData = getCardData(user); // Pass the fetched user data to getCardData
   const userDetails = [{ label: "Email", value: user?.email }];
 
   return (
@@ -70,8 +69,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
               <div className="w-1/3 flex flex-col items-center">
                 <Image
                   src={
-                    user?.profileImageUrl ||
-                    /*default img*/ "/assets/images/avatar.png"
+                    user?.profileImageUrl &&
+                    user.profileImageUrl.startsWith("http")
+                      ? user.profileImageUrl
+                      : "/assets/images/avatar.png"
                   }
                   alt={`${user?.username}'s Profile Picture`}
                   width={256} // Increased width
@@ -123,20 +124,21 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
               </Card>
             ))}
           </div>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {/* Commenting out Recent Opponents and Recent Tournaments */}
+          {/* <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card className="col-span-2">
               <CardHeader>
                 <CardTitle>Recent Opponents</CardTitle>
               </CardHeader>
-              <CardContent>{/*<RecentOpponents />*/}</CardContent>
+              <CardContent>{<RecentOpponents />}</CardContent>
             </Card>
             <Card className="col-span-2">
               <CardHeader>
                 <CardTitle>Recent Tournaments</CardTitle>
               </CardHeader>
-              <CardContent>{/* <RecentOpponents /> */}</CardContent>
+              <CardContent>{<RecentOpponents />}</CardContent>
             </Card>
-          </div>
+          </div> */}
         </div>
       </div>
     </Tooltip.Provider>

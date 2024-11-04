@@ -10,7 +10,7 @@ import {
 import { RecentOpponents } from "@/app/profile/RecentOpponents";
 import { Button } from "@/components/ui/new-york/button";
 import { useUserContext } from "@/context/UserContext";
-import { getCardData } from "./cardData";
+import { getCardData } from "../../components/cardData";
 import { User } from "@/components/types";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import Link from "next/link";
@@ -98,9 +98,7 @@ const ProfilePage: React.FC = () => {
                 <CardHeader>
                   <CardTitle>Recent Opponents</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  {/*<RecentOpponents />*/}
-                </CardContent>
+                <CardContent>{/*<RecentOpponents />*/}</CardContent>
               </Card>
               <Card className="col-span-2">
                 <CardHeader>
@@ -113,8 +111,7 @@ const ProfilePage: React.FC = () => {
         </div>
       </Tooltip.Provider>
     );
-  }
-  else {
+  } else {
     return (
       <main className="flex flex-col justify-center items-center mt-[60px] w-full min-h-full p-60">
         <div className="text-lg p-4">401 | You need to login dude.</div>
@@ -122,7 +119,7 @@ const ProfilePage: React.FC = () => {
           <Button>Login</Button>
         </Link>
       </main>
-    )
+    );
   }
 };
 
