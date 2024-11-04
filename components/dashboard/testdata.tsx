@@ -874,3 +874,104 @@ export const userTournamentCardData2 = [
     }
 ];
 
+export const notificationData2 = [
+    {
+        "id": "1",
+        "username": "johndoe",
+        "tournamentId": "101",
+        "tournamentName": "SMU Chess Open",
+        "message": "Round Started",
+        "type": "Round Started",
+        "category": "notification",
+        "createdAt": "2024-10-12T09:30:00Z",
+        "isRead": false
+    },
+    {
+        "id": "2",
+        "username": "janedoe",
+        "tournamentId": "102",
+        "tournamentName": "SMU Tennis League",
+        "message": "Tournament Started",
+        "type": "Tournament Started",
+        "category": "alert",
+        "createdAt": "2024-10-12T10:00:00Z",
+        "isRead": false
+    },
+    {
+        "id": "3",
+        "username": "alexsmith",
+        "tournamentId": "103",
+        "tournamentName": "SMU Coding Marathon",
+        "message": "Round Started",
+        "type": "Round Started",
+        "category": "notification",
+        "createdAt": "2024-10-12T11:15:00Z",
+        "isRead": true
+    },
+    {
+        "id": "4",
+        "username": "emilywhite",
+        "tournamentId": "104",
+        "tournamentName": "SMU Soccer Showdown",
+        "message": "Tournament Started",
+        "type": "Tournament Started",
+        "category": "alert",
+        "createdAt": "2024-10-12T12:45:00Z",
+        "isRead": false
+    },
+    {
+        "id": "5",
+        "username": "charliebrown",
+        "tournamentId": "105",
+        "tournamentName": "SMU Volleyball Championships",
+        "message": "Round Started",
+        "type": "Round Started",
+        "category": "notification",
+        "createdAt": "2024-10-13T08:20:00Z",
+        "isRead": true
+    },
+    {
+        "id": "6",
+        "username": "lucasmiller",
+        "tournamentId": "106",
+        "tournamentName": "SMU Basketball Dunk Fest",
+        "message": "Tournament Started",
+        "type": "Tournament Started",
+        "category": "alert",
+        "createdAt": "2024-10-13T09:00:00Z",
+        "isRead": false
+    },
+    {
+        "id": "7",
+        "username": "gracejohnson",
+        "tournamentId": "107",
+        "tournamentName": "SMU Badminton Open",
+        "message": "Round Started",
+        "type": "Round Started",
+        "category": "notification",
+        "createdAt": "2024-10-13T09:30:00Z",
+        "isRead": true
+    },
+    {
+        "id": "8",
+        "username": "michaelng",
+        "tournamentId": "108",
+        "tournamentName": "SMU Swimming Gala",
+        "message": "Tournament Started",
+        "type": "Tournament Started",
+        "category": "alert",
+        "createdAt": "2024-10-13T10:15:00Z",
+        "isRead": false
+    },
+    {
+        "id": "9",
+        "username": "sophiachan",
+        "tournamentId": "109",
+        "tournamentName": "SMU Coding Hackathon",
+        "message": "Round Started",
+        "type": "Round Started",
+        "category": "notification",
+        "createdAt": "2024-10-13T11:00:00Z",
+        "isRead": false
+    }
+];

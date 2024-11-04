@@ -207,3 +207,15 @@ export type NotificationCardInfo = {
   createdAt: string;
   isRead: boolean;
 }
+
+export type NotificationData = {
+  id: string;
+  username: string;
+  tournamentId: string;
+  tournamentName: string;
+  message: string;
+  type: string; // Add more specific types if needed
+  category: string;
+  createdAt: string; // ISO date string
+  isRead: boolean;
+};

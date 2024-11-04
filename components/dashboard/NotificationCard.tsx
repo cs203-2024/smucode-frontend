@@ -19,58 +19,63 @@ import {
 } from "@/components/ui/card";
 import { notificationData, userNotificationData } from "./testdata"
 import { useUserContext } from '@/context/UserContext';
+import { NotificationData } from '../types';
 
-export default function NotificationCard() {
+interface NotificationCardProps {
+    data: NotificationData; // Expect `data` as a prop of type `NotificationData`
+}
+
+export default function NotificationCard({data}:NotificationCardProps) {
     const { user, logout } = useUserContext();
     return (
         <div>
-            <Card className='w-full h-full'>
+            {/* <Card className='w-full h-full'>
                 <CardHeader>
                     <CardTitle>Notifications</CardTitle>
-                    <CardDescription>Latest issues, alerts and notifications for me</CardDescription>
+                    <CardDescription>Latest notifications for me</CardDescription>
                 </CardHeader>
                 <CardContent className='w-full'>                
                     
-                    <ScrollArea className='h-[55vh] pr-3'>
-                        {user?.role === "ROLE_ADMIN" ?
-                        notificationData.map((data) => (
+                    <ScrollArea className='h-[55vh] pr-3'> */}
+                        {/* {user?.role === "ROLE_ADMIN" ?
+                        data.map((data) => ( */}
                             <Link key={data.id} href={`tournaments/${data.id}/overview`}>
                                 <div className={cn(
                                     "flex w-full flex-col gap-1 p-4 border-solid border-[1px] mb-4 rounded-xl",
-                                    data.read ? "bg-gray-100":"bg-white hover:bg-gray-100"
+                                    data.isRead ? "bg-gray-100":"bg-white hover:bg-gray-100"
                                 )}>
                                     <div className="flex items-center">
                                         <div className="flex items-center gap-2">
-                                            <div className="font-semibold max-w-[50%] line-clamp-1">{data.message}</div>
-                                            {!data.read && (
+                                            <div className="font-semibold line-clamp-1">{data.type}</div>
+                                            {!data.isRead && (
                                                 <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                                             )}
                                         </div>
                                         <div
                                             className={cn(
                                                 "ml-auto text-xs text-right",
-                                                data.read ? "text-foreground":"text-muted-foreground"
+                                                data.isRead ? "text-foreground":"text-muted-foreground"
                                             )}
                                             >
-                                            {formatDistanceToNow(data.datetime, {
+                                            {formatDistanceToNow(data.createdAt, {
                                                 addSuffix: true,
                                             })}
                                         </div>
                                     </div>
                                     <div className='flex justify-start items-center gap-2 py-1'>
-                                        <div className="text-xs font-medium">{data.tournament.name}</div>
+                                        <div className="text-xs font-medium">{data.tournamentName}</div>
                                         <Badge variant={getBadgeVariantFromLabel(data.category)} className='px-3 py-[2px] rounded-full text-xs font-semibold'>
                                             {capitalise(data.category)}
                                         </Badge>
                                     </div>
                                     <div className="line-clamp-2 text-sm text-muted-foreground py-1">
-                                        {data.description}
+                                        {data.message}
                                     </div>
                                 </div>
                             </Link>
-                        ))
+                        {/* ))
                         :
-                        userNotificationData.map((data) => (
+                        data.map((data) => (
                             <Link key={data.id} href={`tournaments/${data.id}/overview`}>
                                 <div className={cn(
                                     "flex w-full flex-col gap-1 p-4 border-solid border-[1px] mb-4 rounded-xl",
@@ -78,38 +83,38 @@ export default function NotificationCard() {
                                 )}>
                                     <div className="flex items-center">
                                         <div className="flex items-center gap-2">
-                                            <div className="font-semibold">{data.message}</div>
-                                            {!data.read && (
+                                            <div className="font-semibold">{data.type}</div>
+                                            {!data.isRead && (
                                                 <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                                             )}
                                         </div>
                                         <div
                                             className={cn(
                                                 "ml-auto text-xs",
-                                                data.read ? "text-foreground":"text-muted-foreground"
+                                                data.isRead ? "text-foreground":"text-muted-foreground"
                                             )}
                                             >
-                                            {formatDistanceToNow(data.datetime, {
+                                            {formatDistanceToNow(data.createdAt, {
                                                 addSuffix: true,
                                             })}
                                         </div>
                                     </div>
                                     <div className='flex justify-start items-center gap-2 py-1'>
-                                        <div className="text-xs font-medium">{data.tournament.name}</div>
+                                        <div className="text-xs font-medium">{data.tournamentname}</div>
                                         <Badge variant={getBadgeVariantFromLabel(data.category)} className='px-3 py-[2px] rounded-full text-xs font-semibold'>
                                             {capitalise(data.category)}
                                         </Badge>
                                     </div>
                                     <div className="line-clamp-2 text-sm text-muted-foreground py-1">
-                                        {data.description}
+                                        {data.message}
                                     </div>
                                 </div>
                             </Link>
-                        ))}
-                    </ScrollArea>
+                        ))} */}
+                    {/* </ScrollArea>
 
                 </CardContent>
-            </Card>
+            </Card> */}
         </div>
     )
 }
