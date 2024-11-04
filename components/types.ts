@@ -4,6 +4,7 @@ export type PlayerInfo = {
     username: string;
     image: string;
     score: number;
+    winProbability?: number;
 };
 
 export type BracketProps = {
