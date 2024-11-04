@@ -70,10 +70,10 @@ export const removeSignUpForTournament = async (tournamentId: string):Promise<Si
 
 export const leaveOngoingTournament = async (tournamentId: string):Promise<SignUpResponse> => {
     try {
-        const response = await axiosClient.delete<SignUpResponse>(`/tournaments/${tournamentId}/leave`); 
+        const response = await axiosClient.patch<SignUpResponse>(`/tournaments/${tournamentId}/leave`); 
         return response.data;
     } catch (error) {
-        console.error("Error leaving for tournament:", error);
+        console.error("Error leaving tournament:", error);
         throw error;
     }
 }
