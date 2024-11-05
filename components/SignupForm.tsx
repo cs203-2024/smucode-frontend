@@ -23,12 +23,18 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
     setErrorMessage("");
 
     const form = event.target as HTMLFormElement;
+    const roleElement = form.role as HTMLSelectElement | null;
+
     const formData = {
       username: form.username.value,
       email: form.email.value,
       password: form.password.value,
       verifyPassword: form.verifyPassword.value,
-      role: form.role?.value,
+      role: roleElement ? roleElement.value : "PLAYER", // Default to "PLAYER" if roleElement is null
+      profileImageUrl: "", // Add appropriate value or leave empty
+      mu: 0, // Add appropriate value
+      sigma: 0, // Add appropriate value
+      skillIndex: 0, // Add appropriate value
     };
 
     if (formData.password !== formData.verifyPassword) {
