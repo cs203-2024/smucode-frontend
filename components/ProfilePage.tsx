@@ -31,7 +31,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
     const fetchUserData = async () => {
       try {
         const data = await getUserProfile(username);
-        setUser(data);
+        setUser(data);  // Set the fetched user data to state
       } catch (err) {
         setError("Failed to fetch user data");
       } finally {
