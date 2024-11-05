@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { User, UserProfile } from "@/components/types";
 import { isToday } from "date-fns";
 import * as Tooltip from "@radix-ui/react-tooltip";

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -107,9 +108,9 @@ export const HeroCards = () => {
         <CardHeader>
           <CardTitle className="flex item-center justify-between">
             Free
-            <Badge variant="secondary" className="text-sm text-primary">
+            {/* <Badge variant="secondary" className="text-sm text-primary">
               Most popular
-            </Badge>
+            </Badge> */}
           </CardTitle>
           <div>
             <span className="text-3xl font-bold">$0</span>
@@ -117,13 +118,13 @@ export const HeroCards = () => {
           </div>
 
           <CardDescription>
-          The perfect plan to get started with SMUCode.
+            The perfect plan to get started with SMUCode.
           </CardDescription>
         </CardHeader>
 
         <CardContent>
           <a href="/signup">
-            <Button className="w-full">Start Free Trial</Button>
+            <Button className="w-full">Start For Free</Button>
           </a>
         </CardContent>
 
@@ -131,14 +132,16 @@ export const HeroCards = () => {
 
         <CardFooter className="flex">
           <div className="space-y-4">
-            {["4 Team member", "4 GB Storage", "Up to 6 tournament pages"].map(
-              (benefit: string) => (
-                <span key={benefit} className="flex">
-                  <Check className="text-green-500" />{" "}
-                  <h3 className="ml-2">{benefit}</h3>
-                </span>
-              )
-            )}
+            {[
+              "Create Tournaments",
+              "Manage Matches",
+              "Track Player Statistics",
+            ].map((benefit: string) => (
+              <span key={benefit} className="flex">
+                <Check className="text-green-500" />{" "}
+                <h3 className="ml-2">{benefit}</h3>
+              </span>
+            ))}
           </div>
         </CardFooter>
       </Card>
@@ -152,7 +155,8 @@ export const HeroCards = () => {
           <div>
             <CardTitle>Bright Ideas for Tournaments</CardTitle>
             <CardDescription className="text-md mt-2">
-            Easily plan and organize your tournaments with SMUCode’s intuitive tools.
+              Easily plan and organize your tournaments with SMUCode’s intuitive
+              tools.
             </CardDescription>
           </div>
         </CardHeader>

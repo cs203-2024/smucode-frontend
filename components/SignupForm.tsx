@@ -1,8 +1,8 @@
 "use client";
 import * as React from "react";
 // import { useUserContext } from '@/app/context/UserContext';
-import { signup } from '@/services/authAPI';
-import { useRouter } from 'next/navigation';
+import { signup } from "@/services/authAPI";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/new-york/button";
@@ -44,9 +44,9 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
       //redirect to login
       router.push("/login");
     } catch (error: any) {
-      console.error('Error signing up:', error);
+      console.error("Error signing up:", error);
       setErrorMessage(
-          error.response?.data?.message ||
+        error.response?.data?.message ||
           error.message ||
           "Signup failed. Please try again."
       );
@@ -135,7 +135,9 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
               </select>
             </div>
           </div>
-          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="text-red-500 text-sm">{errorMessage}</p>
+          )}
           <Button disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
