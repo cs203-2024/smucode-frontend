@@ -17,23 +17,21 @@ import {
 } from "@/components/ui/tabs";
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import TournamentCard from '../home/TournamentCard';
 import { notificationData2, userNotificationData } from "./testdata"
-import { TournamentCardInfo, UserTournamentCardInfo, UserDashboardTournamentCardInfo, NotificationData } from '../types';
-import { tournamentCardData, tournamentCardData2, userTournamentCardData, userTournamentCardData2 } from '@/components/dashboard/testdata';
+import { NotificationData } from '../types';
 import { useUserContext } from '@/context/UserContext';
-import { getAllTournamentsCreatedByAdmin, getAllTournamentsForUser } from '@/services/tournamentAPI';
-import UserDashboardTournamentCard from './UserDashboardTournamentCard';
-import UserTournamentCard from '../home/UserTournamentCard';
-import AdminDashboardTournamentCard from './AdminDashboardTournamentCard';
 import NotificationCard from './NotificationCard';
+import { getAllNotifications, markNotificationAsRead, markNotificationAsUnRead } from '@/services/notificationAPI';
+import { toast } from 'sonner';
 
 export default function NotificationCardWrapper() {
     const { user, logout } = useUserContext();
 
     const username = user ? user.username:"";
-    const [notifications, setNotifications] = useState<string[]>([]);
+    const [newNotifications, setNewNotifications] = useState<NotificationData[]>([]);
+    const [existingNotifications, setExistingNotifications] = useState<NotificationData[]>([]);
 
+    // Listen for new notifs
     useEffect(() => {
         // Create a new EventSource for the SSE endpoint
         const eventSource = new EventSource('http://localhost:8083/api/notifications/subscribe');
@@ -41,7 +39,8 @@ export default function NotificationCardWrapper() {
         // Listen for messages from the server
         eventSource.onmessage = (event) => {
             console.log("Received SSE message:", event.data);
-            setNotifications((prev) => [...prev, event.data]);
+            const notifResponse = JSON.parse(event.data)
+            setNewNotifications((prev) => [...prev, notifResponse]);
         };
 
         // Handle errors
@@ -56,10 +55,42 @@ export default function NotificationCardWrapper() {
         };
     }, []);
 
-    // useEffect(() => {     
+    async function fetchData() {
+        try {
+            const notificationResponse = await getAllNotifications(); 
+            console.log("Existing notifs received!");
+            setExistingNotifications(notificationResponse);
+        } catch(error) {
+            console.error("Unable to get notification from axios:", error);
+        }
+    }
 
-    //     fetchData(); // Call the function
-    // }, [user]); // Ensure it runs when `user` or `username` is available
+    async function markAsRead(id: string) {
+        try {
+            const response = await markNotificationAsRead(id);
+            toast.success("Marked as read!");
+            fetchData();
+        } catch(error) {
+            toast.error("Unable to mark as read. Please try again.")
+            console.error("Unable to mark as read...", error);
+        }
+    }
+
+    async function markAsUnread(id: string) {
+        try {
+            const response = await markNotificationAsUnRead(id);
+            toast.success("Marked as unread!");
+            fetchData();
+        } catch(error) {
+            toast.error("Unable to mark as unread. Please try again.")
+            console.error("Unable to mark as unread...", error);
+        }
+    }
+
+    useEffect(() => {     
+
+        fetchData(); // Call the function
+    }, [user]); // Ensure it runs when `user` or `username` is available
     
     return (
         <div>
@@ -68,7 +99,7 @@ export default function NotificationCardWrapper() {
                     <Tabs defaultValue="unread" className="w-full">
                         <div className='flex justify-between items-end pt-3'>
                         <div className='py-3'>
-                            <CardTitle>Notifications</CardTitle>
+                            <CardTitle className='py-1'>Notifications</CardTitle>
                             <CardDescription>Latest notifications for me</CardDescription>
                         </div>
                         <TabsList className="grid w-[168px] grid-cols-2 mb-4">
@@ -78,24 +109,33 @@ export default function NotificationCardWrapper() {
                         </div>
 
                         <TabsContent value="unread" className='w-full'>
-                                <ScrollArea className='h-[55vh] w-full whitespace-nowrap pr-3'>
-                                    <div className='pb-1'>
-                                        {notificationData2.filter((item) => !item.isRead).map((data) => (
-                                            <NotificationCard key={data.id} data={data} />
-                                        ))}
-                                    </div>
-                                </ScrollArea>
-                            </TabsContent>
-                        
-                            <TabsContent value="read" className='w-full'>
-                                <ScrollArea className='h-[55vh] w-full whitespace-nowrap pr-3'>
-                                    <div className='pb-1'>
-                                        {notificationData2.filter((item) => item.isRead).map((data) => (
-                                            <NotificationCard key={data.id} data={data} />
-                                        ))}
-                                    </div>
-                                </ScrollArea>
-                            </TabsContent>
+                            <ScrollArea className='h-[55vh] w-full whitespace-nowrap pr-3'>
+                                <div className='pb-1'>
+                                    {newNotifications.filter((item) => !item.isRead).map((data) => (
+                                        <NotificationCard key={data.id} data={data} action={markAsRead} />
+                                    ))}
+                                    {existingNotifications.filter((item) => !item.isRead).map((data) => (
+                                        <NotificationCard key={data.id} data={data} action={markAsRead} />
+                                    ))}
+                                    {notificationData2.filter((item) => !item.isRead).map((data) => (
+                                        <NotificationCard key={data.id} data={data} action={markAsRead} />
+                                    ))}
+                                </div>
+                            </ScrollArea>
+                        </TabsContent>
+                    
+                        <TabsContent value="read" className='w-full'>
+                            <ScrollArea className='h-[55vh] w-full whitespace-nowrap pr-3'>
+                                <div className='pb-1'>
+                                    {existingNotifications.filter((item) => item.isRead).map((data) => (
+                                        <NotificationCard key={data.id} data={data} action={markAsUnread} />
+                                    ))}
+                                    {notificationData2.filter((item) => item.isRead).map((data) => (
+                                        <NotificationCard key={data.id} data={data} action={markAsUnread} />
+                                    ))}
+                                </div>
+                            </ScrollArea>
+                        </TabsContent>
 
                     </Tabs>
                 </CardContent>
