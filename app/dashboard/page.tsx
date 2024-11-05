@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
-import TournamentCardWrapper from "@/components/home/TournamentCardWrapper";
 import DashboardTournamentCardWrapper from "@/components/dashboard/DashboardTournamentCardWrapper";
 import NotificationCard from "@/components/dashboard/NotificationCard";
 import { useUserContext } from '@/context/UserContext';

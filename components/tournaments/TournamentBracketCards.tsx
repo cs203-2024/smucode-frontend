@@ -60,7 +60,7 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
   );
 };
 
-const TournamentBracket: React.FC<BracketProps> = ({ id, status, player1, player2 }) => {
+const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, player1, player2, winner, updateBracketStatus }) => {
   const tournamentContext = useTournamentContext();
   const { user } = useUserContext();
   const tournamentOrganizerId = tournamentContext.organizerId;
@@ -73,10 +73,15 @@ const TournamentBracket: React.FC<BracketProps> = ({ id, status, player1, player
   const [isEnding, setIsEnding] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const [bracketStatus, setBracketStatus] = useState(status);
-  const getWinner = (player1: PlayerInfo | undefined, player2: PlayerInfo | undefined) => {
-    if (player1 && player2 && player1.username && player2.username && bracketStatus === "completed") {
-      if (player1.score === 0 && player2.score === 0) return "";
-      return player1.score > player2.score ? player1.username : player2.username;
+
+  const getWinner = (playerOne: PlayerInfo | undefined, playerTwo: PlayerInfo | undefined) => {
+    // Return winner directly if there is a winner
+    if(winner){
+      return winner;
+    }
+    if (playerOne && playerTwo && playerOne.username && playerTwo.username && bracketStatus === "COMPLETED") {
+      if (playerOne.score === 0 && playerTwo.score === 0) return "";
+      return playerOne.score > playerTwo.score ? playerOne.username : playerTwo.username;
     }
     return undefined;
   };
@@ -364,6 +369,8 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
                 status={bracket.status}
                 player1={bracket.player1}
                 player2={bracket.player2}
+                winner={bracket.winner}
+                updateBracketStatus={updateBracketStatus}
               />
             </div>
           ))}

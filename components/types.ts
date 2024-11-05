@@ -144,6 +144,10 @@ export interface TournamentOverviewProps {
     viewMode: 'grid' | 'list';
   };
 
+  export type ParticipantCardListProp = {
+    participants: Participants
+  };
+
 export type UserTournamentCardInfo = {
     id: string;
     icon: string;

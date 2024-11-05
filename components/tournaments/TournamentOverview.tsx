@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Calendar, LoaderCircle } from 'lucide-react';
 import { useUserContext } from '@/context/UserContext';
 import { toast } from 'sonner';
-import { removeSignUpForTournament, signUpForTournament } from '@/services/tournamentAPI';
+import { removeSignUpForTournament, signUpForTournament, leaveOngoingTournament } from '@/services/tournamentAPI';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogOverlay, DialogTitle } from '@radix-ui/react-dialog';
 
@@ -23,6 +23,7 @@ const TournamentOverview: React.FC = () => {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
   const [canSignUp, setCanSignUp] = useState(false);
+  const [tournamentStatus, setTournamentStatus] = useState(overviewData?.status);
 
   useEffect(() => {
     if(user && user?.role === "ROLE_PLAYER"){
@@ -34,6 +35,7 @@ const TournamentOverview: React.FC = () => {
     if(user){
       // User can only sign up when tournament has not started and when they have not sign up yet
       setCanSignUp(overviewData?.status === "UPCOMING" && user?.role === "ROLE_PLAYER" && !userSignedUp);
+      setTournamentStatus(overviewData?.status);
     }
   }, [overviewData?.status, user, userSignedUp]);
   
@@ -60,12 +62,11 @@ const TournamentOverview: React.FC = () => {
 
   const handleTournamentRemoveSignUp = async () => {
     
-    if (userSignedUp && !isRemovingSignUp) {
+    if (userSignedUp && !isRemovingSignUp && tournamentStatus == "UPCOMING") {
       setIsRemovingSignUp(true);
       try {
-
         await removeSignUpForTournament(id);
-        toast.success("Successfully Removed Registration!"); 
+        toast.success("Successfully removed registration!"); 
         setUserSignedUp(false);
         setIsRemoveDialogOpen(false);
       } catch (error) {
@@ -76,6 +77,26 @@ const TournamentOverview: React.FC = () => {
       }
     }
   };
+
+  const handleLeaveTournament = async () => {
+    
+    if (userSignedUp && !isRemovingSignUp && tournamentStatus == "ONGOING") {
+      setIsRemovingSignUp(true);
+      try {
+        await leaveOngoingTournament(id);
+        toast.success("Successfully left tournament!"); 
+        setUserSignedUp(false);
+        setIsRemoveDialogOpen(false);
+      } catch (error) {
+        console.error("Failed to leave tournament:", error);
+        toast.error("Failed to leave tournament. Please try again.");
+      } finally {
+        setIsRemovingSignUp(false);
+      }
+    }
+  };
+
+
   // Loading State
   if (loadingTournamentContext) {
     return (
@@ -141,10 +162,20 @@ const TournamentOverview: React.FC = () => {
               {getFormattedDateFromString(startDate)} - {getFormattedDateFromString(endDate)}
             </p>
           </div>
-          { userSignedUp &&
-            <Button variant="outline" className="logo_gradient text-white font-semibold w-[110px] mt-8" onClick={() => setIsRemoveDialogOpen(true)}>
-              Registered
-            </Button>
+
+          { userSignedUp && 
+            <>
+            { tournamentStatus == "UPCOMING" &&
+              <Button variant="outline" className="logo_gradient text-white font-semibold w-[110px] mt-8" onClick={() => setIsRemoveDialogOpen(true)}>
+                Registered
+              </Button>
+            }
+            { tournamentStatus == "ONGOING" &&
+              <Button variant="outline" className="w-[110px] mt-8 text-red-500 hover:border-red-500 hover:text-red-500 font-semibold" onClick={() => setIsRemoveDialogOpen(true)}>
+                Leave
+              </Button>
+            }
+            </>
           }
           { canSignUp &&
             <Button variant="outline" className="logo_gradient text-white font-semibold w-[110px] mt-8" onClick={() => setIsConfirmDialogOpen(true)}>
@@ -152,7 +183,6 @@ const TournamentOverview: React.FC = () => {
             </Button>
           }
           
-
         </div>
         <Image
           src={icon || '/assets/images/tournament_default.png'}
@@ -171,13 +201,29 @@ const TournamentOverview: React.FC = () => {
         <div className="space-y-2 mt-10">
             <p className="text-gray-700 mb-6">{description || 'No description available.'}</p>
             <p><b>Format:</b> {format}</p>
+            { band &&
             <p><b>Band:</b> {band}</p>
-            <p><b>Sign ups:</b> {numberOfSignups}/{capacity}</p>
-            <p><b>Capacity:</b> {capacity}</p>
-            <p><b>Current Round:</b> {currentRound || 'Not started'}</p>
+            }
+            {/* Show no. of signups and capacity when tournament not started */}
+            { tournamentStatus == "UPCOMING" &&
+            <>
+               <p><b>Sign ups:</b> {numberOfSignups}</p>
+               <p><b>Capacity:</b> {capacity}</p>
+            </>
+            }
+            { tournamentStatus !== "UPCOMING" &&
+            <>
+               <p><b>Participants:</b> {capacity}</p>
+            </>
+            }
+            { tournamentStatus == "ONGOING" &&
+            <>
+               <p><b>Current Round:</b> {currentRound || 'Not started'}</p>
+            </>
+            }
+            { scoreCriteria && 
             <div>
-              <h3 className="font-semibold mb-1">Score Criteria:</h3>
-              {scoreCriteria ? (
+            <h3 className="font-semibold mb-1">Score Criteria:</h3>
                 <ul className="list-disc list-inside space-y-2">
                   {Object.entries(scoreCriteria).map(([criteria, points], index) => (
                     <li key={index}>
@@ -185,10 +231,8 @@ const TournamentOverview: React.FC = () => {
                     </li>
                   ))}
                 </ul>
-              ) : (
-                <p>Not specified</p>
-              )}
             </div>
+            }
           </div>
         </div>
         <div className='w-[100%] mx-auto rounded-lg'>
@@ -235,12 +279,17 @@ const TournamentOverview: React.FC = () => {
           <DialogContent className="bg-white p-6 rounded-md shadow-md w-[400px] text-sm">
             <DialogTitle className="font-medium text-md">Leave Tournament</DialogTitle>
                 <br/>
-                This action cannot be undone. 
-                Your registration will be removed from the tournament system and you may not be able to participate in the tournament again.
+                This action cannot be undone.
+                { tournamentStatus == "UPCOMING" &&
+                 <p>Your registration will be removed from the tournament system and you may not be able to participate in the tournament again.</p>
+                }
+                { tournamentStatus == "ONGOING" &&
+                 <p>Leaving an ongoing tournament is unfair to other users. It may affect your chances of joining any future tournaments.</p>
+                }
                 <br/>
             <div className="flex justify-end space-x-2 mt-4">
               <Button variant="outline" onClick={() => setIsRemoveDialogOpen(false)}>Cancel</Button>
-              <Button className="w-[110px]" onClick={handleTournamentRemoveSignUp} disabled={isRemovingSignUp}>
+              <Button className="w-[110px]" onClick={tournamentStatus == "ONGOING" ? handleLeaveTournament : handleTournamentRemoveSignUp} disabled={isRemovingSignUp}>
                     {isRemovingSignUp?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Leave")}
               </Button>
             </div>

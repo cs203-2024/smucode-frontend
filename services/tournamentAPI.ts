@@ -1,6 +1,5 @@
 import axiosClient from './axiosClient';
 import { TournamentSignUpInfo, TournamentCardInfo, UserTournamentCardInfo, TournamentProps, TournamentOverviewProps, ParticipantCardListProp, PlayerInfo } from '@/components/types';
-import Cookies from "js-cookie";
 
 //interface for tournament
 interface Tournament {
@@ -65,6 +64,16 @@ export const removeSignUpForTournament = async (tournamentId: string):Promise<Si
         return response.data;
     } catch (error) {
         console.error("Error signing up for tournament:", error);
+        throw error;
+    }
+}
+
+export const leaveOngoingTournament = async (tournamentId: string):Promise<SignUpResponse> => {
+    try {
+        const response = await axiosClient.patch<SignUpResponse>(`/tournaments/${tournamentId}/leave`); 
+        return response.data;
+    } catch (error) {
+        console.error("Error leaving tournament:", error);
         throw error;
     }
 }
