@@ -32,45 +32,34 @@ export default function NotificationCardWrapper() {
     const { user, logout } = useUserContext();
 
     const username = user ? user.username:"";
-    const [adminData, setAdminData] = useState<TournamentCardInfo[]>([]); // Use state for adminData
-    const [userData, setUserData] = useState<UserTournamentCardInfo[]>([]);
+    const [notifications, setNotifications] = useState<string[]>([]);
 
-    async function getDataForAdmin() {
-        try {
-            const response = await getAllTournamentsCreatedByAdmin();
-            console.log("Admin data received in wrapper");
-            console.log(response[0]);
-            return response;
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    useEffect(() => {
+        // Create a new EventSource for the SSE endpoint
+        const eventSource = new EventSource('http://localhost:8083/api/notifications/subscribe');
 
-    async function getDataForUser() {
-        try {
-            const response = await getAllTournamentsForUser();
-            return response;
-        } catch (error) {
-            console.error(error);
-        }
-    }
+        // Listen for messages from the server
+        eventSource.onmessage = (event) => {
+            console.log("Received SSE message:", event.data);
+            setNotifications((prev) => [...prev, event.data]);
+        };
 
-    async function fetchData() {
-        if (user?.role === "ROLE_ADMIN") {
-            const adminDataResponse = (await getDataForAdmin()) ?? [];
-            console.log("Admin data received:", adminDataResponse);
-            setAdminData(adminDataResponse); // Update the state with the fetched data
-        } else {
-            const userDataResponse = (await getDataForUser()) ?? [];
-            console.log("User data received:", userDataResponse);
-            setUserData(userDataResponse); // Update the state with the fetched data
-        }
-    }
+        // Handle errors
+        eventSource.onerror = (error) => {
+            console.error("SSE error:", error);
+            eventSource.close();
+        };
 
-    useEffect(() => {     
+        // Close the EventSource when the component unmounts
+        return () => {
+            eventSource.close();
+        };
+    }, []);
 
-        fetchData(); // Call the function
-    }, [user]); // Ensure it runs when `user` or `username` is available
+    // useEffect(() => {     
+
+    //     fetchData(); // Call the function
+    // }, [user]); // Ensure it runs when `user` or `username` is available
     
     return (
         <div>
@@ -113,16 +102,4 @@ export default function NotificationCardWrapper() {
             </Card>
         </div>
     )
-}
-
-function getBadgeVariantFromLabel(label: string): ComponentProps<typeof Badge>["variant"] {
-    if (["alert"].includes(label.toLowerCase())) {
-        return "default"
-    }
-  
-    if (["notification"].includes(label.toLowerCase())) {
-        return "outline"
-    }
-  
-    return "secondary"
 }

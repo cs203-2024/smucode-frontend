@@ -68,8 +68,13 @@ export default function NotificationCard({data}:NotificationCardProps) {
                                             {capitalise(data.category)}
                                         </Badge>
                                     </div>
-                                    <div className="line-clamp-2 text-sm text-muted-foreground py-1">
-                                        {data.message}
+                                    <div className='max-w-full flex justify-betweep items-center gap-2 py-1'>
+                                        <div className="text-sm text-muted-foreground w-[70%] h-auto whitespace-normal">
+                                            {data.message}
+                                        </div>
+                                        <div className='flex items-end justify-end h-full'>
+                                            <Button variant={"outline"} className='h-10'> {data.isRead ? "Mark as Unread":"Mark as Read"} </Button>
+                                        </div>
                                     </div>
                                 </div>
                             </Link>
