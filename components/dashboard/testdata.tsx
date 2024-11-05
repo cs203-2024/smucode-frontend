@@ -968,7 +968,7 @@ export const notificationData2 = [
         "username": "sophiachan",
         "tournamentId": "109",
         "tournamentName": "SMU Coding Hackathon",
-        "message": "Super long message to test CSS stuff because I have no idea how else to test to be very honest wth you, Super long message to test CSS stuff because I have no idea how else to test to be very honest wth you",
+        "message": "Super long message to test CSS stuff because I have no idea how else to test to be very honest wth you",
         "type": "Round Started",
         "category": "notification",
         "createdAt": "2024-10-13T11:00:00Z",

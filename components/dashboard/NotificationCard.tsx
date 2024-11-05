@@ -53,7 +53,7 @@ export default function NotificationCard({data, action}:NotificationCardProps) {
                         <div className="text-sm text-muted-foreground w-[70%] h-auto whitespace-normal">
                             {data.message}
                         </div>
-                        <div className='flex items-end justify-end h-full'>
+                        <div className='flex self-end justify-end h-full'>
                             <Button variant={"outline"} className='h-10' onClick={() => action(data.id)}> {data.isRead ? "Mark as Unread":"Mark as Read"} </Button>
                         </div>
                     </div>
