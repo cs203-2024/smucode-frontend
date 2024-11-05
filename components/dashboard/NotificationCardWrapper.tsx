@@ -112,13 +112,13 @@ export default function NotificationCardWrapper() {
                             <ScrollArea className='h-[55vh] w-full whitespace-nowrap pr-3'>
                                 <div className='pb-1'>
                                     {newNotifications.filter((item) => !item.isRead).map((data) => (
-                                        <NotificationCard key={data.id} data={data} action={markAsRead} />
+                                        <NotificationCard key={data.id} data={data} action={markAsRead} isNew={true} />
                                     ))}
                                     {existingNotifications.filter((item) => !item.isRead).map((data) => (
-                                        <NotificationCard key={data.id} data={data} action={markAsRead} />
+                                        <NotificationCard key={data.id} data={data} action={markAsRead} isNew={false} />
                                     ))}
                                     {notificationData2.filter((item) => !item.isRead).map((data) => (
-                                        <NotificationCard key={data.id} data={data} action={markAsRead} />
+                                        <NotificationCard key={data.id} data={data} action={markAsRead} isNew={false} />
                                     ))}
                                 </div>
                             </ScrollArea>
@@ -128,10 +128,10 @@ export default function NotificationCardWrapper() {
                             <ScrollArea className='h-[55vh] w-full whitespace-nowrap pr-3'>
                                 <div className='pb-1'>
                                     {existingNotifications.filter((item) => item.isRead).map((data) => (
-                                        <NotificationCard key={data.id} data={data} action={markAsUnread} />
+                                        <NotificationCard key={data.id} data={data} action={markAsUnread} isNew={false} />
                                     ))}
                                     {notificationData2.filter((item) => item.isRead).map((data) => (
-                                        <NotificationCard key={data.id} data={data} action={markAsUnread} />
+                                        <NotificationCard key={data.id} data={data} action={markAsUnread}  isNew={false} />
                                     ))}
                                 </div>
                             </ScrollArea>

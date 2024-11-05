@@ -13,9 +13,10 @@ import { NotificationData } from '../types';
 interface NotificationCardProps {
     data: NotificationData; 
     action: (id: string) => Promise<void>;
+    isNew: boolean;
 }
 
-export default function NotificationCard({data, action}:NotificationCardProps) {
+export default function NotificationCard({data, action, isNew}:NotificationCardProps) {
     const { user, logout } = useUserContext();
     return (
         <div>
@@ -28,7 +29,7 @@ export default function NotificationCard({data, action}:NotificationCardProps) {
                     <div className="flex items-center">
                         <div className="flex items-center gap-2">
                             <div className="font-semibold line-clamp-1">{data.type}</div>
-                            {!data.isRead && (
+                            {isNew && (
                                 <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                             )}
                         </div>
