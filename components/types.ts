@@ -8,19 +8,20 @@ export type PlayerInfo = {
 
 export type BracketProps = {
     id: string;
-    seqId: number;
+    seqId?: number;
     status: string;
     player1?: PlayerInfo;
     player2?: PlayerInfo;
     winner?: string;
+    updateBracketStatus?: (updatedBracket: BracketProps) => void;
 };
 
 export type RoundProps = {
     id: string;
     seqId: number;
     name: string;
-    startDateTime: string;
-    endDateTime: string;
+    startDate: string;
+    endDate: string;
     status: string;
     brackets: BracketProps[];
 };
@@ -56,8 +57,7 @@ export type User = {
 export interface UserContextType {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
-    // loading: boolean;
-    // login: () => Promise<void>;
+    loading: boolean;
     logout: () => Promise<void>;
 }
 
@@ -126,18 +126,12 @@ export interface TournamentOverviewProps {
   }
 
 
-  export type ParticipantCardListProp = {
-    participants: Participant[];
+  export type Participant = {
+    username: string;
+    profileImageUrl: string;
   };
 
-  export type Participant = {
-    id: string;
-    name: string;
-    profilePicture: string;
-    rank: number;
-    wins: number;
-    losses: number;
-  };
+  export type Participants = Participant[];
 
   export type ParticipantCardProps = {
     participants: Participant;
@@ -200,6 +194,7 @@ export type UserDashboardTournamentCardInfo = {
   signupsOpen: boolean; // derived from backend attributes
   placing: number; // -1 if tournament incomplete, actual placing number otherwise (1 - number of players)
 }
+
 
 export type NotificationCardInfo = {
   id: string;
