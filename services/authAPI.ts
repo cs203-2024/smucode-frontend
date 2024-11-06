@@ -64,7 +64,8 @@ export const logoutAccount = async (): Promise<string> => {
 };
 
 export const deleteAccount = async (username: string, password: string): Promise<string> => {
-  
+  console.log("username", username);
+  console.log("password", password);
   try {
     const response = await axiosClient.delete<string>("/auth/delete-account", {
       data: {
