@@ -194,3 +194,8 @@ export type UserDashboardTournamentCardInfo = {
   signupsOpen: boolean; // derived from backend attributes
   placing: number; // -1 if tournament incomplete, actual placing number otherwise (1 - number of players)
 }
+
+export type UploadLinkResponse = {
+  key: string;
+  preSignedURL: string;
+}
