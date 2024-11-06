@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/new-york/label";
 import { Icons } from "@/components/icons";
 import { changePassword } from "@/services/authAPI";
 import { useUserContext } from "@/context/UserContext"; // Import useUserContext
+import axios from "axios";
 
 const ChangePasswordForm: React.FC = () => {
   const { user } = useUserContext(); // Get the user from the context
@@ -42,24 +43,37 @@ const ChangePasswordForm: React.FC = () => {
     // console.log("New Password:", password); // Log the new password to ensure it's being captured
 
     try {
-      await changePassword(user?.username, oldPassword, password); // Include the username when calling changePassword
+      if (user?.username) {
+        await changePassword(user.username, oldPassword, password); // Include the username when calling changePassword
+        setSuccess("Password changed successfully"); // Set success message
+        setOldPassword(""); // Reset old password field
+        setPassword(""); // Reset new password field
+        setConfirmPassword(""); // Reset confirm password field
+      } else {
+        setError("User is not logged in");
+      }
       setSuccess("Password changed successfully"); // Set success message
       setOldPassword(""); // Reset old password field
       setPassword(""); // Reset new password field
       setConfirmPassword(""); // Reset confirm password field
     } catch (err) {
-      if (err.response) {
-        // Server responded with a status other than 200 range
-        console.error("Server response:", err.response.data);
-        setError(err.response.data.message || "Failed to change password");
-      } else if (err.request) {
-        // Request was made but no response received
-        console.error("Request error:", err.request);
-        setError("No response from server");
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          // Server responded with a status other than 200 range
+          console.error("Server response:", err.response.data);
+          setError(err.response.data.message || "Failed to change password");
+        } else if (err.request) {
+          // Request was made but no response received
+          console.error("Request error:", err.request);
+          setError("No response from server");
+        } else {
+          // Something else happened
+          console.error("Error:", err.message);
+          setError(err.message);
+        }
       } else {
-        // Something else happened
-        console.error("Error:", err.message);
-        setError(err.message);
+        console.error("Unexpected error:", err);
+        setError("An unexpected error occurred");
       }
     }
   };

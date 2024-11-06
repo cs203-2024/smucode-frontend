@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { tournamentCardData, tournamentCardData2, userTournamentCardData, userTournamentCardData2 } from "@/components/dashboard/testdata";
-import UserTournamentCard from "@/components/home/UserTournamentCard";
 import ExploreTournamentCard from "@/components/explore/ExploreTournamentCard";
 import { getAllAvailableTournamentsForExplore } from "@/services/tournamentAPI";
 import { UserTournamentCardInfo } from "@/components/types";
