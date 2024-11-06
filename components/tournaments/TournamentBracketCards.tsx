@@ -23,6 +23,9 @@ interface TournamentBracketProps extends BracketProps {
 
 const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; status: string }> = ({ player, isWinner, status }) => {
   if (!player || !player.username) return <div className="flex items-center justify-between bg-transparent p-1.5 h-10 border-gray-400 rounded-full"></div>;
+  
+  const { showPrediction }= useTournamentContext();
+
   return (
     <div className={`${!isWinner && status === "COMPLETED" ? "opacity-40" : ""} flex items-center py-1 justify-between text-sm`}>
       <div className="flex items-center space-x-2">
@@ -34,6 +37,9 @@ const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; 
           )}
         </div>
         <p className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
+        { showPrediction && player.winProbability && 
+          <span className={`pl-1 ${player.winProbability >= 0.5 ? "text-green-500" : "text-orange-500"}`}>{Math.round(player.winProbability*100)}%</span>
+        }
       </div>
       <div className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
         <span className="font-semibold">{player.score}</span>

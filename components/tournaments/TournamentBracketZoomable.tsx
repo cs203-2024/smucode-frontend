@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Crosshair, ZoomIn, ZoomOut } from 'lucide-react';
 import { BracketProps, PlayerInfo, RoundProps, TournamentProps } from '../types';
 import { getFormattedDateFromString } from '@/lib/utils';
+import { useTournamentContext } from '@/context/TournamentContext';
 
 const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProps) => {
 
@@ -29,6 +30,8 @@ const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProp
       );
     }
 
+    const { showPrediction }= useTournamentContext();
+
     return (
       <div className={`${!isWinner && status === "COMPLETED" ? "opacity-40" : ""} flex items-center justify-between bg-white shadow-md p-1.5 rounded-full`}>
         <div className="flex items-center space-x-2">
@@ -40,6 +43,9 @@ const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProp
             )}
           </div>
           <p className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
+          { showPrediction && player.winProbability && 
+            <span className={`pl-1 ${player.winProbability >= 0.5 ? "text-green-500" : "text-orange-500"}`}>{Math.round(player.winProbability*100)}%</span>
+          }
         </div>
         <div className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
           <span className="font-semibold">{player.score}</span>
@@ -49,7 +55,7 @@ const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProp
   };
 
   return (
-    <div className="p-4 w-64 min-w-64">
+    <div className="py-4 px-1 w-64 min-w-64">
       <div className="space-y-1">
         <PlayerCard player={player1} isWinner={isWinner === player1?.username} />
         <PlayerCard player={player2} isWinner={isWinner === player2?.username} />
@@ -107,7 +113,7 @@ const TournamentWrapper = ({ rounds } : TournamentProps) => {
   return (
     <div className="flex flex-row min-w-[100vw] space-x-4 overflow-x-auto p-4">
    {rounds
-      .slice() 
+      .slice(-3)
       .sort((a, b) => a.seqId - b.seqId)
       .map((round) => (
         <div key={round.id} className="flex-shrink-0">
