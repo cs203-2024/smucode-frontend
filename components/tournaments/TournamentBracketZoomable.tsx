@@ -113,8 +113,9 @@ const TournamentWrapper = ({ rounds } : TournamentProps) => {
   return (
     <div className="flex flex-row min-w-[100vw] space-x-4 overflow-x-auto p-4">
    {rounds
-      .slice(-3)
+      .slice()
       .sort((a, b) => a.seqId - b.seqId)
+      .slice(-3)
       .map((round) => (
         <div key={round.id} className="flex-shrink-0">
           <TournamentRound 
