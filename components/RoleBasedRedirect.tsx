@@ -29,7 +29,7 @@ const RoleBasedRedirect = () => {
                 break;
             }
         }
-    }, [user]);
+    }, [user, router]);
 
     return null;
 };
