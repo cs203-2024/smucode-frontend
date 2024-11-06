@@ -1,4 +1,3 @@
-import UserDashboardTournamentCard from "./dashboard/UserDashboardTournamentCard";
 
 export type PlayerInfo = {
     username: string;
