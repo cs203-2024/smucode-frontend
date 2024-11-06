@@ -13,6 +13,8 @@ import { useTournamentContext } from '@/context/TournamentContext';
 import { useUserContext } from '@/context/UserContext';
 import { formatDateToShortTime,getFormattedDateFromString } from '@/lib/utils';
 import { DateTimePicker } from '@/components/DateTimePicker'
+import { useCallback } from 'react';
+import Image from 'next/image';
 
 type BracketStatusUpdate = Pick<BracketProps, 'id' | 'status'>;
 
@@ -22,18 +24,30 @@ interface TournamentBracketProps extends BracketProps {
 
 
 const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; status: string }> = ({ player, isWinner, status }) => {
+
+  const { showPrediction }= useTournamentContext();
+
   if (!player || !player.username) return <div className="flex items-center justify-between bg-transparent p-1.5 h-10 border-gray-400 rounded-full"></div>;
+
   return (
     <div className={`${!isWinner && status === "COMPLETED" ? "opacity-40" : ""} flex items-center py-1 justify-between text-sm`}>
       <div className="flex items-center space-x-2">
         <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
           {player.image ? (
-            <img src={player.image} alt={player.username} className="w-full h-full rounded-full object-cover" />
+            <Image
+             src={player.image}
+             layout="fill"
+             objectFit="cover"
+             alt={player.username}
+            />
           ) : (
             <span className="text-sm">{player.username.charAt(0)}</span>
           )}
         </div>
         <p className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
+        { showPrediction && player.winProbability && 
+          <span className={`pl-1 ${player.winProbability >= 0.5 ? "text-green-500" : "text-orange-500"}`}>{Math.round(player.winProbability*100)}%</span>
+        }
       </div>
       <div className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
         <span className="font-semibold">{player.score}</span>
@@ -50,7 +64,12 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
       <div className="flex items-center space-x-2">
         <div className="bg-gray-300 text-gray-600 w-8 h-8 rounded-full flex items-center justify-center">
           {player.image ? (
-            <img src={player.image} alt={player.username} className="w-full h-full rounded-full object-cover" />
+            <Image
+              src={player.image}
+              layout="fill"
+              objectFit="cover"
+              alt={player.username}
+            />
           ) : (
             <span className="text-sm">{player.username.charAt(0)}</span>
           )}
@@ -84,17 +103,19 @@ const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, playe
   const [isEditable, setIsEditable] = useState(false);
   const [bracketStatus, setBracketStatus] = useState(status);
 
-  const getWinner = (playerOne: PlayerInfo | undefined, playerTwo: PlayerInfo | undefined) => {
-    // Return winner directly if there is a winner
-    if(winner){
-      return winner;
-    }
-    if (playerOne && playerTwo && playerOne.username && playerTwo.username && bracketStatus === "COMPLETED") {
-      if (playerOne.score === 0 && playerTwo.score === 0) return "";
-      return playerOne.score > playerTwo.score ? playerOne.username : playerTwo.username;
-    }
-    return undefined;
-  };
+  const getWinner = useCallback(
+    (playerOne: PlayerInfo | undefined, playerTwo: PlayerInfo | undefined) => {
+      if (winner) {
+        return winner;
+      }
+      if (playerOne && playerTwo && playerOne.username && playerTwo.username && bracketStatus === "COMPLETED") {
+        if (playerOne.score === 0 && playerTwo.score === 0) return "";
+        return playerOne.score > playerTwo.score ? playerOne.username : playerTwo.username;
+      }
+      return undefined;
+    },
+    [winner, bracketStatus]
+  );
   
   const [isWinner, setIsWinner] = useState(getWinner(playerOne, playerTwo)); 
 
@@ -102,13 +123,13 @@ const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, playe
     if (bracketStatus === "COMPLETED") {
       setIsWinner(getWinner(playerOne, playerTwo));
     }
-  }, [bracketStatus]);
+  }, [bracketStatus, playerOne, playerTwo, getWinner]);
 
   useEffect(() => {
     if(user){
       setIsEditable(status === "ONGOING" && tournamentOrganiserId === user?.username);
     }
-  }, [user]);
+  }, [user,status,tournamentOrganiserId]);
 
 
   const handleUpdate = async () => {
@@ -293,7 +314,7 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
     if(user){
       setIsEditable(roundStatus === "ONGOING" && tournamentOrganiserId === user?.username);
     }
-  }, [user,roundStatus]);
+  }, [user,roundStatus,tournamentOrganiserId]);
 
    // Handle actions
   const handleEndRound = async () => {

@@ -1,8 +1,12 @@
+"use client";
+
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Button } from "@/components/ui/button"
 import { Crosshair, ZoomIn, ZoomOut } from 'lucide-react';
 import { BracketProps, PlayerInfo, RoundProps, TournamentProps } from '../types';
 import { getFormattedDateFromString } from '@/lib/utils';
+import { useTournamentContext } from '@/context/TournamentContext';
+import Image from 'next/image';
 
 const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProps) => {
 
@@ -23,6 +27,9 @@ const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProp
   const isWinner = getWinner(player1, player2);
 
   const PlayerCard = ({ player, isWinner }: { player: PlayerInfo | undefined, isWinner: boolean }) => {
+
+    const { showPrediction }= useTournamentContext();
+
     if (!player || !player.username) {
       return (
         <div className="flex items-center justify-between bg-transparent p-1.5 h-11 border-2 border-gray-400 rounded-full"></div>
@@ -34,12 +41,20 @@ const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProp
         <div className="flex items-center space-x-2">
           <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
             {player.image ? (
-              <img src={player.image} alt={player.username} className="w-full h-full rounded-full object-cover" />
+              <Image
+                src={player.image}
+                layout="fill"
+                objectFit="cover"
+                alt={player.username}
+              />
             ) : (
               <span className="text-sm">{player.username.charAt(0)}</span>
             )}
           </div>
           <p className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
+          { showPrediction && player.winProbability && 
+            <span className={`pl-1 ${player.winProbability >= 0.5 ? "text-green-500" : "text-orange-500"}`}>{Math.round(player.winProbability*100)}%</span>
+          }
         </div>
         <div className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
           <span className="font-semibold">{player.score}</span>
@@ -49,7 +64,7 @@ const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProp
   };
 
   return (
-    <div className="p-4 w-64 min-w-64">
+    <div className="py-4 px-1 w-64 min-w-64">
       <div className="space-y-1">
         <PlayerCard player={player1} isWinner={isWinner === player1?.username} />
         <PlayerCard player={player2} isWinner={isWinner === player2?.username} />
@@ -107,8 +122,9 @@ const TournamentWrapper = ({ rounds } : TournamentProps) => {
   return (
     <div className="flex flex-row min-w-[100vw] space-x-4 overflow-x-auto p-4">
    {rounds
-      .slice() 
+      .slice()
       .sort((a, b) => a.seqId - b.seqId)
+      .slice(-3)
       .map((round) => (
         <div key={round.id} className="flex-shrink-0">
           <TournamentRound 
