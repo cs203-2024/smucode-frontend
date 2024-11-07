@@ -16,6 +16,7 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import Link from "next/link";
 import { getUserProfile } from "@/services/userAPI"; // Import the API function
 import { useUserContext } from "@/context/UserContext"; // Import the useUserContext hook
+import ImageUploader from "./upload/ImageUploader";
 
 interface ProfilePageProps {
   username: string;
@@ -82,11 +83,14 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
                   blurDataURL="data:image/png;base64,iVBORw0KGg...AA"
                 />
                 {loggedInUser?.username === username && ( // Conditional rendering
-                  <Link href="/editprofile">
-                    <Button className="bg-blue-500 text-white hover:bg-blue-600 px-8 py-2 mt-4">
-                      Edit Profile
-                    </Button>
-                  </Link>
+                  <div className="flex justify-between items-center gap-2 mt-4">
+                    <Link href="/editprofile">
+                      <Button className="bg-blue-500 text-white hover:bg-blue-600 px-8 py-2">
+                        Edit Profile
+                      </Button>
+                    </Link>
+                    <ImageUploader label={"Profile Picture"} />
+                  </div>
                 )}
               </div>
               <div className="w-2/3 pl-6">

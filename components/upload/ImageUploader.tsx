@@ -9,49 +9,45 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-  } from "@/components/ui/dialog"
-  import { Input } from "@/components/ui/input"
-  import { Label } from "@/components/ui/label"
-  import { Button } from '@/components/ui/button';
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
+import { toast } from "sonner";
+import { getUserImageUploadLink, uploadUserImage } from '@/services/userAPI';
 
 interface ImageUploaderProps {
-    
+    label: string
 }
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
-export default function ImageUploader({ onUploadSuccess }) {
-    const [file, setFile] = useState<File>(null);
+export default function ImageUploader({ label }:ImageUploaderProps) {
+    const [file, setFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false);
-    const [error, setError] = useState(null);
+    const [presignedLink, setPresignedLink] = useState("");
+    const [uploadKey, setUploadKey] = useState("");
+    const [imagePreview, setImagePreview] = useState("/assets/images/default_profile.png");
+    const [fileType, setFileType] = useState("");
 
-    const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
-        setError(null);
-    };
 
-    const uploadFile = async () => {
-        if (!file) {
-            setError('Please select a file to upload.');
-            return;
-        }
-
-        setUploading(true);
-
+    async function getPresignedLink(type: string) {
         try {
-        // Step 1: Get pre-signed URL and image key from backend
-            const response = await fetch(`/api/upload-url?fileName=${encodeURIComponent(file.name)}&fileType=${encodeURIComponent(file.type)}`);
-            
-            if (!response.ok) {
-                throw new Error('Failed to get upload URL');
-            }
+            const response = await getUserImageUploadLink(type);
+            setPresignedLink(response.preSignedURL);
+            setUploadKey(response.key);
+            console.log(response);
+        } catch(error) {
+            console.error("Unable to get presigned link: ", error);
+        }
+    }
 
-            const { uploadUrl, imageKey } = await response.json();
-
-            // Step 2: Upload the file to S3 using the pre-signed URL
+    async function uploadToS3(uploadUrl: string)  {
+        try {
+            const headers: HeadersInit = file?.type ? { 'Content-Type': file.type } : {};
             const uploadResponse = await fetch(uploadUrl, {
                 method: 'PUT',
-                headers: {
-                'Content-Type': file.type,
-                },
+                headers: headers,
                 body: file,
             });
 
@@ -59,28 +55,40 @@ export default function ImageUploader({ onUploadSuccess }) {
                 throw new Error('Failed to upload file to S3');
             }
 
-            // Step 3: Notify backend to store the image reference
-            const storeResponse = await fetch(`/api/user-profile`, {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ imageKey }),
-            });
+        } catch(error) {
+            console.error("Unable to upload to S3:", error);
+            toast.error("There was an error uploading to S3. Please try again.");
+        }
+    }
+    async function saveToBackend(key: string) {
+        try {
+            const response = await uploadUserImage(key);
+            toast.success("Successfully updated image!");
+        } catch (error) {
+            console.error("Error saving to backend:", error);
+            toast.error("There was an error updating your image. Please try again.");
+        }
+    }
 
-            if (!storeResponse.ok) {
-                throw new Error('Failed to store image reference');
-            }
+    const uploadFile = async () => {
+        if (!file) {
+            toast.error('Please select a file to upload.');
+            return;
+        }
 
-            // Step 4: Optionally retrieve the updated profile or image URL
-            const profileResponse = await fetch(`/api/user-profile`);
-            const profileData = await profileResponse.json();
-            onUploadSuccess(profileData.profileImageUrl);
+        setUploading(true);
 
-            alert('Upload successful!');
+        try {
+        
+            getPresignedLink(fileType);
+
+            uploadToS3(presignedLink);
+
+            saveToBackend(uploadKey);
+
         } catch (err) {
-            console.error(err);
-            setError(err.message || 'An error occurred during upload.');
+            console.error("Unable to upload file: ", err);
+            // setError(err.message || 'An error occurred during upload.');
         } finally {
             setUploading(false);
         }
@@ -88,24 +96,24 @@ export default function ImageUploader({ onUploadSuccess }) {
 
     return (
         <div>
-            <input type="file" accept="image/*" onChange={handleFileChange} />
+            {/* <input type="file" accept="image/*" onChange={handleFileChange} />
             <button onClick={uploadFile} disabled={uploading}>
                 {uploading ? 'Uploading...' : 'Upload Image'}
             </button>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>} */}
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="outline">Edit Profile</Button>
+                    <Button variant="outline" className='py-4'>Update {label}</Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
-                    <DialogTitle>Edit profile</DialogTitle>
+                    <DialogTitle>Update {label}</DialogTitle>
                     <DialogDescription>
-                        Make changes to your profile here. Click save when you're done.
+                        Make changes to your {label.toLowerCase()} here. Images must have the following formats: .jpeg or .gif or .png. Click save when you're done.
                     </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
+                    {/* <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="name" className="text-right">
                         Name
                         </Label>
@@ -114,20 +122,42 @@ export default function ImageUploader({ onUploadSuccess }) {
                         defaultValue="Pedro Duarte"
                         className="col-span-3"
                         />
-                    </div>
+                    </div> */}
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="username" className="text-right">
-                        Username
+                        <Label htmlFor="image" className="text-right">
+                            New Image
                         </Label>
                         <Input
-                        id="username"
-                        defaultValue="@peduarte"
-                        className="col-span-3"
+                            type="file" accept={ACCEPTED_IMAGE_TYPES.join(",")} 
+                            id='image'
+                            onChange={(e) => {
+                                const newfile = e.target.files?.[0];
+                                if (newfile && newfile instanceof File) {
+                                    //field.onChange(file);  
+                                    setFile(newfile);
+                                    setFileType(newfile.type);
+                                    console.log("File is: "+newfile.type);
+                                    const objectUrl = URL.createObjectURL(newfile);
+                                    setImagePreview(objectUrl);
+                                }
+                            }}
+                            className='col-span-4'
                         />
                     </div>
                     </div>
                     <DialogFooter>
-                    <Button type="submit">Save changes</Button>
+                    {uploading ? (
+                        <Button disabled>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Saving
+                        </Button>
+                    ):
+                        file ? (
+                            <Button type="submit" onClick={uploadFile}>Save changes</Button>
+                        ):(
+                            <Button type="submit" disabled>Save changes</Button>
+                        )
+                    }
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

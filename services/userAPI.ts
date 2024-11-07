@@ -11,22 +11,22 @@ export const getUserProfile = async (username: string): Promise<UserProfile> => 
   }
 };
 
-export const getUserImageUploadLink = async ():Promise<UploadLinkResponse> => {
+export const getUserImageUploadLink = async (type: string):Promise<UploadLinkResponse> => {
   try {
-    const response = await axiosClient.get<UploadLinkResponse>(`/users/generate-upload-link}`);
+    const response = await axiosClient.post<UploadLinkResponse>(`/users/generate-upload-link?contentType=${type}`);
     return response.data;
   } catch (error) {
-    console.error("Error fetching user profile:", error);
+    console.error("Error fetching generate-upload-link:", error);
     throw error;
   }
 }
 
 export const uploadUserImage = async(key: string):Promise<string> => {
   try {
-    const response = await axiosClient.post<string>(`/users/upload-picture}`, key);
+    const response = await axiosClient.post<string>(`/users/upload-picture`, key);
     return response.data;
   } catch (error) {
-    console.error("Error fetching user profile:", error);
+    console.error("Error posting to upload-picture:", error);
     throw error;
   }
 }
