@@ -430,7 +430,7 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
       { !isEditDialogOpen &&
       <>
        <p className="text-sm text-gray-700 mb-1"><span className="mr-[5px]">Start Date:</span> {localStartDateTime ? getFormattedDateFromString(localStartDateTime) : "TBD"}</p>
-       <p className="text-sm text-gray-700 mb-4"><span className="mr-[17px]">End Date:</span> {localEndDateTime ? getFormattedDateFromString(localEndDateTime) : "TBD"}</p>
+       <p className="text-sm text-gray-700 mb-4"><span className="mr-[5px]">End Date:</span> {localEndDateTime ? getFormattedDateFromString(localEndDateTime) : "TBD"}</p>
       </>
       }
       { isEditDialogOpen &&
