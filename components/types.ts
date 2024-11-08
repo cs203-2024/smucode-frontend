@@ -209,7 +209,6 @@ export type NotificationCardInfo = {
 
 export type NotificationData = {
   id: string;
-  username: string;
   tournamentId: string;
   tournamentName: string;
   message: string;
@@ -217,4 +216,5 @@ export type NotificationData = {
   category: string;
   createdAt: string; // ISO date string
   isRead: boolean;
+  isNew?: boolean;
 };
