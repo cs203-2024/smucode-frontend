@@ -34,7 +34,8 @@ export default function NotificationCardWrapper() {
     // Listen for new notifs
     useEffect(() => {
         // Create a new EventSource for the SSE endpoint
-        const eventSource = new EventSource('http://localhost:8083/api/notifications/subscribe');
+        console.log("listening on port 8082...");
+        const eventSource = new EventSource('http://localhost:8082/api/notifications/subscribe');
 
         // Listen for messages from the server
         eventSource.onmessage = (event) => {
