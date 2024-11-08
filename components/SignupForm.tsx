@@ -32,10 +32,6 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
       password: form.password.value,
       verifyPassword: form.verifyPassword.value,
       role: roleElement ? roleElement.value : "PLAYER", // Default to "PLAYER" if roleElement is null
-      profileImageUrl: "", // Add appropriate value or leave empty
-      mu: 0, // Add appropriate value
-      sigma: 0, // Add appropriate value
-      skillIndex: 0, // Add appropriate value
     };
 
     if (formData.password !== formData.verifyPassword) {

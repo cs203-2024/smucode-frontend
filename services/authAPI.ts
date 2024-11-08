@@ -37,7 +37,7 @@ export const login = async (
 };
 
 export const signup = async (
-  newUser: Omit<User, "id">,
+  newUser: Omit<User, "profileImageUrl" | "mu" | "sigma" | "skillIndex">,
 ): Promise<SignupResponse> => {
   try {
     const response = await axiosClient.post<SignupResponse>(
