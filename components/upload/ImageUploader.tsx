@@ -25,24 +25,23 @@ const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 export default function ImageUploader({ label }:ImageUploaderProps) {
     const [file, setFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false);
-    const [presignedLink, setPresignedLink] = useState("");
-    const [uploadKey, setUploadKey] = useState("");
     const [imagePreview, setImagePreview] = useState("/assets/images/default_profile.png");
     const [fileType, setFileType] = useState("");
 
 
-    async function getPresignedLink(type: string) {
+    async function getPresignedLink(type: string): Promise<{ uploadUrl: string; key: string }> {
         try {
             const response = await getUserImageUploadLink(type);
-            setPresignedLink(response.preSignedURL);
-            setUploadKey(response.key);
+            const { preSignedURL, key } = response;
             console.log(response);
-        } catch(error) {
+            return { uploadUrl: preSignedURL, key };
+        } catch (error) {
             console.error("Unable to get presigned link: ", error);
+            throw error;
         }
     }
-
-    async function uploadToS3(uploadUrl: string)  {
+    
+    async function uploadToS3(uploadUrl: string) {
         try {
             const headers: HeadersInit = file?.type ? { 'Content-Type': file.type } : {};
             const uploadResponse = await fetch(uploadUrl, {
@@ -50,48 +49,52 @@ export default function ImageUploader({ label }:ImageUploaderProps) {
                 headers: headers,
                 body: file,
             });
-
+    
             if (!uploadResponse.ok) {
                 throw new Error('Failed to upload file to S3');
             }
-
-        } catch(error) {
+        } catch (error) {
             console.error("Unable to upload to S3:", error);
-            toast.error("There was an error uploading to S3. Please try again.");
+            throw error;
         }
     }
+    
     async function saveToBackend(key: string) {
         try {
-            const response = await uploadUserImage(key);
+            await uploadUserImage(key);
             toast.success("Successfully updated image!");
         } catch (error) {
             console.error("Error saving to backend:", error);
-            toast.error("There was an error updating your image. Please try again.");
+            throw error;
         }
     }
-
+    
     const uploadFile = async () => {
         if (!file) {
             toast.error('Please select a file to upload.');
             return;
         }
-
+    
         setUploading(true);
-
+    
         try {
-        
-            getPresignedLink(fileType);
-
-            uploadToS3(presignedLink);
-
-            saveToBackend(uploadKey);
-
+            // Step 1: Get the presigned link and key
+            const { uploadUrl, key } = await getPresignedLink(file.type);
+    
+            // Step 2: Upload to S3 using the presigned URL
+            await uploadToS3(uploadUrl);
+    
+            // Step 3: Save the file information to the backend
+            await saveToBackend(key);
+    
         } catch (err) {
             console.error("Unable to upload file: ", err);
+            toast.error("An error occurred during the upload process.");
         } finally {
             setUploading(false);
         }
     };
+    
 
     return (
         <div>
