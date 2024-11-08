@@ -8,6 +8,7 @@ import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/new-york/button";
 import { Input } from "@/components/ui/new-york/input";
 import { Label } from "@/components/ui/new-york/label";
+import { toast } from "sonner";
 
 interface SignupFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -48,6 +49,7 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
       //TODO: link to adr's context
       //setUser(response.userDTO);
       //redirect to login
+      toast.success('Sign up success! Login to continue.');
       router.push("/login");
     } catch (error: any) {
       console.error("Error signing up:", error);

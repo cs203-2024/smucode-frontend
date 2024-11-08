@@ -79,12 +79,12 @@ const Nav = (): JSX.Element => {
         </div>
       </div>
 
-      <div className="relative mt-1 flex gap-3">
+      <div className="relative flex items-center justify-center gap-3">
         {loading ? (
-          <Skeleton className="mb-1 w-[35px] h-[35px] rounded-full" />
+          <Skeleton className="my-1 w-[35px] h-[35px] rounded-full" />
         ) : user ? (
           <>
-            <div className="relative">
+            <div className="relative mt-1">
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Image
@@ -108,7 +108,7 @@ const Nav = (): JSX.Element => {
           </>
         ) : (
           pathname !== "/login" && (
-            <Button asChild className="mr-4">
+            <Button asChild className="mr-1">
               <Link href="/login">Login</Link>
             </Button>
           )

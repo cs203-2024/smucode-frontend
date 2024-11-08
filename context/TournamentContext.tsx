@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from 'next/navigation';
 import { fetchTournamentOverviewData } from '@/services/tournamentAPI'; 
 import { TournamentOverviewProps } from '@/components/types'; 
@@ -34,7 +34,17 @@ export const TournamentContextProvider = ({ children }: TournamentContextProvide
   const [organiserId, setOrganiserId] = useState<string | undefined>(undefined);
   const [overviewData, setOverviewData] = useState<TournamentOverviewProps | null>(null);
   const [loadingTournamentContext, setLoadingTournamentContext] = useState(true);
-  const [showPrediction, setShowPrediction] = useState<boolean>(false); // New state for showPrediction
+  const [showPrediction, setShowPrediction] = useState<boolean>(false); 
+  
+  // useMemo to prevent rerendering if no values change
+  const value = useMemo(() => ({
+    loadingTournamentContext,
+    tournamentId,
+    organiserId,
+    overviewData,
+    showPrediction,
+    setShowPrediction,
+  }), [loadingTournamentContext, tournamentId, organiserId, overviewData, showPrediction]);
 
   useEffect(() => {
     if (tournamentId) {
@@ -66,16 +76,7 @@ export const TournamentContextProvider = ({ children }: TournamentContextProvide
   }, []);
 
   return (
-    <TournamentContext.Provider 
-      value={{ 
-        loadingTournamentContext, 
-        tournamentId, 
-        organiserId, 
-        overviewData, 
-        showPrediction, 
-        setShowPrediction 
-      }}
-    >
+    <TournamentContext.Provider value={value}>
       {children}
     </TournamentContext.Provider>
   );

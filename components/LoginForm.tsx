@@ -10,6 +10,8 @@ import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/new-york/button";
 import { Input } from "@/components/ui/new-york/input";
 import { Label } from "@/components/ui/new-york/label";
+import { toast } from "sonner";
+import { UserRound } from "lucide-react";
 
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -48,6 +50,9 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
           skillIndex: userDetails.skillIndex,
         };
         console.log('Mapped user object:', user);
+        toast.success('Welcome back, ' + userDetails.username,{
+          icon: <UserRound />
+        });
         setUser(user);
         const redirectAfterLogin = sessionStorage.getItem("redirectAfterLogin");
         if (redirectAfterLogin) {
