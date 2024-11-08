@@ -57,7 +57,7 @@ const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; 
 };
 
 const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (score: number) => void }> = ({ player, onChange }) => {
-  if (!player) return null;
+  if (!player || !player.username) return null;
 
   return (
     <div className="flex items-center py-1 justify-between text-sm">
@@ -369,8 +369,8 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
 
   const filteredBrackets = brackets.filter(
     (bracket) =>
-      bracket.player1?.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      bracket.player2?.username.toLowerCase().includes(searchQuery.toLowerCase())
+      bracket.player1 && bracket.player1?.username && bracket.player1?.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      bracket.player2 && bracket.player2?.username && bracket.player2?.username?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   if (filteredBrackets.length === 0) {
@@ -508,8 +508,8 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
   const filteredRounds = rounds.filter((round) => {
     return round.brackets.some(
       (bracket) =>
-        bracket.player1?.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        bracket.player2?.username?.toLowerCase().includes(searchQuery.toLowerCase())
+        bracket.player1 && bracket.player1?.username && bracket.player1?.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        bracket.player2 && bracket.player2?.username && bracket.player2?.username?.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }).reverse();
 
