@@ -9,6 +9,7 @@ import { Icons } from "@/components/icons";
 import { useTournamentContext } from "@/context/TournamentContext";
 import { Skeleton } from '../ui/skeleton';
 import { LayoutGrid } from 'lucide-react';
+import PredictionToggle from "@/components/PredictionToggle"
 
 const TournamentBrackets: React.FC = () => {
   const { loadingTournamentContext, tournamentId } = useTournamentContext();
@@ -91,7 +92,7 @@ const TournamentBrackets: React.FC = () => {
       <div className="flex items-center mb-4 space-x-5"> 
         <p className="font-bold text-2xl mt-[2px] ml-3">Tournament Brackets</p>
   
-        <div className="flex space-x-1">
+        <div className="flex space-x-1 items-center">
           <button
             className={`p-[4px] rounded-lg ${viewMode === 'card' ? 'bg-themelightblue text-themeblue' : 'bg-gray-200'}`}
             onClick={() => setViewMode('card')}
@@ -104,6 +105,7 @@ const TournamentBrackets: React.FC = () => {
           >
             <Icons.bracket />
           </button>
+          <PredictionToggle/>
         </div>
       </div>
       

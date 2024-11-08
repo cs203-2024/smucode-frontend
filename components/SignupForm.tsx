@@ -1,13 +1,14 @@
 "use client";
 import * as React from "react";
 // import { useUserContext } from '@/app/context/UserContext';
-import { signup } from '@/services/authAPI';
-import { useRouter } from 'next/navigation';
+import { signup } from "@/services/authAPI";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/new-york/button";
 import { Input } from "@/components/ui/new-york/input";
 import { Label } from "@/components/ui/new-york/label";
+import { toast } from "sonner";
 
 interface SignupFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -23,12 +24,14 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
     setErrorMessage("");
 
     const form = event.target as HTMLFormElement;
+    const roleElement = form.role as HTMLSelectElement | null;
+
     const formData = {
       username: form.username.value,
       email: form.email.value,
       password: form.password.value,
       verifyPassword: form.verifyPassword.value,
-      role: form.role?.value,
+      role: roleElement ? roleElement.value : "PLAYER", // Default to "PLAYER" if roleElement is null
     };
 
     if (formData.password !== formData.verifyPassword) {
@@ -42,11 +45,12 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
       //TODO: link to adr's context
       //setUser(response.userDTO);
       //redirect to login
+      toast.success('Sign up success! Login to continue.');
       router.push("/login");
     } catch (error: any) {
-      console.error('Error signing up:', error);
+      console.error("Error signing up:", error);
       setErrorMessage(
-          error.response?.data?.message ||
+        error.response?.data?.message ||
           error.message ||
           "Signup failed. Please try again."
       );
@@ -135,7 +139,9 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
               </select>
             </div>
           </div>
-          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="text-red-500 text-sm">{errorMessage}</p>
+          )}
           <Button disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

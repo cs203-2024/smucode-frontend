@@ -37,7 +37,7 @@ export const login = async (
 };
 
 export const signup = async (
-  newUser: Omit<User, "id">,
+  newUser: Omit<User, "profileImageUrl" | "mu" | "sigma" | "skillIndex">,
 ): Promise<SignupResponse> => {
   try {
     const response = await axiosClient.post<SignupResponse>(
@@ -64,7 +64,8 @@ export const logoutAccount = async (): Promise<string> => {
 };
 
 export const deleteAccount = async (username: string, password: string): Promise<string> => {
-  
+  console.log("username", username);
+  console.log("password", password);
   try {
     const response = await axiosClient.delete<string>("/auth/delete-account", {
       data: {

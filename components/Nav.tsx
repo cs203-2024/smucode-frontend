@@ -81,10 +81,12 @@ const Nav = (): JSX.Element => {
         </div>
       </div>
 
-      <div className="relative mt-1 flex gap-3">
-        {user ? (
+      <div className="relative flex items-center justify-center gap-3">
+        {loading ? (
+          <Skeleton className="my-1 w-[35px] h-[35px] rounded-full" />
+        ) : user ? (
           <>
-            <div className="relative">
+            <div className="relative mt-1">
               <DropdownMenu>
                 <DropdownMenuTrigger><Image
                   src={user?.profileImageUrl || '/assets/images/default_profile.png'}
@@ -103,9 +105,9 @@ const Nav = (): JSX.Element => {
             </div>
           </>
         ) : (
-          <>
-          { pathname !== "/login" &&
-            <Button asChild className="mr-4">
+
+          pathname !== "/login" && (
+            <Button asChild className="mr-1">
               <Link href="/login">Login</Link>
             </Button>
           }

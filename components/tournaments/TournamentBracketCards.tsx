@@ -13,20 +13,34 @@ import { useTournamentContext } from '@/context/TournamentContext';
 import { useUserContext } from '@/context/UserContext';
 import { formatDateToShortTime,getFormattedDateFromString } from '@/lib/utils';
 import { DateTimePicker } from '@/components/DateTimePicker'
+import { useCallback } from 'react';
+import Image from 'next/image';
 
 const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; status: string }> = ({ player, isWinner, status }) => {
+
+  const { showPrediction }= useTournamentContext();
+
   if (!player || !player.username) return <div className="flex items-center justify-between bg-transparent p-1.5 h-10 border-gray-400 rounded-full"></div>;
+
   return (
     <div className={`${!isWinner && status === "completed" ? "opacity-40" : ""} flex items-center py-1 justify-between text-sm`}>
       <div className="flex items-center space-x-2">
         <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
           {player.image ? (
-            <img src={player.image} alt={player.username} className="w-full h-full rounded-full object-cover" />
+            <Image
+             src={player.image}
+             layout="fill"
+             objectFit="cover"
+             alt={player.username}
+            />
           ) : (
             <span className="text-sm">{player.username.charAt(0)}</span>
           )}
         </div>
-        <p className={`${status !== "completed" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
+        <p className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
+        { showPrediction && player.winProbability && 
+          <span className={`pl-1 ${player.winProbability >= 0.5 ? "text-green-500" : "text-orange-500"}`}>{Math.round(player.winProbability*100)}%</span>
+        }
       </div>
       <div className={`${status !== "completed" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
         <span className="font-semibold">{player.score}</span>
@@ -36,14 +50,19 @@ const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; 
 };
 
 const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (score: number) => void }> = ({ player, onChange }) => {
-  if (!player) return null;
+  if (!player || !player.username) return null;
 
   return (
     <div className="flex items-center py-1 justify-between text-sm">
       <div className="flex items-center space-x-2">
         <div className="bg-gray-300 text-gray-600 w-8 h-8 rounded-full flex items-center justify-center">
           {player.image ? (
-            <img src={player.image} alt={player.username} className="w-full h-full rounded-full object-cover" />
+            <Image
+              src={player.image}
+              layout="fill"
+              objectFit="cover"
+              alt={player.username}
+            />
           ) : (
             <span className="text-sm">{player.username.charAt(0)}</span>
           )}
@@ -74,17 +93,19 @@ const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, playe
   const [isEditable, setIsEditable] = useState(false);
   const [bracketStatus, setBracketStatus] = useState(status);
 
-  const getWinner = (playerOne: PlayerInfo | undefined, playerTwo: PlayerInfo | undefined) => {
-    // Return winner directly if there is a winner
-    if(winner){
-      return winner;
-    }
-    if (playerOne && playerTwo && playerOne.username && playerTwo.username && bracketStatus === "COMPLETED") {
-      if (playerOne.score === 0 && playerTwo.score === 0) return "";
-      return playerOne.score > playerTwo.score ? playerOne.username : playerTwo.username;
-    }
-    return undefined;
-  };
+  const getWinner = useCallback(
+    (playerOne: PlayerInfo | undefined, playerTwo: PlayerInfo | undefined) => {
+      if (winner) {
+        return winner;
+      }
+      if (playerOne && playerTwo && playerOne.username && playerTwo.username && bracketStatus === "COMPLETED") {
+        if (playerOne.score === 0 && playerTwo.score === 0) return "";
+        return playerOne.score > playerTwo.score ? playerOne.username : playerTwo.username;
+      }
+      return undefined;
+    },
+    [winner, bracketStatus]
+  );
   
   const [isWinner, setIsWinner] = useState(getWinner(player1, player2)); 
   
@@ -92,13 +113,13 @@ const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, playe
     if (bracketStatus === "completed") {
       setIsWinner(getWinner(player1, player2));
     }
-  }, [bracketStatus]);
+  }, [bracketStatus, playerOne, playerTwo, getWinner]);
 
   useEffect(() => {
     if(user){
       setIsEditable(status === "ongoing" && tournamentOrganizerId === user?.username);
     }
-  }, [user]);
+  }, [user,status,tournamentOrganiserId]);
 
 
   const handleUpdate = async () => {
@@ -269,7 +290,7 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
     if(user){
       setIsEditable(roundStatus === "ongoing" && tournamentOrganizerId === user?.username);
     }
-  }, [user,roundStatus]);
+  }, [user,roundStatus,tournamentOrganiserId]);
 
    // Handle actions
   const handleEndRound = async () => {
@@ -318,8 +339,8 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
 
   const filteredBrackets = brackets.filter(
     (bracket) =>
-      bracket.player1?.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      bracket.player2?.username.toLowerCase().includes(searchQuery.toLowerCase())
+      bracket.player1 && bracket.player1?.username && bracket.player1?.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      bracket.player2 && bracket.player2?.username && bracket.player2?.username?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   if (filteredBrackets.length === 0) {
@@ -355,9 +376,39 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
           </>
         )}
       </div>
-
-      <p className="text-sm text-gray-700">Start Date: {localStartDateTime ? getFormattedDateFromString(localStartDateTime) : "TBD"}</p>
-      <p className="text-sm text-gray-700 mb-4">End Date: {localEndDateTime ? getFormattedDateFromString(localEndDateTime) : "TBD"}</p>
+      
+      { !isEditDialogOpen &&
+      <>
+       <p className="text-sm text-gray-700 mb-1"><span className="mr-[5px]">Start Date:</span> {localStartDateTime ? getFormattedDateFromString(localStartDateTime) : "TBD"}</p>
+       <p className="text-sm text-gray-700 mb-4"><span className="mr-[5px]">End Date:</span> {localEndDateTime ? getFormattedDateFromString(localEndDateTime) : "TBD"}</p>
+      </>
+      }
+      { isEditDialogOpen &&
+      <>
+     <div className="flex-row text-sm mb-5"> 
+     <div className="flex items-center">
+        <p className='mb-0 mr-1 w-[80px]'>Start Date: </p> 
+        <DateTimePicker
+          initialDate={startDateTime}
+          onDateChange={handleStartDateChange}
+          initialTime={startTime}
+          onTimeChange={handleStartTimeChange}
+        />
+      </div>
+      <div className="flex mt-1 items-center"> 
+          <p className='mb-0 mr-1 w-[80px]'>End Date: </p>
+          <DateTimePicker
+            initialDate={endDateTime}
+            onDateChange={handleEndDateChange}
+            initialTime={endTime}
+            onTimeChange={handleEndTimeChange}
+          />
+        </div>
+        <p className='ml-[90px] mt-2 mb-2 text-red-500 text-sm'>{dateError}</p>
+      </div>
+      </>
+      }
+      
       <div className="overflow-x-auto mr-[100px]">
         <div className="inline-grid grid-cols-4 gap-x-5 gap-y-8 pb-4 min-w-[1050px] mr-[130px]">
           {filteredBrackets.map((bracket) => (
@@ -442,8 +493,8 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
   const filteredRounds = rounds.filter((round) => {
     return round.brackets.some(
       (bracket) =>
-        bracket.player1?.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        bracket.player2?.username?.toLowerCase().includes(searchQuery.toLowerCase())
+        bracket.player1 && bracket.player1?.username && bracket.player1?.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        bracket.player2 && bracket.player2?.username && bracket.player2?.username?.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }).reverse();
 

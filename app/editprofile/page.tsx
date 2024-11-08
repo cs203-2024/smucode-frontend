@@ -32,7 +32,7 @@ const EditProfilePage: React.FC = () => {
       {/* Add padding-top to push content below the navbar */}
       <div className="container mx-auto p-4 md:p-6 lg:p-8 max-w-lg">
         <div className="flex-1 space-y-4 p-8 pt-6">
-          <Link href={`/profile`}>
+          <Link href={`/profile/${user.username}`}>
             <Button className="bg-gray-500 text-white hover:bg-gray-600 px-8 py-2 mb-2">
               Back to Profile
             </Button>

@@ -7,6 +7,7 @@ import { fetchTournamentParticipantsData } from '@/components/mockApi';
 import { ParticipantCardListProp, Participant } from '@/components/types';
 import { Skeleton } from '../ui/skeleton';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface ParticipantCardProps {
   participant: Participant;
@@ -19,7 +20,12 @@ const ParticipantCard: React.FC<ParticipantCardProps> = ({ participant, viewMode
     <div className={`relative ${viewMode === 'grid' ? 'mb-2' : 'mr-3'}`}>
       <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center">
         {participant.profileImageUrl ? (
-          <img src={participant.profileImageUrl} alt={participant.username} className="w-full h-full rounded-full object-cover" />
+          <Image
+            src={participant.profileImageUrl}
+            layout="fill"
+            objectFit="cover"
+            alt={participant.username}
+          />
         ) : (
           <span className="text-md">{participant.username.charAt(0)}</span>
         )}

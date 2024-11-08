@@ -1,9 +1,9 @@
-import UserDashboardTournamentCard from "./dashboard/UserDashboardTournamentCard";
 
 export type PlayerInfo = {
     username: string;
     image: string;
     score: number;
+    winProbability?: number;
 };
 
 export type BracketProps = {
@@ -44,6 +44,18 @@ export type User = {
     sigma: number;
     skillIndex: number;
 }
+
+export type UserProfile = {
+  id: string;
+  username: string;
+  email: string;
+  profileImageUrl: string | null;
+  wins: number;
+  losses: number;
+  mu: number;
+  sigma: number;
+  skillIndex: number;
+};
 
 // export type UserContextType = {
 //     email: string;
