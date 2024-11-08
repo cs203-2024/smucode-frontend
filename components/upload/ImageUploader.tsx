@@ -88,7 +88,6 @@ export default function ImageUploader({ label }:ImageUploaderProps) {
 
         } catch (err) {
             console.error("Unable to upload file: ", err);
-            // setError(err.message || 'An error occurred during upload.');
         } finally {
             setUploading(false);
         }
@@ -96,11 +95,6 @@ export default function ImageUploader({ label }:ImageUploaderProps) {
 
     return (
         <div>
-            {/* <input type="file" accept="image/*" onChange={handleFileChange} />
-            <button onClick={uploadFile} disabled={uploading}>
-                {uploading ? 'Uploading...' : 'Upload Image'}
-            </button>
-            {error && <p style={{ color: 'red' }}>{error}</p>} */}
             <Dialog>
                 <DialogTrigger asChild>
                     <Button variant="outline" className='py-4'>Update {label}</Button>
@@ -109,20 +103,10 @@ export default function ImageUploader({ label }:ImageUploaderProps) {
                     <DialogHeader>
                     <DialogTitle>Update {label}</DialogTitle>
                     <DialogDescription>
-                        Make changes to your {label.toLowerCase()} here. Images must have the following formats: .jpeg or .gif or .png. Click save when you're done.
+                        Make changes to your {label.toLowerCase()} here. <br/>Images must have the following formats: .jpeg or .gif or .png. <br/>Click save when you're done.
                     </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
-                    {/* <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
-                        Name
-                        </Label>
-                        <Input
-                        id="name"
-                        defaultValue="Pedro Duarte"
-                        className="col-span-3"
-                        />
-                    </div> */}
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="image" className="text-right">
                             New Image
@@ -133,7 +117,6 @@ export default function ImageUploader({ label }:ImageUploaderProps) {
                             onChange={(e) => {
                                 const newfile = e.target.files?.[0];
                                 if (newfile && newfile instanceof File) {
-                                    //field.onChange(file);  
                                     setFile(newfile);
                                     setFileType(newfile.type);
                                     console.log("File is: "+newfile.type);
