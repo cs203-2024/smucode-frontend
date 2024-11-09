@@ -9,7 +9,7 @@ import { useUserContext } from "@/context/UserContext"; // Import useUserContext
 import { Icons } from "@/components/icons"; // Import Icons
 
 const DeleteAccountForm: React.FC = () => {
-  const { user } = useUserContext(); // Get the user from the context
+  const { user, logout } = useUserContext(); // Get the user from the context
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false); // Add state for password visibility
   const [error, setError] = useState<string | null>(null);
@@ -35,8 +35,14 @@ const DeleteAccountForm: React.FC = () => {
 
     try {
       await deleteAccount(user.username, password); // Include the username when calling deleteAccount
-      setSuccess("Account deleted successfully"); // Set success message
+      setSuccess(
+        "Account deleted successfully. Redirecting to home page in 5 seconds..."
+      ); // Set success message
       setPassword(""); // Reset password field
+
+      setTimeout(() => {
+        logout(); // Log out the user after 5 seconds
+      }, 5000);
     } catch (err) {
       if (err instanceof Error) {
         if ((err as any).response) {
