@@ -1,12 +1,10 @@
 "use client"
 
-import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
-    CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 import {
@@ -17,7 +15,7 @@ import {
 } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { TournamentCardInfo, UserTournamentCardInfo } from '../types';
-import { tournamentCardData, tournamentCardData2, userTournamentCardData, userTournamentCardData2 } from '@/components/dashboard/testdata';
+import { tournamentCardData2, userTournamentCardData2 } from '@/components/dashboard/testdata';
 import { useUserContext } from '@/context/UserContext';
 import { getAllTournamentsCreatedByAdmin, getAllTournamentsForUser } from '@/services/tournamentAPI';
 import UserDashboardTournamentCard from './UserDashboardTournamentCard';

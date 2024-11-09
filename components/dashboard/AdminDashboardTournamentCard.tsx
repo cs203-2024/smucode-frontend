@@ -1,45 +1,21 @@
 "use client"
 
-import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
+import React from 'react';
 import {
     Card,
-    CardContent,
     CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-  } from "@/components/ui/alert-dialog"
 import Image from 'next/image';
 import { MdMemory } from "react-icons/md";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { RiNumbersFill } from "react-icons/ri";
-import { FaCircleCheck } from "react-icons/fa6";
 import { TournamentCardInfo } from '../types';
-import { capitalise, getFormattedDateFromString, getPercentage, getPlacingString, getTimeUntil, upperCaseToCapitalised } from '@/lib/utils';
+import { getFormattedDateFromString, getTimeUntil } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
 import { useUserContext } from '@/context/UserContext';
-
-import { signUpForTournament, removeSignUpForTournament } from '@/services/tournamentAPI';
-import { TournamentSignUpInfo } from '../types';
-
 interface AdminDashboardTournamentCardProps {
     data: TournamentCardInfo;
     fetchData: () => Promise<void>; // fetchData is a function that returns a Promise<void>

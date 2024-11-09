@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
+import React from 'react';
 import {
     Card,
     CardContent,
@@ -9,7 +9,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -34,9 +33,7 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useToast } from "@/hooks/use-toast";
 import { useUserContext } from '@/context/UserContext';
-
 import { signUpForTournament } from '@/services/tournamentAPI';
-import { TournamentSignUpInfo } from '../types';
 
 interface ExploreTournamentCardProps {
     data: UserTournamentCardInfo;

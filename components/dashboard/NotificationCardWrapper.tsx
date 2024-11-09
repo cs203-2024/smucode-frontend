@@ -1,12 +1,10 @@
 "use client"
 
-import {useState, useEffect, Dispatch, SetStateAction, ComponentProps} from 'react';
+import {useState, useEffect} from 'react';
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
-    CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 import {
@@ -15,8 +13,7 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { notificationData2, userNotificationData } from "./testdata"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { NotificationData } from '../types';
 import { useUserContext } from '@/context/UserContext';
 import NotificationCard from './NotificationCard';
