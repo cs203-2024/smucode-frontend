@@ -17,10 +17,26 @@ interface NotificationCardProps {
 export default function NotificationCard({data, action, isNew}:NotificationCardProps) {
 
     const router = useRouter();
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            router.push(`tournaments/${data.id}/overview`);
+        }
+    };
+
     return (
         <div>
-            
-            <div onClick={() => router.push(`tournaments/${data.id}/overview`)} className={cn("flex w-full flex-col gap-1 p-4 border-solid border-[1px] cursor-pointer mb-4 rounded-xl", data.isRead ? "bg-gray-100" : "bg-white hover:bg-gray-100")}>
+            <div
+                onClick={() => router.push(`tournaments/${data.id}/overview`)}
+                onKeyDown={handleKeyDown}
+                tabIndex={0}
+                role="button"
+                className={cn(
+                    "flex w-full flex-col gap-1 p-4 border-solid border-[1px] cursor-pointer mb-4 rounded-xl",
+                    data.isRead ? "bg-gray-100" : "bg-white hover:bg-gray-100"
+                )}
+            >
                 <div className="flex items-center">
                     <div className="flex items-center gap-2">
                         <div className="font-semibold line-clamp-1">{data.type}</div>
