@@ -1,8 +1,7 @@
 import axios from "axios";
 
-
 const axiosClient = axios.create({
-  baseURL: "http://localhost:9000/api",
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -14,11 +13,15 @@ axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const request = error.config;
-  
-    if (error.response?.status === 401 && !request.url.includes('/auth/login') && !request._retry) {
+
+    if (
+      error.response?.status === 401 &&
+      !request.url.includes("/auth/login") &&
+      !request._retry
+    ) {
       request._retry = true;
       try {
-        await axiosClient.post('/auth/refresh');
+        await axiosClient.post("/auth/refresh");
         return axiosClient(request);
       } catch {
         //Redirects user back to the previous page after re-login
@@ -33,9 +36,9 @@ axiosClient.interceptors.response.use(
     } else if (!error.response) {
       console.error("Network error");
     }
-    
+
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosClient;
