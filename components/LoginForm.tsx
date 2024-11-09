@@ -114,7 +114,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
             {inputFields.map((field) => (
               <React.Fragment key={field.id}>
                 <Label htmlFor={field.id}>{field.label}</Label>
-                <div className="relative">
+                <div className="relative mb-1.5">
                   <Input
                     id={field.id}
                     name={field.name}
