@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { User, Trophy, Medal, Grid, List } from 'lucide-react';
 import { useTournamentContext } from "@/context/TournamentContext";
-import { fetchTournamentParticipantsData } from '@/services/tournamentAPI'; 
-import { Participants, Participant } from '@/components/types';
+import { fetchTournamentParticipantsData } from '@/components/mockApi';
+import { ParticipantCardListProp, Participant } from '@/components/types';
 import { Skeleton } from '../ui/skeleton';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -95,8 +95,8 @@ const TournamentParticipantsList: React.FC = () => {
   if (error) {
     return <div className="text-center p-4 text-red-500 mt-10">{error}</div>;
   }
-  
-  if (!tournamentData || tournamentData.length === 0) {
+
+  if (!tournamentData || tournamentData.participants.length === 0) {
     return <div className="text-center p-4 mt-10">No tournament participants data available</div>;
   }
   
@@ -152,7 +152,7 @@ const TournamentParticipantsList: React.FC = () => {
           }
           >
           {filteredParticipants.map((participant) => (
-            <ParticipantCard key={participant.username} participant={participant} viewMode={viewMode} />
+            <ParticipantCard key={participant.id} participant={participant} viewMode={viewMode} />
           ))}
           </div>
         )}

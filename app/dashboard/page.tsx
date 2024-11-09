@@ -7,6 +7,7 @@ import DashboardTournamentCardWrapper from "@/components/dashboard/DashboardTour
 import NotificationCard from "@/components/dashboard/NotificationCard";
 import { useUserContext } from '@/context/UserContext';
 import { User } from "@/components/types";
+import NotificationCardWrapper from "@/components/dashboard/NotificationCardWrapper";
 
 export default function Home() {
     const { user, logout } = useUserContext();
@@ -31,7 +32,7 @@ export default function Home() {
               <DashboardTournamentCardWrapper />
             </div>
             <div className="col-span-4">
-              <NotificationCard />
+              <NotificationCardWrapper />
             </div>
           </div>
         </main>

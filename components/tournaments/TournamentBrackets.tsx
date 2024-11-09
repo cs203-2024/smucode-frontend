@@ -31,7 +31,7 @@ const TournamentBrackets: React.FC = () => {
     };
 
     loadTournamentData();
-  }, [tournamentId,viewMode]);
+  }, [tournamentId]);
 
   if (loading || loadingTournamentContext) {
     return (

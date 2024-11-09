@@ -8,7 +8,7 @@ import { TournamentOverviewProps } from '@/components/types';
 interface TournamentContextType {
   loadingTournamentContext: boolean;
   tournamentId?: string;
-  organiserId?: string;
+  organizerId?: string;
   overviewData?: TournamentOverviewProps | null;
   showPrediction: boolean;
   setShowPrediction: (value: boolean) => void;
@@ -31,7 +31,7 @@ interface TournamentContextProviderProps {
 export const TournamentContextProvider = ({ children }: TournamentContextProviderProps) => {
   const params = useParams();
   const tournamentId = params?.id as string | undefined;
-  const [organiserId, setOrganiserId] = useState<string | undefined>(undefined);
+  const [organizerId, setOrganizerId] = useState<string | undefined>(undefined);
   const [overviewData, setOverviewData] = useState<TournamentOverviewProps | null>(null);
   const [loadingTournamentContext, setLoadingTournamentContext] = useState(true);
   const [showPrediction, setShowPrediction] = useState<boolean>(false); 
@@ -49,21 +49,21 @@ export const TournamentContextProvider = ({ children }: TournamentContextProvide
   useEffect(() => {
     if (tournamentId) {
       setLoadingTournamentContext(true);
-      const fetchOrganiserId = async () => {
+      const fetchOrganizerId = async () => {
         try {
           const response = await fetchTournamentOverviewData(tournamentId);
-          setOrganiserId(response?.organiser);
+          setOrganizerId(response?.organiser);
           setOverviewData(response);
         } catch (error) {
-          console.error("Failed to fetch organiserId:", error);
+          console.error("Failed to fetch organizerId:", error);
         } finally {
           setLoadingTournamentContext(false);
         }
       };
 
-      fetchOrganiserId();
+      fetchOrganizerId();
     } else {
-      setOrganiserId(undefined);
+      setOrganizerId(undefined);
       setOverviewData(null);
     }
   }, [tournamentId]);
