@@ -9,7 +9,10 @@ import { Poppins } from 'next/font/google'
 // Metadata
 export const metadata = {
     title: "BrawlCode",
-    description: ""
+    description: "",
+    icons: {
+      icon: '/favicon/favicon.png'
+    },
 };
 
 
