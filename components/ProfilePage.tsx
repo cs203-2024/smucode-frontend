@@ -16,6 +16,7 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import Link from "next/link";
 import { getUserProfile } from "@/services/userAPI"; // Import the API function
 import { useUserContext } from "@/context/UserContext"; // Import the useUserContext hook
+import ImageUploader from "./upload/ImageUploader";
 
 interface ProfilePageProps {
   username: string;
@@ -26,12 +27,16 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [profilePicture, setProfilePicture] = useState("/assets/images/avatar.png");
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const data = await getUserProfile(username);
         setUser(data);  // Set the fetched user data to state
+        if (data.profileImageUrl && data.profileImageUrl.startsWith("http")) {
+          setProfilePicture(data.profileImageUrl);
+        }
       } catch (err) {
         setError("Failed to fetch user data");
       } finally {
@@ -69,10 +74,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
               <div className="w-1/3 flex flex-col items-center">
                 <Image
                   src={
-                    user?.profileImageUrl &&
-                    user.profileImageUrl.startsWith("http")
-                      ? user.profileImageUrl
-                      : "/assets/images/avatar.png"
+                    profilePicture
                   }
                   alt={`${user?.username}'s Profile Picture`}
                   width={256} // Increased width
@@ -82,11 +84,14 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
                   blurDataURL="data:image/png;base64,iVBORw0KGg...AA"
                 />
                 {loggedInUser?.username === username && ( // Conditional rendering
-                  <Link href="/editprofile">
-                    <Button className="bg-blue-500 text-white hover:bg-blue-600 px-8 py-2 mt-4">
-                      Edit Profile
-                    </Button>
-                  </Link>
+                  <div className="flex justify-between items-center gap-2 mt-4">
+                    <Link href="/editprofile">
+                      <Button className="bg-blue-500 text-white hover:bg-blue-600 px-8 py-2">
+                        Edit Profile
+                      </Button>
+                    </Link>
+                    <ImageUploader label={"Profile Picture"} setPicture={setProfilePicture} />
+                  </div>
                 )}
               </div>
               <div className="w-2/3 pl-6">

@@ -230,3 +230,12 @@ export type NotificationData = {
   isRead: boolean;
   isNew?: boolean;
 };
+export type UploadLinkResponse = {
+  key: string;
+  preSignedUrl: string;
+}
+
+export type UploadSuccessResponse = {
+  username: string;
+  imageUrl: string;
+}
