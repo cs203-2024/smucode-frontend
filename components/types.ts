@@ -6,6 +6,13 @@ export type PlayerInfo = {
     winProbability?: number;
 };
 
+export type PlayerCardProps = {
+  player: PlayerInfo | undefined;
+  isWinner: boolean;
+  status: string;
+  isCardView: boolean;
+}
+
 export type BracketProps = {
     id: string;
     seqId?: number;

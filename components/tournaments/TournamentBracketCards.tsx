@@ -11,51 +11,17 @@ import { updateBracketScore, endBracket, endRound, updateRoundDetails } from '@/
 import { toast } from "sonner";
 import { useTournamentContext } from '@/context/TournamentContext';
 import { useUserContext } from '@/context/UserContext';
-import { capitalise, formatDateToShortTime,getFormattedDateFromString } from '@/lib/utils';
+import { formatDateToShortTime,getFormattedDateFromString } from '@/lib/utils';
 import { DateTimePicker } from '@/components/DateTimePicker'
 import { useCallback } from 'react';
 import Image from 'next/image';
+import PlayerCard from './TournamentPlayerCard';
 
 type BracketStatusUpdate = Pick<BracketProps, 'id' | 'status'>;
 
 interface TournamentBracketProps extends BracketProps {
   updateBracketStatus: (update: BracketStatusUpdate) => void;
 }
-
-
-const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; status: string }> = ({ player, isWinner, status }) => {
-
-  const { showPrediction }= useTournamentContext();
-
-  if (!player || !player.username) return <div className="flex items-center justify-between bg-transparent p-1.5 h-10 border-gray-400 rounded-full"></div>;
-
-  return (
-    <div className={`${!isWinner && status === "COMPLETED" ? "opacity-40" : ""} flex items-center py-1 justify-between text-sm`}>
-      <div className="flex items-center space-x-2">
-        <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
-          {player.image ? (
-            <Image
-              src={player.image}
-              width={32} 
-              height={32}
-              className="rounded-full w-8 h-8 object-cover"
-              alt={player.username}
-            />
-          ) : (
-            <span className="text-sm">{capitalise(player.username.charAt(0))}</span>
-          )}
-        </div>
-        <p className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
-        { showPrediction && player.winProbability && 
-          <span className={`pl-1 ${player.winProbability >= 0.5 ? "text-green-500" : "text-orange-500"}`}>{Math.round(player.winProbability*100)}%</span>
-        }
-      </div>
-      <div className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
-        <span className="font-semibold">{player.score}</span>
-      </div>
-    </div>
-  );
-};
 
 const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (score: number) => void }> = ({ player, onChange }) => {
   if (!player || !player.username) return null;
@@ -73,7 +39,7 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
               alt={player.username}
             />
           ) : (
-            <span className="text-sm">{capitalise(player.username.charAt(0))}</span>
+            <span className="text-sm">{player.username.charAt(0).toUpperCase()}</span>
           )}
         </div>
         <p className="font-medium">{player.username}</p>
@@ -184,8 +150,8 @@ const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, playe
           onMouseLeave={() => isEditable && setIsHovered(false)}
         >
           <div className={`space-y-1 ${isHovered ? 'blur-sm' : ''} transition-all duration-200`}>
-            <PlayerCard player={playerOne} isWinner={isWinner === playerOne?.username} status={bracketStatus} />
-            <PlayerCard player={playerTwo} isWinner={isWinner === playerTwo?.username} status={bracketStatus} />
+            <PlayerCard player={playerOne} isWinner={isWinner === playerOne?.username} status={bracketStatus} isCardView={true}/>
+            <PlayerCard player={playerTwo} isWinner={isWinner === playerTwo?.username} status={bracketStatus} isCardView={true}/>
           </div>
           {isHovered && (
             <div className="absolute inset-0 flex items-center justify-center">
