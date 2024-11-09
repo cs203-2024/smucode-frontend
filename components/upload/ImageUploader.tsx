@@ -123,6 +123,7 @@ export default function ImageUploader({ label, setPicture }:ImageUploaderProps) 
     
             // Step 3: Save the file information to the backend
             const newImageUrl = await saveToBackend(key);
+            console.log(newImageUrl);
             setPicture(newImageUrl);
             toast.success("Successfully updated image!");
     

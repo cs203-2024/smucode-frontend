@@ -34,6 +34,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
       try {
         const data = await getUserProfile(username);
         setUser(data);  // Set the fetched user data to state
+        if (data.profileImageUrl && data.profileImageUrl.startsWith("http")) {
+          setProfilePicture(data.profileImageUrl);
+        }
       } catch (err) {
         setError("Failed to fetch user data");
       } finally {
@@ -71,10 +74,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
               <div className="w-1/3 flex flex-col items-center">
                 <Image
                   src={
-                    user?.profileImageUrl &&
-                    user.profileImageUrl.startsWith("http")
-                      ? user.profileImageUrl
-                      : profilePicture
+                    profilePicture
                   }
                   alt={`${user?.username}'s Profile Picture`}
                   width={256} // Increased width
