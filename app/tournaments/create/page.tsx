@@ -28,7 +28,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider"
 import { format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
+import { Loader2, Calendar as CalendarIcon } from "lucide-react"
 import { capitalise, cn, generateCapacity, isPowerOfTwo } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -44,7 +44,6 @@ import {
   } from "@/components/ui/tooltip"
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons"
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
 
 import { useUserContext } from '@/context/UserContext';
 

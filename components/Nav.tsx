@@ -37,7 +37,7 @@ interface UserContextType {
 const Nav = (): JSX.Element => {
   const { user, logout, loading } = useUserContext() as UserContextType;
   const pathname = usePathname();
-  const [isAdmin, setIsAdmin] = useState<Boolean>(user?.role === "ROLE_ADMIN");
+  const [isAdmin, setIsAdmin] = useState<boolean>(user?.role === "ROLE_ADMIN");
 
   useEffect(() => {
     if (user) {
