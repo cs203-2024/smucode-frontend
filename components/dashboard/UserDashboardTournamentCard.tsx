@@ -111,7 +111,7 @@ export default function UserDashboardTournamentCard({data,fetchData}: UserDashbo
                 </div>
             ):(
                 <Link href={`tournaments/${data.id}/overview`} className='col-span-1 w-full flex justify-end items-center px-4'>
-                    <Button className='font-semibold'>View</Button>
+                    <Button className='font-semibold text-xs h-8 px-3'>View</Button>
                 </Link>
             )}
         </Card>

@@ -91,7 +91,7 @@ export default function AdminDashboardTournamentCard({data,fetchData}: AdminDash
                 </CardDescription>
             </div>
             <Link href={`tournaments/${data.id}/overview`} className='col-span-1 w-full flex justify-end items-center px-4'>
-                <Button className='font-semibold'>Manage</Button>
+                <Button className='font-semibold text-xs h-8 px-3'>Manage</Button>
             </Link>
         </Card>
     )
