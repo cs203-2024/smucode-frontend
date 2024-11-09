@@ -146,7 +146,7 @@ export default function ImageUploader({ label, setPicture }:ImageUploaderProps) 
                     <DialogHeader>
                     <DialogTitle>Update {label}</DialogTitle>
                     <DialogDescription>
-                        Make changes to your {label.toLowerCase()} here. <br/>Images must have the following formats: .jpeg or .gif or .png. <br/>Click save when you're done.
+                        Make changes to your {label.toLowerCase()} here. <br/>Images must have the following formats: .jpeg or .gif or .png. <br/>Click save when you&apos;re done.
                     </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
