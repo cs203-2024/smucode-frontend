@@ -33,7 +33,6 @@ export default function ImageUploader({ label, setPicture }:ImageUploaderProps) 
     const [uploading, setUploading] = useState(false);
     const [imagePreview, setImagePreview] = useState("/assets/images/default_profile.png");
     const [fileType, setFileType] = useState("");
-    //const [presignedurl, setPresignedurl] = useState("");
 
     const s3Client = new S3Client({
         region: process.env.NEXT_PUBLIC_AWS_BUCKET_REGION!,
@@ -49,18 +48,21 @@ export default function ImageUploader({ label, setPicture }:ImageUploaderProps) 
             const response = await getUserImageUploadLink(type);            
             const { preSignedUrl, key } = response;
 
-            const putObjectCommand = new PutObjectCommand({
-                Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME!,
-                Key: key,
-                ContentType: type,
-            });
+            // Uncomment to test frontend s3 client
+
+            // const putObjectCommand = new PutObjectCommand({
+            //     Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME!,
+            //     Key: key,
+            //     ContentType: fileType
+            // });
           
-            // Generate presigned URL with a 60-second expiration
-            const uploadUrl = await getSignedUrl(s3Client, putObjectCommand, { expiresIn: 60 });
-            console.log("Presigned URL:", uploadUrl);
-            console.log(response);
+            // // Generate presigned URL with a 60-second expiration
+            // const uploadUrl = await getSignedUrl(s3Client, putObjectCommand, { expiresIn: 60 });
+            // console.log("Presigned URL:", uploadUrl);
+            // console.log(response);
             
-            return { uploadUrl: uploadUrl, key };
+            // Change preSignedUrl to uploadUrl if testing s3Client
+            return { uploadUrl: preSignedUrl, key:key };
         } catch (error) {
             console.error("Unable to get presigned link: ", error);
             throw error;
@@ -70,9 +72,8 @@ export default function ImageUploader({ label, setPicture }:ImageUploaderProps) 
     async function uploadToS3(uploadUrl: string) {
         try {
             console.log("Uploading to: "+uploadUrl);
-            //const headers: HeadersInit = file?.type ? { 'Content-Type': file.type } : {};
             const headers: HeadersInit = {
-                'Content-Type': fileType,
+                'Content-Type': fileType
             };
             console.log(fileType);
             const uploadResponse = await fetch(uploadUrl, {
