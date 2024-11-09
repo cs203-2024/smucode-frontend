@@ -1,6 +1,5 @@
 "use client"
-
-import {createContext, useState, ReactNode, useContext, useEffect} from 'react';
+import { createContext, useState, ReactNode, useContext, useEffect } from 'react';
 import { User, UserContextType } from '@/components/types';
 import { logoutAccount } from '@/services/authAPI';
 import { toast } from 'sonner';
@@ -27,6 +26,14 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [user]);
 
+  const updateProfileImageUrl = (newUrl: string) => {
+    if (user) {
+      const updatedUser = { ...user, profileImageUrl: newUrl };
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+    }
+  };
+
   const logout = async () => {
     try {
       await logoutAccount();
@@ -34,18 +41,17 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       localStorage.removeItem("user");
       window.location.href = "/login";
     } catch (error) {
-      toast.error("Unable to Logout, please try again.")
+      toast.error("Unable to Logout, please try again.");
       console.error('Logout failed', error);
     }
   };
 
   return (
-      <UserContext.Provider value={{ user, setUser, logout, loading }}>
+      <UserContext.Provider value={{ user, setUser, logout, loading, updateProfileImageUrl }}>
         {children}
       </UserContext.Provider>
   );
 };
-
 
 export const useUserContext = () => {
   const context = useContext(UserContext);

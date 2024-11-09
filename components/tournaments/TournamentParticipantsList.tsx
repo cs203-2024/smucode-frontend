@@ -23,8 +23,9 @@ const ParticipantCard: React.FC<ParticipantCardProps> = ({ participant, viewMode
         {participant.profileImageUrl ? (
           <Image
             src={participant.profileImageUrl}
-            layout="fill"
-            objectFit="cover"
+            width={48} 
+            height={48}
+            className="rounded-full w-12 h-12 object-cover"
             alt={participant.username}
           />
         ) : (

@@ -67,11 +67,13 @@ export type UserProfile = {
 // }
 
 export interface UserContextType {
-    user: User | null;
-    setUser: React.Dispatch<React.SetStateAction<User | null>>;
-    loading: boolean;
-    logout: () => Promise<void>;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  loading: boolean;
+  logout: () => Promise<void>;
+  updateProfileImageUrl: (newUrl: string) => void;
 }
+
 
 export type TournamentCardInfo = {
     id: string;

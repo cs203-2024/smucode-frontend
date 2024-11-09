@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { toast } from "sonner";
 import { getUserImageUploadLink, uploadUserImage } from '@/services/userAPI';
+import { useUserContext } from '@/context/UserContext';
 
 interface ImageUploaderProps {
     label: string,
@@ -33,7 +34,8 @@ export default function ImageUploader({ label, setPicture }:ImageUploaderProps) 
     const [uploading, setUploading] = useState(false);
     const [imagePreview, setImagePreview] = useState("/assets/images/default_profile.png");
     const [fileType, setFileType] = useState("");
-
+    const { updateProfileImageUrl } = useUserContext();
+    
     const s3Client = new S3Client({
         region: process.env.NEXT_PUBLIC_AWS_BUCKET_REGION!,
         credentials: {
@@ -126,7 +128,8 @@ export default function ImageUploader({ label, setPicture }:ImageUploaderProps) 
             console.log(newImageUrl);
             setPicture(newImageUrl);
             toast.success("Successfully updated image!");
-    
+            updateProfileImageUrl(newImageUrl);
+
         } catch (err) {
             console.error("Unable to upload file: ", err);
             toast.error("An error occurred during the upload process.");

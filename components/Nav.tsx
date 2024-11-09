@@ -91,7 +91,7 @@ const Nav = (): JSX.Element => {
                     src={user?.profileImageUrl || '/assets/images/default_profile.png'}
                     width={35}
                     height={35}
-                    className="rounded-full cursor-pointer"
+                    className="cursor-pointer rounded-full w-[35px] h-[35px] object-cover"
                     alt="profile"
                   />
                 </DropdownMenuTrigger>

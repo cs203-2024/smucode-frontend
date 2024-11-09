@@ -43,8 +43,9 @@ const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProp
             {player.image ? (
               <Image
                 src={player.image}
-                layout="fill"
-                objectFit="cover"
+                width={32} 
+                height={32}
+                className="rounded-full w-8 h-8 object-cover"
                 alt={player.username}
               />
             ) : (

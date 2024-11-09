@@ -35,10 +35,11 @@ const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; 
         <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
           {player.image ? (
             <Image
-             src={player.image}
-             layout="fill"
-             objectFit="cover"
-             alt={player.username}
+              src={player.image}
+              width={32} 
+              height={32}
+              className="rounded-full w-8 h-8 object-cover"
+              alt={player.username}
             />
           ) : (
             <span className="text-sm">{capitalise(player.username.charAt(0))}</span>
@@ -66,8 +67,9 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
           {player.image ? (
             <Image
               src={player.image}
-              layout="fill"
-              objectFit="cover"
+              width={32} 
+              height={32}
+              className="rounded-full w-8 h-8 object-cover"
               alt={player.username}
             />
           ) : (
