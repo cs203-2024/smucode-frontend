@@ -1,5 +1,5 @@
 import axiosClient from "./axiosClient";
-import { UserProfile, UploadLinkResponse } from "@/components/types";
+import { UserProfile, UploadLinkResponse, UploadSuccessResponse } from "@/components/types";
 
 export const getUserProfile = async (username: string): Promise<UserProfile> => {
   try {
@@ -21,9 +21,9 @@ export const getUserImageUploadLink = async (type: string):Promise<UploadLinkRes
   }
 }
 
-export const uploadUserImage = async(key: string):Promise<string> => {
+export const uploadUserImage = async(key: string):Promise<UploadSuccessResponse> => {
   try {
-    const response = await axiosClient.post<string>(`/users/upload-picture`, key);
+    const response = await axiosClient.post<UploadSuccessResponse>(`/users/upload-picture?key=${key}`);
     return response.data;
   } catch (error) {
     console.error("Error posting to upload-picture:", error);

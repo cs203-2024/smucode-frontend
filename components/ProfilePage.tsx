@@ -27,6 +27,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [profilePicture, setProfilePicture] = useState("/assets/images/avatar.png");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -73,7 +74,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
                     user?.profileImageUrl &&
                     user.profileImageUrl.startsWith("http")
                       ? user.profileImageUrl
-                      : "/assets/images/avatar.png"
+                      : profilePicture
                   }
                   alt={`${user?.username}'s Profile Picture`}
                   width={256} // Increased width
@@ -89,7 +90,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username }) => {
                         Edit Profile
                       </Button>
                     </Link>
-                    <ImageUploader label={"Profile Picture"} />
+                    <ImageUploader label={"Profile Picture"} setPicture={setProfilePicture} />
                   </div>
                 )}
               </div>

@@ -209,5 +209,10 @@ export type UserDashboardTournamentCardInfo = {
 
 export type UploadLinkResponse = {
   key: string;
-  preSignedURL: string;
+  preSignedUrl: string;
+}
+
+export type UploadSuccessResponse = {
+  username: string;
+  imageUrl: string;
 }

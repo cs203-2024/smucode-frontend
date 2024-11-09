@@ -1,6 +1,11 @@
 "use client"
 
-import React, { useState } from 'react';
+import dotenv from 'dotenv';
+dotenv.config();
+
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -18,23 +23,44 @@ import { toast } from "sonner";
 import { getUserImageUploadLink, uploadUserImage } from '@/services/userAPI';
 
 interface ImageUploaderProps {
-    label: string
+    label: string,
+    setPicture: React.Dispatch<React.SetStateAction<string>>
 }
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
-export default function ImageUploader({ label }:ImageUploaderProps) {
+export default function ImageUploader({ label, setPicture }:ImageUploaderProps) {
     const [file, setFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false);
     const [imagePreview, setImagePreview] = useState("/assets/images/default_profile.png");
     const [fileType, setFileType] = useState("");
+    //const [presignedurl, setPresignedurl] = useState("");
 
+    const s3Client = new S3Client({
+        region: process.env.NEXT_PUBLIC_AWS_BUCKET_REGION!,
+        credentials: {
+            accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY!,
+            secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY!,
+        },
+    });
 
     async function getPresignedLink(type: string): Promise<{ uploadUrl: string; key: string }> {
         try {
-            const response = await getUserImageUploadLink(type);
-            const { preSignedURL, key } = response;
+
+            const response = await getUserImageUploadLink(type);            
+            const { preSignedUrl, key } = response;
+
+            const putObjectCommand = new PutObjectCommand({
+                Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME!,
+                Key: key,
+                ContentType: type,
+            });
+          
+            // Generate presigned URL with a 60-second expiration
+            const uploadUrl = await getSignedUrl(s3Client, putObjectCommand, { expiresIn: 60 });
+            console.log("Presigned URL:", uploadUrl);
             console.log(response);
-            return { uploadUrl: preSignedURL, key };
+            
+            return { uploadUrl: uploadUrl, key };
         } catch (error) {
             console.error("Unable to get presigned link: ", error);
             throw error;
@@ -43,26 +69,35 @@ export default function ImageUploader({ label }:ImageUploaderProps) {
     
     async function uploadToS3(uploadUrl: string) {
         try {
-            const headers: HeadersInit = file?.type ? { 'Content-Type': file.type } : {};
+            console.log("Uploading to: "+uploadUrl);
+            //const headers: HeadersInit = file?.type ? { 'Content-Type': file.type } : {};
+            const headers: HeadersInit = {
+                'Content-Type': fileType,
+            };
+            console.log(fileType);
             const uploadResponse = await fetch(uploadUrl, {
                 method: 'PUT',
                 headers: headers,
                 body: file,
             });
+            
+            console.log(uploadResponse);
     
             if (!uploadResponse.ok) {
                 throw new Error('Failed to upload file to S3');
             }
+            console.log("Image successfully sent to generated link.");
         } catch (error) {
             console.error("Unable to upload to S3:", error);
             throw error;
         }
     }
     
-    async function saveToBackend(key: string) {
+    async function saveToBackend(key: string):Promise<string> {
         try {
-            await uploadUserImage(key);
-            toast.success("Successfully updated image!");
+            const response = await uploadUserImage(key);
+            const { username, imageUrl } = response;
+            return imageUrl;
         } catch (error) {
             console.error("Error saving to backend:", error);
             throw error;
@@ -79,13 +114,16 @@ export default function ImageUploader({ label }:ImageUploaderProps) {
     
         try {
             // Step 1: Get the presigned link and key
-            const { uploadUrl, key } = await getPresignedLink(file.type);
+            const getPresignedResponse = await getPresignedLink(file.type);
+            const { uploadUrl, key } = getPresignedResponse; 
     
             // Step 2: Upload to S3 using the presigned URL
             await uploadToS3(uploadUrl);
     
             // Step 3: Save the file information to the backend
-            await saveToBackend(key);
+            const newImageUrl = await saveToBackend(key);
+            setPicture(newImageUrl);
+            toast.success("Successfully updated image!");
     
         } catch (err) {
             console.error("Unable to upload file: ", err);
