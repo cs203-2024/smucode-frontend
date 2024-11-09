@@ -7,14 +7,21 @@ import { Edit, LoaderCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogOverlay, DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
 import { DialogFooter, DialogHeader } from '../ui/dialog';
 import { Input } from '../ui/input';
-import { updateBracketScore, endBracket, endRound, updateRoundStartEndDate } from '@/services/tournamentAPI';
+import { updateBracketScore, endBracket, endRound, updateRoundDetails } from '@/services/tournamentAPI';
 import { toast } from "sonner";
 import { useTournamentContext } from '@/context/TournamentContext';
 import { useUserContext } from '@/context/UserContext';
-import { formatDateToShortTime,getFormattedDateFromString } from '@/lib/utils';
+import { capitalise, formatDateToShortTime,getFormattedDateFromString } from '@/lib/utils';
 import { DateTimePicker } from '@/components/DateTimePicker'
 import { useCallback } from 'react';
 import Image from 'next/image';
+
+type BracketStatusUpdate = Pick<BracketProps, 'id' | 'status'>;
+
+interface TournamentBracketProps extends BracketProps {
+  updateBracketStatus: (update: BracketStatusUpdate) => void;
+}
+
 
 const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; status: string }> = ({ player, isWinner, status }) => {
 
@@ -23,7 +30,7 @@ const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; 
   if (!player || !player.username) return <div className="flex items-center justify-between bg-transparent p-1.5 h-10 border-gray-400 rounded-full"></div>;
 
   return (
-    <div className={`${!isWinner && status === "completed" ? "opacity-40" : ""} flex items-center py-1 justify-between text-sm`}>
+    <div className={`${!isWinner && status === "COMPLETED" ? "opacity-40" : ""} flex items-center py-1 justify-between text-sm`}>
       <div className="flex items-center space-x-2">
         <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
           {player.image ? (
@@ -34,7 +41,7 @@ const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; 
              alt={player.username}
             />
           ) : (
-            <span className="text-sm">{player.username.charAt(0)}</span>
+            <span className="text-sm">{capitalise(player.username.charAt(0))}</span>
           )}
         </div>
         <p className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
@@ -42,7 +49,7 @@ const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; 
           <span className={`pl-1 ${player.winProbability >= 0.5 ? "text-green-500" : "text-orange-500"}`}>{Math.round(player.winProbability*100)}%</span>
         }
       </div>
-      <div className={`${status !== "completed" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
+      <div className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
         <span className="font-semibold">{player.score}</span>
       </div>
     </div>
@@ -64,7 +71,7 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
               alt={player.username}
             />
           ) : (
-            <span className="text-sm">{player.username.charAt(0)}</span>
+            <span className="text-sm">{capitalise(player.username.charAt(0))}</span>
           )}
         </div>
         <p className="font-medium">{player.username}</p>
@@ -74,6 +81,7 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
         value={player.score}
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-16 text-center"
+        min="0"
       />
     </div>
   );
@@ -82,10 +90,12 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
 const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, player1, player2, winner, updateBracketStatus }) => {
   const tournamentContext = useTournamentContext();
   const { user } = useUserContext();
-  const tournamentOrganizerId = tournamentContext.organizerId;
+  const tournamentOrganiserId = tournamentContext.organiserId;
   const [isHovered, setIsHovered] = useState(false);
   const [editedplayer1, setEditedplayer1] = useState(player1);
   const [editedplayer2, setEditedplayer2] = useState(player2);
+  const [playerOne, setPlayerOne] = useState(player1);
+  const [playerTwo, setPlayerTwo] = useState(player2);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -107,17 +117,17 @@ const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, playe
     [winner, bracketStatus]
   );
   
-  const [isWinner, setIsWinner] = useState(getWinner(player1, player2)); 
-  
+  const [isWinner, setIsWinner] = useState(getWinner(playerOne, playerTwo)); 
+
   useEffect(() => {
-    if (bracketStatus === "completed") {
-      setIsWinner(getWinner(player1, player2));
+    if (bracketStatus === "COMPLETED") {
+      setIsWinner(getWinner(playerOne, playerTwo));
     }
   }, [bracketStatus, playerOne, playerTwo, getWinner]);
 
   useEffect(() => {
     if(user){
-      setIsEditable(status === "ongoing" && tournamentOrganizerId === user?.username);
+      setIsEditable(status === "ONGOING" && tournamentOrganiserId === user?.username);
     }
   }, [user,status,tournamentOrganiserId]);
 
@@ -128,6 +138,8 @@ const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, playe
       try {
         await updateBracketScore(id, editedplayer1, editedplayer2);
         toast.success("Bracket score updated successfully!");
+        setPlayerOne(editedplayer1);
+        setPlayerTwo(editedplayer2);
         setIsDialogOpen(false);
       } catch (error) {
         console.error("Failed to update bracket:", error);
@@ -141,15 +153,16 @@ const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, playe
   };
   
   const handleEnd = async () => {
-    if (player1 && player2 && !isEnding) {
+    if (playerOne && playerTwo && !isEnding) {
       setIsEnding(true);
       try {
         await endBracket(id);
         toast.success("Bracket ended!");
-        setBracketStatus("completed");
+        setBracketStatus("COMPLETED");
         setIsEditable(false);
         setIsDialogOpen(false);
         setIsConfirmDialogOpen(false);
+        updateBracketStatus({ id, status: "COMPLETED" });
       } catch (error) {
         console.error("Failed to end bracket:", error);
         toast.error("Failed to end bracket. Please try again.");
@@ -169,8 +182,8 @@ const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, playe
           onMouseLeave={() => isEditable && setIsHovered(false)}
         >
           <div className={`space-y-1 ${isHovered ? 'blur-sm' : ''} transition-all duration-200`}>
-            <PlayerCard player={player1} isWinner={isWinner === player1?.username} status={bracketStatus} />
-            <PlayerCard player={player2} isWinner={isWinner === player2?.username} status={bracketStatus} />
+            <PlayerCard player={playerOne} isWinner={isWinner === playerOne?.username} status={bracketStatus} />
+            <PlayerCard player={playerTwo} isWinner={isWinner === playerTwo?.username} status={bracketStatus} />
           </div>
           {isHovered && (
             <div className="absolute inset-0 flex items-center justify-center">
@@ -224,25 +237,36 @@ const TournamentBracket: React.FC<TournamentBracketProps> = ({ id, status, playe
   );
 };
 
-const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name, id, status, startDateTime, endDateTime, brackets, searchQuery }) => {
+const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name, id, status, startDate, endDate, brackets, searchQuery }) => {
   const tournamentContext = useTournamentContext();
   const { user } = useUserContext();
-  const tournamentOrganizerId = tournamentContext.organizerId;
+  const tournamentOrganiserId = tournamentContext.organiserId;
   const [isEndDialogOpen, setIsEndDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isEndingRound, setIsEndingRound] = useState(false);
+  const [roundName, setRoundName] = useState(name);
   const [roundStatus, setRoundStatus] = useState(status);
   const [isEditable, setIsEditable] = useState(false);
   const [isEditingRound, setIsEditingRound] = useState(false);
-  const [localStartDateTime, setLocalStartDateTime] = useState<string>(startDateTime);
-  const [localEndDateTime, setLocalEndDateTime] = useState<string>(endDateTime)
-  const [startDate, setStartDate] = useState<Date | undefined>(startDateTime ? new Date(startDateTime) : undefined);
-  const [endDate, setEndDate] = useState<Date | undefined>(endDateTime ? new Date(endDateTime) : undefined);
-  const [startTime, setStartTime] = useState<string>(startDateTime ? formatDateToShortTime(new Date(startDateTime)) : "09:00");
-  const [endTime, setEndTime] = useState<string>(endDateTime ? formatDateToShortTime(new Date(endDateTime)) : "18:00");
+  const [localStartDateTime, setLocalStartDateTime] = useState<string>(startDate);
+  const [localEndDateTime, setLocalEndDateTime] = useState<string>(endDate)
+  const [startDateTime, setStartDate] = useState<Date | undefined>(startDate ? new Date(startDate) : undefined);
+  const [endDateTime, setEndDate] = useState<Date | undefined>(endDate ? new Date(endDate) : undefined);
+  const [startTime, setStartTime] = useState<string>(startDate ? formatDateToShortTime(new Date(startDate)) : "09:00");
+  const [endTime, setEndTime] = useState<string>(endDate ? formatDateToShortTime(new Date(endDate)) : "18:00");
   const [dateError, setDateError ] = useState<string>("");
   const [updateStartDate, setUpdateStartDate] = useState<Date | undefined>(undefined);
   const [updateEndDate, setUpdateEndDate] = useState<Date | undefined>(undefined);
+  const [updateRoundName, setUpdateRoundName] = useState(name);
+  const [latestBrackets, setLatestBrackets] = useState(brackets);
+
+  const updateBracketStatus = ({ id, status }: BracketStatusUpdate) => {
+    setLatestBrackets((prevBrackets) =>
+      prevBrackets.map((bracket) =>
+        bracket.id === id ? { ...bracket, status } : bracket
+      )
+    );
+  };
 
   // Date Time Logic
   const handleStartDateChange = (newDate: Date | undefined) => {
@@ -263,38 +287,38 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
 
   // Check if end date/time is before start date/time
   useEffect(() => {
-    if (startDate && endDate) {
+    if (startDateTime && endDateTime) {
       const [startHours, startMinutes] = startTime.split(':').map(Number);
       const [endHours, endMinutes] = endTime.split(':').map(Number);
 
-      const startDateTime = new Date(startDate);
-      startDateTime.setHours(startHours, startMinutes);
+      const startDate = new Date(startDateTime);
+      startDate.setHours(startHours, startMinutes);
 
-      const endDateTime = new Date(endDate);
-      endDateTime.setHours(endHours, endMinutes);
+      const endDate = new Date(endDateTime);
+      endDate.setHours(endHours, endMinutes);
       
-      if (endDateTime <= startDateTime) {
+      if (endDate <= startDate) {
         setDateError("End date/time is before start date/time.");
         setUpdateStartDate(undefined);
         setUpdateEndDate(undefined);
       } else {
         setDateError("");
-        setUpdateStartDate(startDateTime);
-        setUpdateEndDate(endDateTime);
+        setUpdateStartDate(startDate);
+        setUpdateEndDate(endDate);
       }
     }
-  }, [startDate, endDate, startTime, endTime]);
+  }, [startDateTime, endDateTime, startTime, endTime]);
 
   // Admin editable logic
   useEffect(() => {
     if(user){
-      setIsEditable(roundStatus === "ongoing" && tournamentOrganizerId === user?.username);
+      setIsEditable(roundStatus === "ONGOING" && tournamentOrganiserId === user?.username);
     }
   }, [user,roundStatus,tournamentOrganiserId]);
 
    // Handle actions
   const handleEndRound = async () => {
-    const allBracketsCompleted = brackets.every((bracket) => bracket.status === "completed");
+    const allBracketsCompleted = latestBrackets.every((bracket) => bracket.status === "COMPLETED");
 
     if (!allBracketsCompleted) {
       toast.error("All brackets must be completed before ending the round.");
@@ -306,7 +330,7 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
       try {
         await endRound(id);
         toast.success("Round ended!");
-        setRoundStatus("completed");
+        setRoundStatus("COMPLETED");
         setIsEditable(false);
         setIsEndDialogOpen(false);
       } catch (error) {
@@ -323,10 +347,16 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
     if (!isEditingRound && updateStartDate && updateEndDate) {
       setIsEditingRound(true);
       try {
-        await updateRoundStartEndDate(id, updateStartDate, updateEndDate);
+        // Convert to SG time
+        const sgStartDateTime = new Date(updateStartDate);
+        sgStartDateTime.setTime(sgStartDateTime.getTime() + 8 * 60 * 60 * 1000);
+        const sgEndDateTime = new Date(updateEndDate);
+        sgEndDateTime.setTime(sgEndDateTime.getTime() + 8 * 60 * 60 * 1000);
+        await updateRoundDetails(id, updateRoundName, sgStartDateTime, sgEndDateTime);
         toast.success("Successfully updated round details");
         setLocalStartDateTime(updateStartDate.toLocaleString("en-GB", {dateStyle: "short",timeStyle: "short"}));
         setLocalEndDateTime(updateEndDate.toLocaleString("en-GB", {dateStyle: "short",timeStyle: "short"}));
+        setRoundName(updateRoundName);
         setIsEditDialogOpen(false);
       } catch (error) {
         console.error("Failed to update round details:", error);
@@ -354,25 +384,45 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
   return (
     <div className="p-6 h-full w-full">
       <div className="flex items-center mb-4">
-        <h2 className="font-bold text-xl">{name}</h2>
 
+        { !isEditDialogOpen &&
+           <h2 className="font-bold text-xl">{roundName}</h2>
+        }
+       
         {isEditable && (
           <>
-            <Button
-              variant="outline"
-              className="ml-5 text-sm"
+            { !isEditDialogOpen &&
+            <>
+              <Button
+              variant="ghost"
+              className="ml-2 p-0 text-sm w-[40px]"
               onClick={() => setIsEditDialogOpen(true)} 
-            >
-              Edit
-            </Button>
-
-            <Button
+              >
+                <Edit className="w-6 h-6 text-gray-600" />
+              </Button>
+              <Button
               variant="outline"
               className="ml-5 text-sm"
               onClick={() => setIsEndDialogOpen(true)} 
-            >
-              End Round
-            </Button>
+              >
+                End Round
+              </Button>
+            </>
+            } 
+            { isEditDialogOpen &&
+            <>
+              <Input
+                type="text"
+                className="w-[344px] p-2 border text-xl bg-white font-semibold border-gray-300 rounded-md"
+                value={updateRoundName}
+                onChange={(e) => setUpdateRoundName(e.target.value)}
+              />
+              <Button variant="outline" className="ml-4 w-[100px]" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
+              <Button variant="default" className="ml-2 w-[100px]" onClick={handleEditRound} disabled={isEditingRound}>
+                  {isEditingRound?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Update")}
+              </Button>
+            </>
+            }
           </>
         )}
       </div>
@@ -411,7 +461,10 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
       
       <div className="overflow-x-auto mr-[100px]">
         <div className="inline-grid grid-cols-4 gap-x-5 gap-y-8 pb-4 min-w-[1050px] mr-[130px]">
-          {filteredBrackets.map((bracket) => (
+          {filteredBrackets
+          .filter((bracket): bracket is BracketProps & { seqId: number } => bracket.seqId !== undefined) 
+          .sort((a, b) => a.seqId! - b.seqId!) 
+          .map((bracket) => (
             <div key={bracket.id} className="w-[250px] bg-white shadow-sm p-4 rounded-lg">
               <TournamentBracket
                 key={bracket.id}
@@ -427,42 +480,7 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
           ))}
         </div>
       </div>
-
-      {/* Edit round dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogOverlay className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <DialogContent className="bg-white p-6 rounded-md shadow-md">
-         <DialogTitle className="font-medium text-sm">Update Round Start/End Date</DialogTitle>
-         <div className='text-sm m-6'>
-            <p className='mt-2 mb-1'>Start Date & Time</p>
-            <DateTimePicker
-              initialDate={startDate}
-              onDateChange={handleStartDateChange}
-              initialTime={startTime}
-              onTimeChange={handleStartTimeChange}
-            />
-            <p className='mt-2 mb-1'>End Date & Time</p>
-            <DateTimePicker
-              initialDate={endDate}
-              onDateChange={handleEndDateChange}
-              initialTime={endTime}
-              onTimeChange={handleEndTimeChange}
-            />
-            <p className='mt-4 text-red-500'>{dateError}</p>
-          </div>
-         <div className="flex justify-end space-x-2 mt-4">
-           <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
-           <Button className="w-[150px]" onClick={handleEditRound} disabled={isEditingRound}>
-                {isEndingRound?(<LoaderCircle className="animate-spin" color="#FFF"/>):("Update")}
-            </Button>
-         </div>
-       </DialogContent>
-       </DialogOverlay>
-      </Dialog>
           
-
-
-
       {/* End round dialog */}
       <Dialog open={isEndDialogOpen} onOpenChange={setIsEndDialogOpen}>
         <DialogOverlay className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -516,15 +534,18 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
       </div>
     ) : (
       <div className="overflow-y-auto h-[80vh] w-full">
-        {filteredRounds.map((round) => (
+        {filteredRounds
+          .slice() 
+          .sort((b, a) => a.seqId - b.seqId)
+          .map((round) => (
           <div key={round.id} className="flex-shrink-0">
             <TournamentRound 
               key={round.id}
               id={round.id} 
               seqId={round.seqId}
               name={round.name} 
-              startDateTime={round.startDateTime}
-              endDateTime={round.endDateTime}
+              startDate={round.startDate}
+              endDate={round.endDate}
               status={round.status}
               brackets={round.brackets}
               searchQuery={searchQuery}

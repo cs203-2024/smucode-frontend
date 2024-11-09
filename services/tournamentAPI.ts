@@ -128,9 +128,9 @@ export const fetchTournamentBracketsData = async (id: string | undefined):Promis
     } 
 };
 
-export const fetchTournamentParticipantsData = async (id: string):Promise<ParticipantCardListProp> => {
+export const fetchTournamentParticipantsData = async (id: string | undefined):Promise<ParticipantCardListProp> => {
     try {
-        const response = await axiosClient.get<ParticipantCardListProp>(`/tournaments/participants?id=${id}`); 
+        const response = await axiosClient.get<ParticipantCardListProp>(`/tournaments/${id}/participants`); 
         return response.data;
     } catch (error) {
         console.error("Error retrieving tournament participants:", error);
@@ -194,17 +194,19 @@ export const endRound = async (
     }
 };
 
-export const updateRoundStartEndDate = async (
+export const updateRoundDetails = async (
     id: string | undefined,
+    updateRoundName: String,
     updateStartDate: Date,
     updateEndDate: Date
     ): Promise<string> => {
     try {
     const payload = {
+        name: updateRoundName,
         startDate: updateStartDate,
         endDate: updateEndDate
     }
-    const response = await axiosClient.put<string>(`/tournaments/round/${id}`, payload);
+    const response = await axiosClient.put<string>(`/tournaments/rounds/${id}`, payload);
       
     return response.data;
 

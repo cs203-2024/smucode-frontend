@@ -4,7 +4,7 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Button } from "@/components/ui/button"
 import { Crosshair, ZoomIn, ZoomOut } from 'lucide-react';
 import { BracketProps, PlayerInfo, RoundProps, TournamentProps } from '../types';
-import { getFormattedDateFromString } from '@/lib/utils';
+import { capitalise, getFormattedDateFromString } from '@/lib/utils';
 import { useTournamentContext } from '@/context/TournamentContext';
 import Image from 'next/image';
 
@@ -37,7 +37,7 @@ const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProp
     }
 
     return (
-      <div className={`${!isWinner && status === "completed" ? "opacity-40" : ""} flex items-center justify-between bg-white shadow-md p-1.5 rounded-full`}>
+      <div className={`${!isWinner && status === "COMPLETED" ? "opacity-40" : ""} flex items-center justify-between bg-white shadow-md p-1.5 rounded-full`}>
         <div className="flex items-center space-x-2">
           <div className={`${isWinner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"} w-8 h-8 rounded-full flex items-center justify-center`}>
             {player.image ? (
@@ -48,7 +48,7 @@ const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProp
                 alt={player.username}
               />
             ) : (
-              <span className="text-sm">{player.username.charAt(0)}</span>
+              <span className="text-sm">{capitalise(player.username.charAt(0))}</span>
             )}
           </div>
           <p className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
@@ -56,7 +56,7 @@ const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProp
             <span className={`pl-1 ${player.winProbability >= 0.5 ? "text-green-500" : "text-orange-500"}`}>{Math.round(player.winProbability*100)}%</span>
           }
         </div>
-        <div className={`${status !== "completed" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
+        <div className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} ${isWinner ? "logo_gradient text-white" : ""} w-8 h-8 rounded-full flex items-center justify-center`}>
           <span className="font-semibold">{player.score}</span>
         </div>
       </div>
@@ -75,7 +75,7 @@ const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProp
 
 
 
-const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDateTime, endDateTime }) => {
+const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDate, endDate }) => {
 
   const getSpacingClass = (count: number) => {
     switch (count) {
@@ -97,10 +97,13 @@ const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDateTi
   return (
     <div className={`p-6 h-full w-[20vw] min-w-80 flex flex-col`}>
       <h2 className="font-bold mb-4 min-w-70 text-2xl">{name}</h2>
-      <p className="text-gray-700">Start Date: {startDateTime ? getFormattedDateFromString(startDateTime) : "TBD"}</p>
-      <p className="text-gray-700 mb-4">End Date: {endDateTime ? getFormattedDateFromString(endDateTime) : "TBD"}</p>
+      <p className="text-gray-700">Start Date: {startDate ? getFormattedDateFromString(startDate) : "TBD"}</p>
+      <p className="text-gray-700 mb-4">End Date: {endDate ? getFormattedDateFromString(endDate) : "TBD"}</p>
       <div className={`${spacingClass} h-fit justify-center flex flex-col flex-grow overflow-hidden`}>
-        {brackets.map((bracket) => (
+        {brackets
+        .filter((bracket): bracket is BracketProps & { seqId: number } => bracket.seqId !== undefined) 
+        .sort((a, b) => a.seqId! - b.seqId!) 
+        .map((bracket) => (
           <div key={bracket.id} className="flex items-center">
             <TournamentBracket
               key={bracket.id}
@@ -108,7 +111,7 @@ const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDateTi
               seqId={bracket.seqId}
               status={bracket.status}
               player1={bracket.player1}
-              player2={bracket.player2} 
+              player2={bracket.player2}
               winner={bracket.winner}
             />
           </div>
