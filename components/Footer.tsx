@@ -22,14 +22,14 @@ export const Footer = () => {
           <div>
             <a
               rel="noreferrer noopener"
-              href="#"
+              href="https://github.com/cs203-2024"
               className="opacity-60 hover:opacity-100"
             >
               Github
             </a>
           </div>
 
-          <div>
+          {/* <div>
             <a
               rel="noreferrer noopener"
               href="#"
@@ -47,10 +47,10 @@ export const Footer = () => {
             >
               Dribbble
             </a>
-          </div>
+          </div> */}
         </div>
 
-        <div className="flex flex-col gap-2">
+        {/* <div className="flex flex-col gap-2">
           <h3 className="font-bold text-lg">Platforms</h3>
           <div>
             <a
@@ -147,7 +147,7 @@ export const Footer = () => {
               Twitch
             </a>
           </div>
-        </div>
+        </div> */}
       </section>
 
       <section className="container pb-14 text-center">
