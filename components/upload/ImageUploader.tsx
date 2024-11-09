@@ -50,19 +50,19 @@ export default function ImageUploader({ label, setPicture }:ImageUploaderProps) 
 
             // Uncomment to test frontend s3 client
 
-            // const putObjectCommand = new PutObjectCommand({
-            //     Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME!,
-            //     Key: key,
-            //     ContentType: fileType
-            // });
+            const putObjectCommand = new PutObjectCommand({
+                Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME!,
+                Key: key,
+                ContentType: fileType
+            });
           
-            // // Generate presigned URL with a 60-second expiration
-            // const uploadUrl = await getSignedUrl(s3Client, putObjectCommand, { expiresIn: 60 });
-            // console.log("Presigned URL:", uploadUrl);
-            // console.log(response);
+            // Generate presigned URL with a 60-second expiration
+            const uploadUrl = await getSignedUrl(s3Client, putObjectCommand, { expiresIn: 300 });
+            console.log("Presigned URL:", uploadUrl);
+            console.log(response);
             
             // Change preSignedUrl to uploadUrl if testing s3Client
-            return { uploadUrl: preSignedUrl, key:key };
+            return { uploadUrl: uploadUrl, key:key };
         } catch (error) {
             console.error("Unable to get presigned link: ", error);
             throw error;
@@ -75,7 +75,7 @@ export default function ImageUploader({ label, setPicture }:ImageUploaderProps) 
             const headers: HeadersInit = {
                 'Content-Type': fileType
             };
-            console.log(fileType);
+            console.log("Content Type is: ",fileType);
             const uploadResponse = await fetch(uploadUrl, {
                 method: 'PUT',
                 headers: headers,
