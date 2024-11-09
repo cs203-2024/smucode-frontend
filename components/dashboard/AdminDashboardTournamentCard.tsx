@@ -80,7 +80,7 @@ export default function AdminDashboardTournamentCard({data,fetchData}: AdminDash
                         )}>
                             {data.currentRound}
                             {data.status === "ONGOING" ? (
-                                <span className='pl-1'>({getTimeUntil(data.currentRoundEndDate)})</span>
+                                <span className='pl-1'>({data.currentRoundEndDate ? getTimeUntil(data.currentRoundEndDate) : "TBD"})</span>
                             ):(
                                 <span className='pl-1 font-semibold'>(No ongoing round)</span>
                             )}

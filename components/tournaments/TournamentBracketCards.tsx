@@ -11,7 +11,7 @@ import { updateBracketScore, endBracket, endRound, updateRoundDetails } from '@/
 import { toast } from "sonner";
 import { useTournamentContext } from '@/context/TournamentContext';
 import { useUserContext } from '@/context/UserContext';
-import { formatDateToShortTime,getFormattedDateFromString } from '@/lib/utils';
+import { capitalise, formatDateToShortTime,getFormattedDateFromString } from '@/lib/utils';
 import { DateTimePicker } from '@/components/DateTimePicker'
 import { useCallback } from 'react';
 import Image from 'next/image';
@@ -41,7 +41,7 @@ const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; 
              alt={player.username}
             />
           ) : (
-            <span className="text-sm">{player.username.charAt(0)}</span>
+            <span className="text-sm">{capitalise(player.username.charAt(0))}</span>
           )}
         </div>
         <p className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
@@ -57,7 +57,7 @@ const PlayerCard: React.FC<{ player: PlayerInfo | undefined; isWinner: boolean; 
 };
 
 const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (score: number) => void }> = ({ player, onChange }) => {
-  if (!player) return null;
+  if (!player || !player.username) return null;
 
   return (
     <div className="flex items-center py-1 justify-between text-sm">
@@ -71,7 +71,7 @@ const EditPlayerCard: React.FC<{ player: PlayerInfo | undefined; onChange: (scor
               alt={player.username}
             />
           ) : (
-            <span className="text-sm">{player.username.charAt(0)}</span>
+            <span className="text-sm">{capitalise(player.username.charAt(0))}</span>
           )}
         </div>
         <p className="font-medium">{player.username}</p>
@@ -369,8 +369,8 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
 
   const filteredBrackets = brackets.filter(
     (bracket) =>
-      bracket.player1?.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      bracket.player2?.username.toLowerCase().includes(searchQuery.toLowerCase())
+      bracket.player1 && bracket.player1?.username && bracket.player1?.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      bracket.player2 && bracket.player2?.username && bracket.player2?.username?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   if (filteredBrackets.length === 0) {
@@ -461,7 +461,10 @@ const TournamentRound: React.FC<RoundProps & { searchQuery: string }> = ({ name,
       
       <div className="overflow-x-auto mr-[100px]">
         <div className="inline-grid grid-cols-4 gap-x-5 gap-y-8 pb-4 min-w-[1050px] mr-[130px]">
-          {filteredBrackets.map((bracket) => (
+          {filteredBrackets
+          .filter((bracket): bracket is BracketProps & { seqId: number } => bracket.seqId !== undefined) 
+          .sort((a, b) => a.seqId! - b.seqId!) 
+          .map((bracket) => (
             <div key={bracket.id} className="w-[250px] bg-white shadow-sm p-4 rounded-lg">
               <TournamentBracket
                 key={bracket.id}
@@ -508,8 +511,8 @@ const TournamentBracketCard = ({ rounds }: TournamentProps) => {
   const filteredRounds = rounds.filter((round) => {
     return round.brackets.some(
       (bracket) =>
-        bracket.player1?.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        bracket.player2?.username?.toLowerCase().includes(searchQuery.toLowerCase())
+        bracket.player1 && bracket.player1?.username && bracket.player1?.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        bracket.player2 && bracket.player2?.username && bracket.player2?.username?.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }).reverse();
 

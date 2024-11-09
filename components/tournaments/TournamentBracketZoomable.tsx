@@ -4,7 +4,7 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Button } from "@/components/ui/button"
 import { Crosshair, ZoomIn, ZoomOut } from 'lucide-react';
 import { BracketProps, PlayerInfo, RoundProps, TournamentProps } from '../types';
-import { getFormattedDateFromString } from '@/lib/utils';
+import { capitalise, getFormattedDateFromString } from '@/lib/utils';
 import { useTournamentContext } from '@/context/TournamentContext';
 import Image from 'next/image';
 
@@ -48,7 +48,7 @@ const TournamentBracket = ({ id, status, player1, player2, winner }: BracketProp
                 alt={player.username}
               />
             ) : (
-              <span className="text-sm">{player.username.charAt(0)}</span>
+              <span className="text-sm">{capitalise(player.username.charAt(0))}</span>
             )}
           </div>
           <p className={`${status !== "COMPLETED" ? "font-medium text-black-500" : ""} font-medium`}>{player.username}</p>
@@ -100,7 +100,10 @@ const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDate, 
       <p className="text-gray-700">Start Date: {startDate ? getFormattedDateFromString(startDate) : "TBD"}</p>
       <p className="text-gray-700 mb-4">End Date: {endDate ? getFormattedDateFromString(endDate) : "TBD"}</p>
       <div className={`${spacingClass} h-fit justify-center flex flex-col flex-grow overflow-hidden`}>
-        {brackets.map((bracket) => (
+        {brackets
+        .filter((bracket): bracket is BracketProps & { seqId: number } => bracket.seqId !== undefined) 
+        .sort((a, b) => a.seqId! - b.seqId!) 
+        .map((bracket) => (
           <div key={bracket.id} className="flex items-center">
             <TournamentBracket
               key={bracket.id}
@@ -108,7 +111,7 @@ const TournamentRound: React.FC<RoundProps> = ({ id, name, brackets, startDate, 
               seqId={bracket.seqId}
               status={bracket.status}
               player1={bracket.player1}
-              player2={bracket.player2} 
+              player2={bracket.player2}
               winner={bracket.winner}
             />
           </div>

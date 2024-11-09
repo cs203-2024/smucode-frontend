@@ -29,7 +29,7 @@ export function formatDateToShortTime(date: Date): string {
 }
 
 export function getTimeUntil(date1: string): string {
-    if (!date1) return "Invalid date";
+    if (!date1) return "Invalid Date";
     
     const futureDate = new Date(date1);
     const dateNow = new Date();

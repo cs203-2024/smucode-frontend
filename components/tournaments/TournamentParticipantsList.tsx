@@ -8,6 +8,7 @@ import { Participants, Participant } from '@/components/types';
 import { Skeleton } from '../ui/skeleton';
 import Link from 'next/link';
 import Image from 'next/image';
+import { capitalise } from '@/lib/utils';
 
 interface ParticipantCardProps {
   participant: Participant;
@@ -27,7 +28,7 @@ const ParticipantCard: React.FC<ParticipantCardProps> = ({ participant, viewMode
             alt={participant.username}
           />
         ) : (
-          <span className="text-md">{participant.username.charAt(0)}</span>
+          <span className="text-md">{capitalise(participant.username.charAt(0))}</span>
         )}
       </div>
     </div>

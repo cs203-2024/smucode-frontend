@@ -207,6 +207,29 @@ export type UserDashboardTournamentCardInfo = {
   placing: number; // -1 if tournament incomplete, actual placing number otherwise (1 - number of players)
 }
 
+
+export type NotificationCardInfo = {
+  id: string;
+  tournamentId: string;
+  tournamentName: string;
+  message: string;
+  type: string; // NotificationType 
+  category: string;
+  createdAt: string;
+  isRead: boolean;
+}
+
+export type NotificationData = {
+  id: string;
+  tournamentId: string;
+  tournamentName: string;
+  message: string;
+  type: string; // Add more specific types if needed
+  category: string;
+  createdAt: string; // ISO date string
+  isRead: boolean;
+  isNew?: boolean;
+};
 export type UploadLinkResponse = {
   key: string;
   preSignedUrl: string;
