@@ -38,7 +38,7 @@ jobs:
           NEXT_PUBLIC_PROFILE_PICTURE_BUCKET: ${{ vars.AWS_PROFILE_PICTURE_BUCKET }}
 
       - name: Deploy to S3
-        run: aws s3 sync ./out s3://${{ secrets.AWS_FRONTEND_BUCKET }} --delete --acl public-read
+        run: aws s3 sync ./out s3://${{ secrets.AWS_FRONTEND_BUCKET }} --delete
 
       - name: Invalidate CloudFront
         run: |
