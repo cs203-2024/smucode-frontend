@@ -104,7 +104,8 @@ const formSchema = z.object({
     organiser: z.string().min(0, {
         message: "Organiser name must be at least 0 characters."
     }),
-    icon: z.string() //z.instanceof(File, {message: "Please select a valid file."}).optional(),
+    icon: z.string(),
+    //imageFile: z.instanceof(File, {message: "Please select a valid file."}).optional(),
 })
 .superRefine((data, ctx) => {
     if (data.timeWeight + data.memWeight + data.testCaseWeight !== 100) {
@@ -705,42 +706,43 @@ export default function CreateTournament() {
                                 )}
                             />
                             <div className="col-span-1 flex flex-col justify-center">
-                                <FormField
-                                    control={form.control}
-                                    name="icon"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="font-semibold">Logo (optional)</FormLabel>
-                                            <div className="flex justify-center items-center p-6">
-                                                {imagePreview ? (
-                                                <Image src={imagePreview} alt="Uploaded Preview" className="bg-gray-300 w-40 h-40 object-cover rounded-full" width={160} height={160} />
-                                                ) : (
-                                                <div className="bg-gray-200 w-40 h-40 object-contain rounded-full text-gray-400 text-sm font-semibold flex items-center justify-center p-4 text-center" >No image uploaded</div>
-                                                )}
+                                <FormItem>
+                                    <FormLabel className="font-semibold">Logo (optional)</FormLabel>
+                                    <div className="flex justify-center items-center p-6">
+                                        {imagePreview ? (
+                                            <Image
+                                                src={imagePreview}
+                                                alt="Uploaded Preview"
+                                                className="bg-gray-300 w-40 h-40 object-cover rounded-full"
+                                                width={160}
+                                                height={160}
+                                            />
+                                        ) : (
+                                            <div className="bg-gray-200 w-40 h-40 object-contain rounded-full text-gray-400 text-sm font-semibold flex items-center justify-center p-4 text-center">
+                                                No image uploaded
                                             </div>
-                                            <FormControl>
-                                                <Input
-                                                    type="file" accept={ACCEPTED_IMAGE_TYPES.join(",")} 
-                                                    onChange={(e) => {
-                                                        const file = e.target.files?.[0];
-                                                        if (file && file instanceof File) {
-                                                            field.onChange(file);  
-                                                            form.trigger("icon"); 
-                                                            const objectUrl = URL.createObjectURL(file);
-                                                            setImagePreview(objectUrl);
-                                                            setFileType(file.type);
-                                                            setFile(file);
-                                                        }
-                                                    }}
-                                                />
-                                            </FormControl>
-                                            <FormDescription>
-                                                Images must have the following formats: .jpeg or .jpg or .png 
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                        )}
+                                    </div>
+                                    <FormControl>
+                                        <Input
+                                            type="file"
+                                            accept={ACCEPTED_IMAGE_TYPES.join(",")}
+                                            onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file) {
+                                                    const objectUrl = URL.createObjectURL(file);
+                                                    setImagePreview(objectUrl);
+                                                    setFileType(file.type);
+                                                    setFile(file);  // Store file separately from form data
+                                                }
+                                            }}
+                                        />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Images must have the following formats: .jpeg, .jpg, or .png
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
                             </div>
                         </div>
                     </div>
