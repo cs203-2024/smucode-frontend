@@ -47,7 +47,7 @@ import { useToast } from "@/hooks/use-toast";
 
 import { useUserContext } from '@/context/UserContext';
 
-import { createTournament } from "@/services/tournamentAPI";
+import { createTournament, getTournamentImageUploadLink, uploadTournamentImage } from "@/services/tournamentAPI";
 
 const TournamentStatusEnum = z.enum(["upcoming", "ongoing", "completed"]);
 type TournamentStatusEnum = z.infer<typeof TournamentStatusEnum>;
@@ -160,6 +160,8 @@ export default function CreateTournament() {
     const [spaceW, setSpaceW] = useState(0);
     const [tcW, setTcW] = useState(0);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [fileType, setFileType] = useState("");
+    const [file, setFile] = useState<File | null>(null);
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -216,6 +218,29 @@ export default function CreateTournament() {
         // create tournament with axios
         try {
             const response = await createTournament(updatedValues);
+            if (imagePreview && file) {
+
+                // Get presigned url
+                const tournamentId = response.id;
+                const getPresignedUrlesponse = await getTournamentImageUploadLink(tournamentId, fileType);            
+                const { preSignedUrl, key } = getPresignedUrlesponse;
+
+                // Attempt to send To S3
+                const headers: HeadersInit = {
+                    'Content-Type': fileType
+                };
+                const uploadResponse = await fetch(preSignedUrl, {
+                    method: 'PUT',
+                    headers: headers,
+                    body: file,
+                });        
+                if (!uploadResponse.ok) {
+                    throw new Error('Failed to upload file to S3');
+                }
+
+                // Save to backend
+                const saveToBackendResponse = await uploadTournamentImage(tournamentId, key);
+            }
             toast({
                 title: "Tournament Created",
                 description: "Tournament has been created successfully.",
@@ -703,6 +728,8 @@ export default function CreateTournament() {
                                                             form.trigger("icon"); 
                                                             const objectUrl = URL.createObjectURL(file);
                                                             setImagePreview(objectUrl);
+                                                            setFileType(file.type);
+                                                            setFile(file);
                                                         }
                                                     }}
                                                 />
