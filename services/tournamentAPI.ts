@@ -1,8 +1,8 @@
 import axiosClient from './axiosClient';
-import { TournamentSignUpInfo, TournamentCardInfo, UserTournamentCardInfo, TournamentProps, TournamentOverviewProps, ParticipantCardListProp, PlayerInfo } from '@/components/types';
+import { TournamentSignUpInfo, TournamentCardInfo, UserTournamentCardInfo, TournamentProps, TournamentOverviewProps, ParticipantCardListProp, PlayerInfo, UploadLinkResponse, UploadSuccessResponse } from '@/components/types';
 
 //interface for tournament
-interface Tournament {
+export interface Tournament {
     name: string;
     description: string;
     capacity: number;
@@ -21,9 +21,24 @@ interface Tournament {
 }
 
 interface CreateTournamentResponse {
-    message: string;
-    tournamentDTO: Tournament;
-    token?: string;
+    id: string;
+    name: string;
+    description: string;
+    capacity: number;
+    format: string;
+    band: string;
+    startDate: string;
+    endDate: string;
+    signupStartDate: string;
+    signupEndDate: string;
+    status: string;
+    timeWeight: number;
+    memWeight: number;
+    testCaseWeight: number;
+    organiser: string;
+    icon: string;
+    currentRound: string;
+    signups: string[];
 }
 
 interface SignUpInfo {
@@ -36,10 +51,10 @@ interface SignUpResponse {
     signUpData: SignUpInfo;
 }
 
-export const createTournament = async (tournamentData: Tournament):Promise<Tournament> => {
+export const createTournament = async (tournamentData: Tournament):Promise<CreateTournamentResponse> => {
     try {
         console.log(tournamentData);
-        const response = await axiosClient.post<Tournament>(`/tournaments/create`, tournamentData);
+        const response = await axiosClient.post<CreateTournamentResponse>(`/tournaments/create`, tournamentData);
         return response.data;
     } catch (error) {
         console.error('Error creating tournament:', error);
@@ -227,3 +242,23 @@ export const getAllAvailableTournamentsForExplore = async ():Promise<UserTournam
         throw error;
     } 
 }
+
+export const getTournamentImageUploadLink = async (tournamentId: string, type: string):Promise<UploadLinkResponse> => {
+    try {
+      const response = await axiosClient.post<UploadLinkResponse>(`/users/get-upload-link?tournamentId=${tournamentId}&contentType=${type}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching get-upload-link:", error);
+      throw error;
+    }
+  }
+  
+  export const uploadTournamentImage = async(tournamentId: string, key: string):Promise<UploadSuccessResponse> => {
+    try {
+      const response = await axiosClient.post<UploadSuccessResponse>(`/tournaments/upload-picture?tournamentId=${tournamentId}&key=${key}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error posting to upload-picture:", error);
+      throw error;
+    }
+  }
