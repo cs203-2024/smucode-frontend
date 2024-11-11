@@ -245,7 +245,7 @@ export const getAllAvailableTournamentsForExplore = async ():Promise<UserTournam
 
 export const getTournamentImageUploadLink = async (tournamentId: string, type: string):Promise<UploadLinkResponse> => {
     try {
-      const response = await axiosClient.post<UploadLinkResponse>(`/users/get-upload-link?tournamentId=${tournamentId}&contentType=${type}`);
+      const response = await axiosClient.post<UploadLinkResponse>(`/tournaments/get-upload-link?tournamentId=${tournamentId}&contentType=${type}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching get-upload-link:", error);

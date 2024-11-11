@@ -52,7 +52,7 @@
 // export const tournamentCardData = [
 //     {
 //         "id": "1",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "upper",
@@ -71,7 +71,7 @@
 //     },
 //     {
 //         "id": "2",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "double-elimination",
 //         "band": "upper",
@@ -90,7 +90,7 @@
 //     },
 //     {
 //         "id": "3",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "middle",
@@ -109,7 +109,7 @@
 //     },
 //     {
 //         "id": "4",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "upper",
@@ -128,7 +128,7 @@
 //     },
 //     {
 //         "id": "5",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "lower",
@@ -147,7 +147,7 @@
 //     },
 //     {
 //         "id": "6",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "upper",
@@ -166,7 +166,7 @@
 //     },
 //     {
 //         "id": "7",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "upper",
@@ -185,7 +185,7 @@
 //     },
 //     {
 //         "id": "8",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "upper",
@@ -204,7 +204,7 @@
 //     },
 //     {
 //         "id": "9",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "upper",
@@ -226,7 +226,7 @@
 // export const userTournamentCardData = [
 //     {
 //         "id": "1",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "upper",
@@ -249,7 +249,7 @@
 //     },
 //     {
 //         "id": "2",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "double-elimination",
 //         "band": "upper",
@@ -272,7 +272,7 @@
 //     },
 //     {
 //         "id": "3",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "middle",
@@ -295,7 +295,7 @@
 //     },
 //     {
 //         "id": "4",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "upper",
@@ -318,7 +318,7 @@
 //     },
 //     {
 //         "id": "5",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "lower",
@@ -341,7 +341,7 @@
 //     },
 //     {
 //         "id": "6",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "upper",
@@ -364,7 +364,7 @@
 //     },
 //     {
 //         "id": "7",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "upper",
@@ -387,7 +387,7 @@
 //     },
 //     {
 //         "id": "8",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "upper",
@@ -410,7 +410,7 @@
 //     },
 //     {
 //         "id": "9",
-//         "icon": "smu-logo.png",
+//         "icon": "/smu-logo.png",
 //         "name": "SMU Gardening Championships",
 //         "format": "single-elimination",
 //         "band": "upper",
@@ -487,7 +487,7 @@
 export const tournamentCardData2 = [
     {
         id: "1",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "Summer Coding Challenge 2024",
         capacity: 32,
         format: "single-elimination",
@@ -508,7 +508,7 @@ export const tournamentCardData2 = [
     },
     {
         id: "2",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Soccer Showdown",
         capacity: 128,
         format: "double-elimination",
@@ -529,7 +529,7 @@ export const tournamentCardData2 = [
     },
     {
         id: "3",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Chess Grand Masters",
         capacity: 32,
         format: "round-robin",
@@ -550,7 +550,7 @@ export const tournamentCardData2 = [
     },
     {
         id: "4",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Badminton Open",
         capacity: 64,
         format: "single-elimination",
@@ -571,7 +571,7 @@ export const tournamentCardData2 = [
     },
     {
         id: "5",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Tennis League",
         capacity: 32,
         format: "round-robin",
@@ -592,7 +592,7 @@ export const tournamentCardData2 = [
     },
     {
         id: "6",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Basketball Dunk Fest",
         capacity: 128,
         format: "single-elimination",
@@ -613,7 +613,7 @@ export const tournamentCardData2 = [
     },
     {
         id: "7",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Esports Tournament",
         capacity: 64,
         format: "double-elimination",
@@ -634,7 +634,7 @@ export const tournamentCardData2 = [
     },
     {
         id: "8",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Golf Open",
         capacity: 64,
         format: "single-elimination",
@@ -658,7 +658,7 @@ export const tournamentCardData2 = [
 export const userTournamentCardData2 = [
     {
         id: "1",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "Summer Coding Challenge 2024",
         capacity: 32,
         format: "single-elimination",
@@ -682,7 +682,7 @@ export const userTournamentCardData2 = [
     },
     {
         id: "2",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Soccer Showdown",
         capacity: 128,
         format: "double-elimination",
@@ -706,7 +706,7 @@ export const userTournamentCardData2 = [
     },
     {
         id: "3",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Chess Grand Masters",
         capacity: 32,
         format: "round-robin",
@@ -730,7 +730,7 @@ export const userTournamentCardData2 = [
     },
     {
         id: "4",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Badminton Open",
         capacity: 64,
         format: "single-elimination",
@@ -754,7 +754,7 @@ export const userTournamentCardData2 = [
     },
     {
         id: "5",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Tennis League",
         capacity: 32,
         format: "round-robin",
@@ -778,7 +778,7 @@ export const userTournamentCardData2 = [
     },
     {
         id: "6",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Basketball Dunk Fest",
         capacity: 128,
         format: "single-elimination",
@@ -802,7 +802,7 @@ export const userTournamentCardData2 = [
     },
     {
         id: "7",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Esports Tournament",
         capacity: 64,
         format: "double-elimination",
@@ -826,7 +826,7 @@ export const userTournamentCardData2 = [
     },
     {
         id: "8",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Golf Open",
         capacity: 64,
         format: "single-elimination",
@@ -850,7 +850,7 @@ export const userTournamentCardData2 = [
     },
     {
         id: "9",
-        icon: "smu-logo.png",
+        icon: "/smu-logo.png",
         name: "SMU Volleyball Championships",
         capacity: 48,
         format: "round-robin",

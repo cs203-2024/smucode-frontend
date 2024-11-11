@@ -1,5 +1,11 @@
 'use client'
 
+import dotenv from 'dotenv';
+dotenv.config();
+
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -185,6 +191,14 @@ export default function CreateTournament() {
         },
     })
 
+    const s3Client = new S3Client({
+        region: process.env.NEXT_PUBLIC_AWS_BUCKET_REGION!,
+        credentials: {
+            accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY!,
+            secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY!,
+        },
+    });
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
 
         console.log("submit clicked");
@@ -225,17 +239,29 @@ export default function CreateTournament() {
                 const tournamentId = response.id;
                 const getPresignedUrlesponse = await getTournamentImageUploadLink(tournamentId, fileType);            
                 const { preSignedUrl, key } = getPresignedUrlesponse;
+                console.log("Presigned for tourney: ", preSignedUrl);
+
+                const putObjectCommandTournament = new PutObjectCommand({
+                    Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME!,
+                    Key: key,
+                    ContentType: fileType
+                });
+              
+                // Generate presigned URL with a 300-second expiration
+                const uploadTournamentUrl = await getSignedUrl(s3Client, putObjectCommandTournament, { expiresIn: 300 });
+                console.log("Presigned URL:", uploadTournamentUrl);
+                //console.log(response);
 
                 // Attempt to send To S3
                 const headers: HeadersInit = {
                     'Content-Type': fileType
                 };
-                const uploadResponse = await fetch(preSignedUrl, {
+                const uploadTournamentResponse = await fetch(uploadTournamentUrl, {
                     method: 'PUT',
                     headers: headers,
                     body: file,
                 });        
-                if (!uploadResponse.ok) {
+                if (!uploadTournamentResponse.ok) {
                     throw new Error('Failed to upload file to S3');
                 }
 
@@ -248,7 +274,7 @@ export default function CreateTournament() {
             });
             router.push("/dashboard");
         } catch (error: any) {
-            console.log("error creatingg tournament");
+            console.log("error creatingg tournament: ", error);
             toast({
                 title: "Error Creating Tournament",
                 description: "Uh-oh, there was a problem creating the tournament. Please try again.",
