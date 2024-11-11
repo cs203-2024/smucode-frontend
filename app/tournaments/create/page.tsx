@@ -192,7 +192,7 @@ export default function CreateTournament() {
     })
 
     const s3Client = new S3Client({
-        region: process.env.NEXT_PUBLIC_AWS_BUCKET_REGION!,
+        region: "ap-southeast-1",
         credentials: {
             accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY!,
             secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY!,
@@ -242,7 +242,7 @@ export default function CreateTournament() {
                 console.log("Presigned for tourney: ", preSignedUrl);
 
                 const putObjectCommandTournament = new PutObjectCommand({
-                    Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME!,
+                    Bucket: "brawlcode-assets",
                     Key: key,
                     ContentType: fileType
                 });
