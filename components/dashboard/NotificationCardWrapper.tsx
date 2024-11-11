@@ -35,7 +35,7 @@ export default function NotificationCardWrapper() {
         if(loadingNotifications) return;
         const connectEventSource = () => {
 
-            const eventSource = new EventSource('http://localhost:9000/api/notifications/subscribe', { withCredentials: true });
+            const eventSource = new EventSource('https://api.brawlcode.com/api/notifications/subscribe', { withCredentials: true });
               
             eventSource.onmessage = (event) => {
                 console.log("Received SSE message:", JSON.parse(event.data));
