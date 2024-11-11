@@ -1,5 +1,11 @@
 'use client'
 
+import dotenv from 'dotenv';
+dotenv.config();
+
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -47,7 +53,7 @@ import { useToast } from "@/hooks/use-toast";
 
 import { useUserContext } from '@/context/UserContext';
 
-import { createTournament } from "@/services/tournamentAPI";
+import { createTournament, getTournamentImageUploadLink, uploadTournamentImage } from "@/services/tournamentAPI";
 
 const TournamentStatusEnum = z.enum(["upcoming", "ongoing", "completed"]);
 type TournamentStatusEnum = z.infer<typeof TournamentStatusEnum>;
@@ -104,7 +110,8 @@ const formSchema = z.object({
     organiser: z.string().min(0, {
         message: "Organiser name must be at least 0 characters."
     }),
-    icon: z.string() //z.instanceof(File, {message: "Please select a valid file."}).optional(),
+    icon: z.string(),
+    //imageFile: z.instanceof(File, {message: "Please select a valid file."}).optional(),
 })
 .superRefine((data, ctx) => {
     if (data.timeWeight + data.memWeight + data.testCaseWeight !== 100) {
@@ -160,6 +167,8 @@ export default function CreateTournament() {
     const [spaceW, setSpaceW] = useState(0);
     const [tcW, setTcW] = useState(0);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [fileType, setFileType] = useState("");
+    const [file, setFile] = useState<File | null>(null);
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -181,6 +190,14 @@ export default function CreateTournament() {
             icon: ""//new File([], "nullIcon.png", { type: "image/png" })
         },
     })
+
+    const s3Client = new S3Client({
+        region: process.env.NEXT_PUBLIC_AWS_BUCKET_REGION!,
+        credentials: {
+            accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY!,
+            secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY!,
+        },
+    });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
 
@@ -216,13 +233,48 @@ export default function CreateTournament() {
         // create tournament with axios
         try {
             const response = await createTournament(updatedValues);
+            if (imagePreview && file) {
+
+                // Get presigned url
+                const tournamentId = response.id;
+                const getPresignedUrlesponse = await getTournamentImageUploadLink(tournamentId, fileType);            
+                const { preSignedUrl, key } = getPresignedUrlesponse;
+                console.log("Presigned for tourney: ", preSignedUrl);
+
+                const putObjectCommandTournament = new PutObjectCommand({
+                    Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME!,
+                    Key: key,
+                    ContentType: fileType
+                });
+              
+                // Generate presigned URL with a 300-second expiration
+                const uploadTournamentUrl = await getSignedUrl(s3Client, putObjectCommandTournament, { expiresIn: 300 });
+                console.log("Presigned URL:", uploadTournamentUrl);
+                //console.log(response);
+
+                // Attempt to send To S3
+                const headers: HeadersInit = {
+                    'Content-Type': fileType
+                };
+                const uploadTournamentResponse = await fetch(uploadTournamentUrl, {
+                    method: 'PUT',
+                    headers: headers,
+                    body: file,
+                });        
+                if (!uploadTournamentResponse.ok) {
+                    throw new Error('Failed to upload file to S3');
+                }
+
+                // Save to backend
+                const saveToBackendResponse = await uploadTournamentImage(tournamentId, key);
+            }
             toast({
                 title: "Tournament Created",
                 description: "Tournament has been created successfully.",
             });
             router.push("/dashboard");
         } catch (error: any) {
-            console.log("error creatingg tournament");
+            console.log("error creatingg tournament: ", error);
             toast({
                 title: "Error Creating Tournament",
                 description: "Uh-oh, there was a problem creating the tournament. Please try again.",
@@ -680,40 +732,43 @@ export default function CreateTournament() {
                                 )}
                             />
                             <div className="col-span-1 flex flex-col justify-center">
-                                <FormField
-                                    control={form.control}
-                                    name="icon"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="font-semibold">Logo (optional)</FormLabel>
-                                            <div className="flex justify-center items-center p-6">
-                                                {imagePreview ? (
-                                                <Image src={imagePreview} alt="Uploaded Preview" className="bg-gray-300 w-40 h-40 object-cover rounded-full" width={160} height={160} />
-                                                ) : (
-                                                <div className="bg-gray-200 w-40 h-40 object-contain rounded-full text-gray-400 text-sm font-semibold flex items-center justify-center p-4 text-center" >No image uploaded</div>
-                                                )}
+                                <FormItem>
+                                    <FormLabel className="font-semibold">Logo (optional)</FormLabel>
+                                    <div className="flex justify-center items-center p-6">
+                                        {imagePreview ? (
+                                            <Image
+                                                src={imagePreview}
+                                                alt="Uploaded Preview"
+                                                className="bg-gray-300 w-40 h-40 object-cover rounded-full"
+                                                width={160}
+                                                height={160}
+                                            />
+                                        ) : (
+                                            <div className="bg-gray-200 w-40 h-40 object-contain rounded-full text-gray-400 text-sm font-semibold flex items-center justify-center p-4 text-center">
+                                                No image uploaded
                                             </div>
-                                            <FormControl>
-                                                <Input
-                                                    type="file" accept={ACCEPTED_IMAGE_TYPES.join(",")} 
-                                                    onChange={(e) => {
-                                                        const file = e.target.files?.[0];
-                                                        if (file && file instanceof File) {
-                                                            field.onChange(file);  
-                                                            form.trigger("icon"); 
-                                                            const objectUrl = URL.createObjectURL(file);
-                                                            setImagePreview(objectUrl);
-                                                        }
-                                                    }}
-                                                />
-                                            </FormControl>
-                                            <FormDescription>
-                                                Images must have the following formats: .jpeg or .jpg or .png 
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                        )}
+                                    </div>
+                                    <FormControl>
+                                        <Input
+                                            type="file"
+                                            accept={ACCEPTED_IMAGE_TYPES.join(",")}
+                                            onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file) {
+                                                    const objectUrl = URL.createObjectURL(file);
+                                                    setImagePreview(objectUrl);
+                                                    setFileType(file.type);
+                                                    setFile(file);  // Store file separately from form data
+                                                }
+                                            }}
+                                        />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Images must have the following formats: .jpeg, .jpg, or .png
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
                             </div>
                         </div>
                     </div>

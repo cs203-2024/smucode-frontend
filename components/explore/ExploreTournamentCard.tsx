@@ -47,7 +47,7 @@ export default function ExploreTournamentCard({data, fetchData}: ExploreTourname
     return (
         <Card className='w-[30%] h-[52vh] p-0 overflow-hidden'>
             <div className='w-full h-[60%] relative'>
-                <Image src={data.icon ? `/${data.icon}`:"/smu-logo.png"} 
+                <Image src={data.icon || '/assets/images/tournament_default.png'} 
                     className={'w-full h-full object-contain bg-gray-100 opacity-80 brightness-[65%] hover:brightness-50 transition duration-200'} alt={data.name} width={1000} height={1000} 
                 />
                 <div className='z-10 absolute top-4 left-4 h-full flex flex-col justify-between items-start pb-6 pr-4'>
