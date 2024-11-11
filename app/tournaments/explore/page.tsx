@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-import { userTournamentCardData2 } from "@/components/dashboard/testdata";
 import ExploreTournamentCard from "@/components/explore/ExploreTournamentCard";
 import { getAllAvailableTournamentsForExplore } from "@/services/tournamentAPI";
 import { UserTournamentCardInfo } from "@/components/types";
@@ -43,9 +42,11 @@ export default function ExplorePage() {
                     {exploreData.map((data) => (
                         <ExploreTournamentCard key={data.id} data={data} fetchData={fetchExploreData} />
                     ))}
-                    {userTournamentCardData2.map((data) => (
-                        <ExploreTournamentCard key={data.id} data={data} fetchData={fetchExploreData} />
-                    ))}
+                    {exploreData.length <= 0 ? (
+                        <div className="flex justify-center items-center h-full w-full p-16 text-gray-500">No Tournaments posted yet. Check back again later!</div>
+                    ):(
+                        <div></div>
+                    )}
                 </div>
             </ScrollArea>
         </main>
