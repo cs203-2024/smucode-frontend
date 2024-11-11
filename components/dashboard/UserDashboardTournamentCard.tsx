@@ -42,7 +42,7 @@ export default function UserDashboardTournamentCard({data,fetchData}: UserDashbo
 
     return (
         <Card className='flex w-full grid grid-cols-11 gap-3 h-20 w-full items-center mb-3'>
-            <Image src={data.icon ? `/${data.icon}`:"/smu-logo.png"} className={cn(
+            <Image src={data.icon || '/assets/images/tournament_default.png'} className={cn(
                 'col-span-2 w-full h-16 object-contain bg-gray-100 ml-2 rounded-md',
                 data.status === "COMPLETED" ? "opacity-60":""
             )} alt={data.name} width={1000} height={1000} />

@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { TournamentCardInfo, UserTournamentCardInfo } from '../types';
-import { tournamentCardData2, userTournamentCardData2 } from '@/components/dashboard/testdata';
 import { useUserContext } from '@/context/UserContext';
 import { getAllTournamentsCreatedByAdmin, getAllTournamentsForUser } from '@/services/tournamentAPI';
 import UserDashboardTournamentCard from './UserDashboardTournamentCard';
@@ -87,11 +86,25 @@ export default function DashboardTournamentCardWrapper() {
                         <TabsContent value="upcoming" className='w-full'>
                                 <ScrollArea className='h-[55vh] w-full whitespace-nowrap pr-3'>
                                     <div className='pb-4'>
-                                        {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
+                                        {/* {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "upcoming").map((data) => (
                                             <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "upcoming" && item.signedUp).map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
-                                        ))}
+                                        ))} */}
+
+                                        {user?.role === "ROLE_ADMIN" ? (
+                                            adminData.filter((item) => item.status.toLowerCase() === "upcoming").length <= 0 ? (
+                                                <div className='flex justify-center items-center h-full w-full p-16 text-gray-500'>No Upcoming tournaments</div>
+                                            ) : (
+                                                <div>{/* Content for admin with ongoing tournaments */}</div>
+                                            )
+                                        ) : (
+                                            userData.filter((item) => item.status.toLowerCase() === "upcoming").length <= 0 ? (
+                                                <div className='flex justify-center items-center h-full w-full p-16 text-gray-500'>No Upcoming tournaments</div>
+                                            ) : (
+                                                <div>{/* Content for user with ongoing tournaments */}</div>
+                                            )
+                                        )}
 
                                         {/* Uncomment below when real data is present */}
 
@@ -107,11 +120,27 @@ export default function DashboardTournamentCardWrapper() {
                             <TabsContent value="ongoing" className='w-full'>
                                 <ScrollArea className='h-[55vh] w-full pr-3'>
                                     <div className='pb-4'>
-                                        {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
+                                        {/* {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "ongoing").map((data) => (
                                             <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "ongoing" && item.participated).map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
-                                        ))}
+                                        ))} */}
+
+                                        {user?.role === "ROLE_ADMIN" ? (
+                                            adminData.filter((item) => item.status.toLowerCase() === "ongoing").length <= 0 ? (
+                                                <div className='flex justify-center items-center h-full w-full p-16 text-gray-500'>No Ongoing tournaments</div>
+                                            ) : (
+                                                <div>{/* Content for admin with ongoing tournaments */}</div>
+                                            )
+                                        ) : (
+                                            userData.filter((item) => item.status.toLowerCase() === "ongoing").length <= 0 ? (
+                                                <div className='flex justify-center items-center h-full w-full p-16 text-gray-500'>No Ongoing tournaments</div>
+                                            ) : (
+                                                <div>{/* Content for user with ongoing tournaments */}</div>
+                                            )
+                                        )}
+
+                                        
 
                                         {/* Uncomment below when real data is present */}
 
@@ -127,11 +156,25 @@ export default function DashboardTournamentCardWrapper() {
                             <TabsContent value="completed" className='w-full'>
                                 <ScrollArea className='h-[55vh] whitespace-nowrap pr-3'>
                                     <div className='pb-4'>
-                                        {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
+                                        {/* {user?.role === "ROLE_ADMIN" ? tournamentCardData2.filter((item) => item.status.toLowerCase() === "completed").map((data) => (
                                             <AdminDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
                                         )):userTournamentCardData2.filter((item) => item.status.toLowerCase() === "completed" && item.participated).map((data) => (
                                             <UserDashboardTournamentCard key={data.id} data={data} fetchData={() => fetchData()} />
-                                        ))}
+                                        ))} */}
+
+                                        {user?.role === "ROLE_ADMIN" ? (
+                                            adminData.filter((item) => item.status.toLowerCase() === "completed").length <= 0 ? (
+                                                <div className='flex justify-center items-center h-full w-full p-16 text-gray-500'>No Completed tournaments</div>
+                                            ) : (
+                                                <div>{/* Content for admin with ongoing tournaments */}</div>
+                                            )
+                                        ) : (
+                                            userData.filter((item) => item.status.toLowerCase() === "completed").length <= 0 ? (
+                                                <div className='flex justify-center items-center h-full w-full p-16 text-gray-500'>No Completed tournaments</div>
+                                            ) : (
+                                                <div>{/* Content for user with ongoing tournaments */}</div>
+                                            )
+                                        )}
 
                                         {/* Uncomment below when real data is present */}
 
