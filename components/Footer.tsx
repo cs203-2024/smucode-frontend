@@ -5,21 +5,21 @@ export const Footer = () => {
     <footer id="footer">
       <hr className="w-11/12 mx-auto" />
 
-      <section className="container py-20 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-x-12 gap-y-8">
-        <div className="col-span-full xl:col-span-2">
+      <section className="container py-20 grid grid-cols-2 md:grid-cols-4 xl:grid-cols- gap-x-12 gap-y-8">
+        {/* <div className="col-span-full xl:col-span-2">
           <a
             rel="noreferrer noopener"
             href="/"
             className="font-bold text-xl flex"
           >
             <LogoIcon />
-            SMUCode
+            BrawlCode
           </a>
-        </div>
+        </div> */}
 
-        <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">Follow US</h3>
-          <div>
+        {/* <div className="flex flex-col gap-2">
+          <h3 className="font-bold text-lg">Follow US</h3> */}
+        {/* <div>
             <a
               rel="noreferrer noopener"
               href="https://github.com/cs203-2024"
@@ -27,9 +27,9 @@ export const Footer = () => {
             >
               Github
             </a>
-          </div>
+          </div> */}
 
-          {/* <div>
+        {/* <div>
             <a
               rel="noreferrer noopener"
               href="#"
@@ -48,7 +48,7 @@ export const Footer = () => {
               Dribbble
             </a>
           </div> */}
-        </div>
+        {/* </div> */}
 
         {/* <div className="flex flex-col gap-2">
           <h3 className="font-bold text-lg">Platforms</h3>
@@ -152,7 +152,7 @@ export const Footer = () => {
 
       <section className="container pb-14 text-center">
         <h3>
-          &copy; 2024 SMUCode{" "}
+          &copy; 2024 BrawlCode{" "}
           {/* <a
             rel="noreferrer noopener"
             target="_blank"
