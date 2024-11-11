@@ -29,7 +29,7 @@ export const HeroCards = () => {
           </div>
         </CardHeader>
 
-        <CardContent>SMUCode is easy, simple, & flawless!</CardContent>
+        <CardContent>BrawlCode is simple & flawless!</CardContent>
       </Card>
 
       {/* Team */}
@@ -47,7 +47,7 @@ export const HeroCards = () => {
         </CardHeader>
 
         <CardContent className="text-center pb-2">
-          <p>SMUCode has transformed the way I organize my tournaments!</p>
+          <p>BrawlCode has transformed the way I organize my tournaments!</p>
         </CardContent>
 
         <CardFooter>
@@ -116,7 +116,7 @@ export const HeroCards = () => {
           </div>
 
           <CardDescription>
-            The perfect plan to get started with SMUCode.
+            The perfect plan to get started with BrawlCode.
           </CardDescription>
         </CardHeader>
 
@@ -153,7 +153,7 @@ export const HeroCards = () => {
           <div>
             <CardTitle>Bright Ideas for Tournaments</CardTitle>
             <CardDescription className="text-md mt-2">
-              Easily plan and organize your tournaments with SMUCode’s intuitive
+              Easily plan & organize your tournaments with BrawlCode’s intuitive
               tools.
             </CardDescription>
           </div>
